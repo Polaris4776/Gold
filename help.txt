@@ -1,0 +1,65 @@
+{prefixe}help :white_check_mark:
+Sert a voir toutes ces magnifiques commandes.
+
+{prefixe}gold :white_check_mark:
+Admirez la beauté de votre nombre de pièces.
+
+{prefixe}give :white_check_mark:
+Soyez charitables et donnez à quelqu'un une somme d'argent.
+
+{prefixe}rank gold :white_check_mark:
+Admirez le classement en fonction du nombre de lingots d'or.
+
+{prefixe}beg :white_check_mark:
+Mendiez un peu d'argent.
+
+{prefixe}daily :white_check_mark:
+Récupérez votre récompense journalière.
+
+{prefixe}hebdo :white_check_mark:
+Récupérez votre récompense hebdomadaire.
+
+{prefixe}steal :white_check_mark:
+Volez de l'argent à une personne. Si elle est présente, elle vous {prefixe}report et vous payez une amende !
+
+{prefixe}report :white_check_mark:
+Faites payer une amende au voyou qui vous à dérobé !
+
+{prefixe}profile :white_check_mark:
+Observez votre grandiose profil.
+
+{prefixe}shop :arrows_counterclockwise:
+Faites un peu de shopping dans le magasin !
+
+{prefixe}buy :arrows_counterclockwise:
+Achetez un objet !
+
+{prefixe}sell :arrows_counterclockwise:
+Vendez votre objet avec une taxe de 10% comparé au prix original.
+
+{prefixe}bag :white_check_mark:
+Admirez votre magifique équipement... ou jalousez celui d'autrui !
+
+{prefixe}use :arrows_counterclockwise:
+Utilisez vos supers équipements !!!
+
+{prefixe}level :white_check_mark:
+Sert a voir son niveau.
+
+{prefixe}xp :white_check_mark:
+Sert à voir son xp
+
+{prefixe}rank level :white_check_mark:
+Admirez le classement en fonction du niveau.
+
+{prefixe}rank wins :x:
+Admirez le classement en fonction du nombre de parties gagnées à un jeu.
+
+{prefixe}game :x:
+Jouez à un jeu.
+
+{prefixe}removemydata :white_check_mark:
+Supprimez votre compte. :pleading_face:
+
+{prefixe}nothing :white_check_mark:
+Sert à rien. Pourquoi faire simple quand on peut faire compliqué ?
