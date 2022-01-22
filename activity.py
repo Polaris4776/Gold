@@ -9,13 +9,13 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
-	while True : 
-		with open("activity.txt", "r") as f : 
-			activity_name = f.read()
-		activity = discord.Game(name=activity_name)
-		await client.change_presence(status=discord.Status.online, activity=activity)
-		await asyncio.sleep(10)
-
+    while True:
+        with open("activity.txt", "r") as f:
+            activity_name = f.read()
+        activity = discord.Game(name=activity_name)
+        status = discord.Status.online
+        await client.change_presence(status=status, activity=activity)
+        await asyncio.sleep(10)
 
 
 client.run(TOKEN)

@@ -1,6 +1,6 @@
+from tokenize import Token
 import discord
 import os
-import asyncio
 from replit import db
 from discord.ext import tasks
 import random
@@ -8,7 +8,8 @@ from datetime import datetime
 import pytz
 import classic_commands
 import admin_commands
-"""Commandes spéciales : 
+from dotenv import dotenv_values
+"""Commandes spéciales :
 ?delete
 ?resetdata
 ?removemydata
@@ -19,7 +20,7 @@ import admin_commands
 # 0 : Name		1 : Comment		2 : Prix		3 : Number
 shop = [
     [
-		"Pendentif de sagesse de Leonard de Vinci :medal:",
+        "Pendentif de sagesse de Leonard de Vinci :medal:",
         "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
         3000
     ],
@@ -58,9 +59,12 @@ shop = [
         "Empêchez les gens de vous voler pendant une semaine !!!", 2000
     ],
     ["Crotte :poop:", "Offrez la à vos amis !", 10],
-	["Justice corrompue :scales:", "Faite la preuve de votre richesse est corrompez le monde entier !", 1000000000],
-	["Richesse exquise :reminder_ribbon:", "Montrez une preuve de votre raffinement extrême !", 1000000000000],
-	["Richesse suprême :rosette: ", "L'objet qui ferait mourir de jalousie un milliardaire !", 99000000000000000]
+    ["Justice corrompue :scales:",
+        "Faite la preuve de votre richesse est corrompez le monde entier !", 1000000000],
+    ["Richesse exquise :reminder_ribbon:",
+        "Montrez une preuve de votre raffinement extrême !", 1000000000000],
+    ["Richesse suprême :rosette: ",
+        "L'objet qui ferait mourir de jalousie un milliardaire !", 99000000000000000]
 ]
 # ":boomerang:""  boomerang
 
@@ -70,6 +74,9 @@ for group_item in shop:
     number += 1
 
 TOKEN = os.getenv("DISCORD_TOKEN")
+print("\n\n\n\n\n")
+print(TOKEN)
+print("\n\n\n\n")
 client = discord.Client()
 prefixe = "?"
 
@@ -179,11 +186,11 @@ def timer_edit_less(user, prefixe_num):
 
 
 def timer_edit_more(user, prefixe_num):
-	if not (user.startswith(prefixe_num)):
-		return
-	var = int(db[user])
-	
-	db[user] = var + 1  # On augmente la valeur d'une minute.
+    if not (user.startswith(prefixe_num)):
+        return
+    var = int(db[user])
+
+    db[user] = var + 1  # On augmente la valeur d'une minute.
 
 
 def report_edit(user):
@@ -196,7 +203,8 @@ def report_edit(user):
     if ls[0] == 0:
         return  # On est prêt à faire la commande !
     else:
-        db[user] = f"{ls[0] - 1}|{ls[1]}"  # On s'approche du moment prêt de 1 min !
+        # On s'approche du moment prêt de 1 min !
+        db[user] = f"{ls[0] - 1}|{ls[1]}"
 
 
 async def wait_for_message(
@@ -309,14 +317,6 @@ day = hour * 24
 white = 16775930
 
 
-
-
-
-
-
-
-
-
 # users = db.keys()
 # for user in users :
 # 	if user.startswith("+_+") :
@@ -349,254 +349,261 @@ white = 16775930
 # 						info.write(f"{user} remis à 0 !!!")
 
 
-
-
-		
-
-@tasks.loop(seconds=minute)  # 1 minute d'attente entre chaque execution de def
+# 1 minute d'attente entre chaque execution de def
+@ tasks.loop(seconds=minute)
 async def temps():
-	rand = random.randint(1, 2048)  # 1 chance sur 2048 pour l'instant
-	if rand == 5:
-		rand = True
-	
-	users = db.keys()
-	for user in users:
-		timer_edit_less(user, prefixes[0])  # On retire 1 minute au temps restant avant que daily soit dispo
-		timer_edit_less(user, prefixes[1])  # On retire 1 minute au temps restant avant que hebdo soit dispo
-		timer_edit_less(user, prefixes[3])  # On retire 1 minute au temps restant avant que beg soit dispo
-		timer_edit_less(user, prefixes[5])  # On retire 1 minute au temps restant avant que steal soit dispo
-		timer_edit_less(user, prefixes[12])  # On retire 1 minute au temps restant avant que le sablier temporel soit dispo
-		timer_edit_more(user, prefixes[13])  # On ajoute 1 minute au temps d'inactivité
-	
-		try:
-			timer_edit_less(user, prefixes[8])  # On retire 1 minute au temps restant avant que shield soit dispo
-		except ValueError:
-			pass
-			report_edit(user)
-		if rand:
-			exploitation(user)  # On ajoute l'argent de l'exploitation
-		
-	users = db.keys()
-	for user in users:
-		if user.startswith("O_O") : 
-			if int(db[user]) > 10080 : # Inactif depuis 1 semaine.
-				list_user = list(user)
-				for i in range(3) : 
-					del list_user[0]
-				no_list_user = "".join(list_user)
-				if str(db["°-°" + no_list_user]) == "0" : 
-					print(f"La personne {no_list_user} est pauvre et inactive : supprimons la !")
-					to_delete = no_list_user
+    rand = random.randint(1, 2048)  # 1 chance sur 2048 pour l'instant
+    if rand == 5:
+        rand = True
 
-					users = db.keys()
-					found = False
-					for user in users : 
-						if to_delete in user : 
-							del db[user]
-							found = True
-					if found : 
-						print(f"{to_delete} supprimé avec succès !")
+    users = db.keys()
+    for user in users:
+        # On retire 1 minute au temps restant avant que daily soit dispo
+        timer_edit_less(user, prefixes[0])
+        # On retire 1 minute au temps restant avant que hebdo soit dispo
+        timer_edit_less(user, prefixes[1])
+        # On retire 1 minute au temps restant avant que beg soit dispo
+        timer_edit_less(user, prefixes[3])
+        # On retire 1 minute au temps restant avant que steal soit dispo
+        timer_edit_less(user, prefixes[5])
+        # On retire 1 minute au temps restant avant que le sablier temporel soit dispo
+        timer_edit_less(user, prefixes[12])
+        # On ajoute 1 minute au temps d'inactivité
+        timer_edit_more(user, prefixes[13])
+
+        try:
+            # On retire 1 minute au temps restant avant que shield soit dispo
+            timer_edit_less(user, prefixes[8])
+        except ValueError:
+            pass
+            report_edit(user)
+        if rand:
+            exploitation(user)  # On ajoute l'argent de l'exploitation
+
+    users = db.keys()
+    for user in users:
+        if user.startswith("O_O"):
+            if int(db[user]) > 10080:  # Inactif depuis 1 semaine.
+                list_user = list(user)
+                for i in range(3):
+                    del list_user[0]
+                no_list_user = "".join(list_user)
+                if str(db["°-°" + no_list_user]) == "0":
+                    print(
+                        f"La personne {no_list_user} est pauvre et inactive : supprimons la !")
+                    to_delete = no_list_user
+
+                    users = db.keys()
+                    found = False
+                    for user in users:
+                        if to_delete in user:
+                            del db[user]
+                            found = True
+                    if found:
+                        print(f"{to_delete} supprimé avec succès !")
 
 
-@client.event
+@ client.event
 async def on_ready():
     print("Je me suis connecté en {0.user}".format(client))
 
     temps.start()
 
 
-@client.event
+@ client.event
 async def on_message(message):
-	content = message.content
-	author = message.author
-	channel = message.channel
-	
-	if author == client.user:
-		return
-	
-	if str(content).startswith(prefixe):
-		create_user(str(author))
+    content = message.content
+    author = message.author
+    channel = message.channel
 
-		users = db.keys()
-		for user in users:
-			if user.startswith(prefixes[7]): 
-				if str(author) in user:
-					print(
+    if author == client.user:
+        return
+
+    if str(content).startswith(prefixe):
+        create_user(str(author))
+
+        users = db.keys()
+        for user in users:
+            if user.startswith(prefixes[7]):
+                if str(author) in user:
+                    print(
                         f"{author}, utilisateur bannis, a tenté de faire une commande."
                     )
-					return
-		add_xp(author, 49)
-	
-	cl_command = classic_commands.commands(message, prefixes, shop)
-	adm_command = admin_commands.commands(message, prefixes)
-	
-	if content.lower().startswith(prefixe + "help"):
-		notation = f"{prefixe}help"
-		args = get_args(content, prefixe + "help")
-		
-		await cl_command.help(notation, args)
+                    return
+        add_xp(author, 49)
 
-	elif content.lower().startswith(prefixe + "shop"):
-		notation = f"{prefixe}shop"
+    cl_command = classic_commands.commands(message, prefixes, shop)
+    adm_command = admin_commands.commands(message, prefixes)
 
-		await cl_command.shop_print(notation)
+    if content.lower().startswith(prefixe + "help"):
+        notation = f"{prefixe}help"
+        args = get_args(content, prefixe + "help")
 
-	elif content.lower().startswith(prefixe + "buy"):
-		notation = f"{prefixe}buy [item_number] [count]"
-		args = get_args(content, prefixe + "buy")
+        await cl_command.help(notation, args)
 
-		await cl_command.buy(notation, args)
+    elif content.lower().startswith(prefixe + "shop"):
+        notation = f"{prefixe}shop"
 
-	elif content.lower().startswith(prefixe + "sell"):
-		notation = f"{prefixe}sell [item_number] [count]"
-		args = get_args(content, prefixe + "sell")
+        await cl_command.shop_print(notation)
 
-		await cl_command.sell(notation, args)
+    elif content.lower().startswith(prefixe + "buy"):
+        notation = f"{prefixe}buy [item_number] [count]"
+        args = get_args(content, prefixe + "buy")
 
-	elif content.lower().startswith(prefixe + "bag"):
-		notation = f"{prefixe}bag [user]"
-		args = get_args(content, prefixe + "bag")
+        await cl_command.buy(notation, args)
 
-		await cl_command.bag(notation, args)
+    elif content.lower().startswith(prefixe + "sell"):
+        notation = f"{prefixe}sell [item_number] [count]"
+        args = get_args(content, prefixe + "sell")
 
-	elif content.lower().startswith(prefixe + "use"):
-		notation = f"{prefixe}use [item]"
-		args = get_args(content, prefixe + "buy")
+        await cl_command.sell(notation, args)
 
-		await cl_command.use(notation, args)
+    elif content.lower().startswith(prefixe + "bag"):
+        notation = f"{prefixe}bag [user]"
+        args = get_args(content, prefixe + "bag")
 
-	elif content.lower().startswith(prefixe + "profile"):
-		notation = f"{prefixe}profile [user]"
-		args = get_args(content, prefixe + "profile")
+        await cl_command.bag(notation, args)
 
-		await cl_command.profile(notation, args)
+    elif content.lower().startswith(prefixe + "use"):
+        notation = f"{prefixe}use [item]"
+        args = get_args(content, prefixe + "buy")
 
-	elif content.lower().startswith(prefixe + "gold"):
-		notation = f"{prefixe}gold [user]"
-		args = get_args(content, prefixe + "gold")
+        await cl_command.use(notation, args)
 
-		await cl_command.gold(notation, args)
-	elif content.lower().startswith(prefixe + "balance"):
-		notation = f"{prefixe}balance [user]"
-		args = get_args(content, prefixe + "balance")
+    elif content.lower().startswith(prefixe + "profile"):
+        notation = f"{prefixe}profile [user]"
+        args = get_args(content, prefixe + "profile")
 
-		await cl_command.gold(notation, args)
+        await cl_command.profile(notation, args)
 
-	if content.lower().startswith(prefixe + "level"):
-		notation = f"{prefixe}level [user]"
-		args = get_args(content, prefixe + "level")
+    elif content.lower().startswith(prefixe + "gold"):
+        notation = f"{prefixe}gold [user]"
+        args = get_args(content, prefixe + "gold")
 
-		await cl_command.level(notation, args)
-	if content.lower().startswith(prefixe + "xp"):
-		notation = f"{prefixe}xp [user]"
-		args = get_args(content, prefixe + "xp")
+        await cl_command.gold(notation, args)
+    elif content.lower().startswith(prefixe + "balance"):
+        notation = f"{prefixe}balance [user]"
+        args = get_args(content, prefixe + "balance")
 
-		await cl_command.level(notation, args)
+        await cl_command.gold(notation, args)
 
-	elif content.lower().startswith(prefixe + "give"):
-		notation = f"{prefixe}give <user> <valeur>"
-		args = get_args(content, prefixe + "give")
+    if content.lower().startswith(prefixe + "level"):
+        notation = f"{prefixe}level [user]"
+        args = get_args(content, prefixe + "level")
 
-		await cl_command.give(notation, args)
+        await cl_command.level(notation, args)
+    if content.lower().startswith(prefixe + "xp"):
+        notation = f"{prefixe}xp [user]"
+        args = get_args(content, prefixe + "xp")
 
-	elif content.lower().startswith(prefixe + "rank level"):
-		notation = f"{prefixe}rank level"
+        await cl_command.level(notation, args)
 
-		await cl_command.rank_level(notation)
+    elif content.lower().startswith(prefixe + "give"):
+        notation = f"{prefixe}give <user> <valeur>"
+        args = get_args(content, prefixe + "give")
 
-	elif content.lower().startswith(prefixe + "rank gold"):
-		notation = f"{prefixe}rank gold"
+        await cl_command.give(notation, args)
 
-		await cl_command.rank_gold(notation)
+    elif content.lower().startswith(prefixe + "rank level"):
+        notation = f"{prefixe}rank level"
 
-	elif content.lower().startswith(prefixe + "beg"):
-		notation = f"{prefixe}beg"
+        await cl_command.rank_level(notation)
 
-		await cl_command.beg()
+    elif content.lower().startswith(prefixe + "rank gold"):
+        notation = f"{prefixe}rank gold"
 
-	elif content.lower().startswith(prefixe + "daily"):
-		notation = f"{prefixe}daily"
+        await cl_command.rank_gold(notation)
 
-		await cl_command.daily()
+    elif content.lower().startswith(prefixe + "beg"):
+        notation = f"{prefixe}beg"
 
-	elif content.lower().startswith(prefixe + "hebdo"):
-		notation = f"{prefixe}hebdo"
+        await cl_command.beg()
 
-		await cl_command.hebdo()
+    elif content.lower().startswith(prefixe + "daily"):
+        notation = f"{prefixe}daily"
 
-	elif content.lower().startswith(prefixe + "ping"):
-		notation = f"{prefixe}ping"
+        await cl_command.daily()
 
-		await cl_command.ping()
+    elif content.lower().startswith(prefixe + "hebdo"):
+        notation = f"{prefixe}hebdo"
 
-	elif content.lower().startswith(prefixe + "steal"):
-		notation = f"{prefixe}steal <user>"
-		args = get_args(content, prefixe + "steal")
+        await cl_command.hebdo()
 
-		await cl_command.steal(notation, args)
+    elif content.lower().startswith(prefixe + "ping"):
+        notation = f"{prefixe}ping"
 
-	elif content.lower().startswith(prefixe + "report"):
-		notation = f"{prefixe}report <user>"
-		args = get_args(content, prefixe + "report")
+        await cl_command.ping()
 
-		await cl_command.report(notation, args)
+    elif content.lower().startswith(prefixe + "steal"):
+        notation = f"{prefixe}steal <user>"
+        args = get_args(content, prefixe + "steal")
 
-	elif content.lower().startswith(prefixe + "delete"):
-		notation = f"{prefixe}delete <user>"
-		args = get_args(content, prefixe + "delete")
+        await cl_command.steal(notation, args)
 
-		if not (str(author) == "Polaris#4776"):
-			return
+    elif content.lower().startswith(prefixe + "report"):
+        notation = f"{prefixe}report <user>"
+        args = get_args(content, prefixe + "report")
 
-		await adm_command.delete(notation, args)
+        await cl_command.report(notation, args)
 
-	elif content.lower().startswith(prefixe + "removemydata"):
-		notation = f"{prefixe}removemydata"
-		args = get_args(content, prefixe + "removemydata")
+    elif content.lower().startswith(prefixe + "delete"):
+        notation = f"{prefixe}delete <user>"
+        args = get_args(content, prefixe + "delete")
 
-		if not (str(author) == "Alioth#7249"):
-			if not (str(author) == "Polaris#4776"):
-				return
+        if not (str(author) == "Polaris#4776"):
+            return
 
-		await adm_command.remove_my_data(notation, args)
+        await adm_command.delete(notation, args)
 
-	elif content.lower().startswith(prefixe + "resetdata"):
-		notation = f"{prefixe}resetdata <type>"
-		args = get_args(content, prefixe + "resetdata <type>")
+    elif content.lower().startswith(prefixe + "removemydata"):
+        notation = f"{prefixe}removemydata"
+        args = get_args(content, prefixe + "removemydata")
 
-		if not (str(author) == "Polaris#4776"):
-			return
+        if not (str(author) == "Alioth#7249"):
+            if not (str(author) == "Polaris#4776"):
+                return
 
-		await adm_command.reset_data(notation, args)
+        await adm_command.remove_my_data(notation, args)
 
-	elif content.lower().startswith(prefixe + "blockgold"):
-		notation = f"{prefixe}blockgold <user>"
-		args = get_args(content, prefixe + "blockgold <user>")
+    elif content.lower().startswith(prefixe + "resetdata"):
+        notation = f"{prefixe}resetdata <type>"
+        args = get_args(content, prefixe + "resetdata <type>")
 
-		if not (str(author) == "Polaris#4776"):
-			return
+        if not (str(author) == "Polaris#4776"):
+            return
 
-		await adm_command.blockgold(notation, args)
-	
-	elif content.lower().startswith(prefixe + "unblockgold"):
-		notation = f"{prefixe}unblockgold <user>"
-		args = get_args(content, prefixe + "unblockgold <user>")
+        await adm_command.reset_data(notation, args)
 
-		if not (str(author) == "Polaris#4776"):
-			return
+    elif content.lower().startswith(prefixe + "blockgold"):
+        notation = f"{prefixe}blockgold <user>"
+        args = get_args(content, prefixe + "blockgold <user>")
 
-		await adm_command.unblockgold(notation, args)
-	
-	elif content.lower().startswith(prefixe + "nothing"):
-		notation = f"{prefixe}nothing"
+        if not (str(author) == "Polaris#4776"):
+            return
 
-		embed = discord.Embed(title="Rien ne s'est passé !", description="", color=white)
-		await channel.send(embed=embed)
-	
-	if not author.bot:
-		add_xp(author, 1)
-		
-		db[prefixes[13] + str(author)] = 0  # On remet la durée d'inactivité à 0.
+        await adm_command.blockgold(notation, args)
+
+    elif content.lower().startswith(prefixe + "unblockgold"):
+        notation = f"{prefixe}unblockgold <user>"
+        args = get_args(content, prefixe + "unblockgold <user>")
+
+        if not (str(author) == "Polaris#4776"):
+            return
+
+        await adm_command.unblockgold(notation, args)
+
+    elif content.lower().startswith(prefixe + "nothing"):
+        notation = f"{prefixe}nothing"
+
+        embed = discord.Embed(title="Rien ne s'est passé !",
+                              description="", color=white)
+        await channel.send(embed=embed)
+
+    if not author.bot:
+        add_xp(author, 1)
+
+        # On remet la durée d'inactivité à 0.
+        db[prefixes[13] + str(author)] = 0
 
 
 client.run(TOKEN)
