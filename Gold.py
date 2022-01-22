@@ -263,7 +263,7 @@ def add_xp(author, value):
 
 
 def exploitation(user):
-    exploitation_rent = 10
+    exploitation_rent = 1
 
     if prefixes[11] in user:
         cible = str(user).replace(prefixes[11], "")
