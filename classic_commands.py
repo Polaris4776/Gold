@@ -592,8 +592,8 @@ class commands:
         gold_dans_db_for_cible = self.prefixes[2] + cible_user
 
         if str(self.author) == cible_user:
-            embed = discord.Embed(title="Vous ne pouvez pas vous donner de l'argent à vous même !!!!".format(
-                prefixe + "give"), description="", color=white)
+            embed = discord.Embed(
+                title="Vous ne pouvez pas vous donner de l'argent à vous même !!!!", description="", color=white)
             await self.channel.send(embed=embed)
             return
 
