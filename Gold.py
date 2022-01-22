@@ -72,9 +72,6 @@ for group_item in shop:
     number += 1
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-print("\n\n\n\n\n")
-print(TOKEN)
-print("\n\n\n\n")
 client = discord.Client()
 prefixe = "?"
 
