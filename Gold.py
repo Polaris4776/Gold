@@ -1,4 +1,3 @@
-from tokenize import Token
 import discord
 import os
 from replit import db
@@ -8,7 +7,6 @@ from datetime import datetime
 import pytz
 import classic_commands
 import admin_commands
-from dotenv import dotenv_values
 """Commandes spéciales :
 ?delete
 ?resetdata
