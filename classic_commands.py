@@ -4,7 +4,6 @@ from replit import db
 import random
 
 
-TOKEN = os.getenv("DISCORD_TOKEN")
 client = discord.Client()
 prefixe = "?"
 
