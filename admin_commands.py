@@ -1,13 +1,12 @@
 import discord
-import os
 from replit import db
 
 
-client = discord.Client()
-prefixe = "?"
+CLIENT = discord.Client()
+PREFIXE = "?"
 
 
-white = 16775930
+WHITE = 16775930
 
 
 # Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
@@ -50,7 +49,7 @@ class commands:
         self.content = message.content
         self.author = message.author
         self.channel = message.channel
-        self.client = client
+        self.CLIENT = CLIENT
         self.user_id = message.author.id
         self.prefixes = prefixes
 
@@ -80,11 +79,11 @@ class commands:
 
         if found:
             embed = discord.Embed(
-                title=f"{to_delete} supprimé avec succès !", description="", color=white)
+                title=f"{to_delete} supprimé avec succès !", description="", color=WHITE)
             await self.channel.send(embed=embed)
         if not(found):
             embed = discord.Embed(
-                title=f"{to_delete} n'a pas été trouvé dans la base de données !", description="", color=white)
+                title=f"{to_delete} n'a pas été trouvé dans la base de données !", description="", color=WHITE)
             await self.channel.send(embed=embed)
 
     async def remove_my_data(self, notation, args):
@@ -105,17 +104,17 @@ class commands:
                 if cible in user:
                     del db[user]
             embed = discord.Embed(
-                title="Compte supprimé avec succès !", description="", color=white)
+                title="Compte supprimé avec succès !", description="", color=WHITE)
             await self.channel.send(embed=embed)
         else:
             embed = discord.Embed(
-                title="Vous ne pouvez pas supprimer votre compte car vous n'existez pas encore.", description="", color=white)
+                title="Vous ne pouvez pas supprimer votre compte car vous n'existez pas encore.", description="", color=WHITE)
             await self.channel.send(embed=embed)
 
     async def reset_data(self, notation, args):
         if len(args) == 0:
             embed = discord.Embed(
-                title=f"Merci de faire ```{notation}```", description="Entrez le numéro de *prefixes*", color=white)
+                title=f"Merci de faire ```{notation}```", description="Entrez le numéro de *prefixes*", color=WHITE)
             await self.channel.send(embed=embed)
             return
 
@@ -125,7 +124,7 @@ class commands:
             if user.startswith(self.prefixes[args[0]]):
                 del db[user]
         embed = discord.Embed(
-            title="Variable supprimée avec succès !", description="", color=white)
+            title="Variable supprimée avec succès !", description="", color=WHITE)
         await self.channel.send(embed=embed)
 
     async def blockgold(self, notation, args):
@@ -136,14 +135,14 @@ class commands:
 
         if cible == "None":
             embed = discord.Embed(
-                title=f"Merci de faire ```{notation}```", description="Bloquer définitivement l'accès à Gold.", color=white)
+                title=f"Merci de faire ```{notation}```", description="Bloquer définitivement l'accès à Gold.", color=WHITE)
             await self.channel.send(embed=embed)
             return
 
         db[self.prefixes[7] + cible] = "True"
 
         embed = discord.Embed(title="Compte bannis !",
-                              description="", color=white)
+                              description="", color=WHITE)
         await self.channel.send(embed=embed)
 
     async def unblockgold(self, notation, args):
@@ -154,7 +153,7 @@ class commands:
 
         if cible == "None":
             embed = discord.Embed(
-                title=f"Merci de faire ```{notation}```", description="Débloquer l'accès à Gold.", color=white)
+                title=f"Merci de faire ```{notation}```", description="Débloquer l'accès à Gold.", color=WHITE)
             await self.channel.send(embed=embed)
             return
 
@@ -162,9 +161,9 @@ class commands:
             del db[self.prefixes[7] + cible]
         except KeyError:
             embed = discord.Embed(
-                title="Ce compte n'étais pas bannis !", description="", color=white)
+                title="Ce compte n'étais pas bannis !", description="", color=WHITE)
             await self.channel.send(embed=embed)
         else:
             embed = discord.Embed(title="Compte débannis !",
-                                  description="", color=white)
+                                  description="", color=WHITE)
             await self.channel.send(embed=embed)
