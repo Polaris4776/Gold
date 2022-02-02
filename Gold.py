@@ -7,6 +7,7 @@ from datetime import datetime
 import pytz
 import classic_commands
 import admin_commands
+
 """Commandes spéciales :
 ?delete
 ?resetdata
@@ -16,7 +17,7 @@ import admin_commands
 """
 
 # 0 : Name		1 : Comment		2 : Prix		3 : Number
-shop = [
+SHOP = [
     [
         "Pendentif de sagesse de Leonard de Vinci :medal:",
         "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
@@ -66,14 +67,10 @@ shop = [
 ]
 # ":boomerang:""  boomerang
 
-number = 1
-for group_item in shop:
-    group_item.append(number)
-    number += 1
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-client = discord.Client()
-prefixe = "?"
+CLIENT = discord.Client()
+PREFIXE = "?"
 
 
 def is_x_in_items(x, items):  # items = liste dans liste
@@ -93,7 +90,7 @@ def get_items_of_user(cible):
     lst_of_items_num = []
 
     for group_item in range(len(ls)):
-        item_in_shop = shop[(int(ls[group_item][0])) -
+        item_in_shop = SHOP[(int(ls[group_item][0])) -
                             1]  # 0 : Name		1 : Comment		2 : Prix		3 : Number
         name = item_in_shop[0]
         number = item_in_shop[3]
@@ -105,7 +102,7 @@ def get_items_of_user(cible):
 
 
 def extract_data_encoded_NT1(cible):  # NT1 Nolann's Technic 1 (spécifique)
-    items_dans_db_for_author = prefixes[6] + f"{cible}"
+    items_dans_db_for_author = PREFIXES[6] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
 
@@ -162,11 +159,11 @@ def create_user(UserToCreate):
     users = db.keys()
 
     for i in parcour:
-        if not prefixes[i] + UserToCreate in users:
-            db[prefixes[i] + UserToCreate] = "0"
+        if not PREFIXES[i] + UserToCreate in users:
+            db[PREFIXES[i] + UserToCreate] = "0"
 
-    if not prefixes[6] + UserToCreate in users:  # Items
-        db[prefixes[6] + UserToCreate] = "11-1"
+    if not PREFIXES[6] + UserToCreate in users:  # Items
+        db[PREFIXES[6] + UserToCreate] = "11-1"
 
 
 def timer_edit_less(user, prefixe_num):
@@ -189,7 +186,7 @@ def timer_edit_more(user, prefixe_num):
 
 
 def report_edit(user):
-    if not (user.startswith(prefixes[4])):
+    if not (user.startswith(PREFIXES[4])):
         return
     var = db[user]
     ls = var.split("|")
@@ -204,12 +201,12 @@ def report_edit(user):
 
 async def wait_for_message(
         channel, author,
-        client):  # En attente d'un message dans le même salon.
+        CLIENT):  # En attente d'un message dans le même salon.
     def check(m):
         return (m.channel == channel) and (m.content != "") and (
-            m.author == author) and (author != client.user)
+            m.author == author) and (author != CLIENT.user)
 
-    msg = await client.wait_for("message", check=check)
+    msg = await CLIENT.wait_for("message", check=check)
 
     return msg
 
@@ -243,8 +240,8 @@ def get_args(content, command):
 
 def add_xp(author, value):
     author = str(author)
-    xp_in_db = prefixes[9] + author
-    lvl_in_db = prefixes[10] + author
+    xp_in_db = PREFIXES[9] + author
+    lvl_in_db = PREFIXES[10] + author
 
     try:
         xp = int(db[xp_in_db])
@@ -268,15 +265,15 @@ def add_xp(author, value):
 def exploitation(user):
     exploitation_rent = 1
 
-    if prefixes[11] in user:
-        cible = str(user).replace(prefixes[11], "")
+    if PREFIXES[11] in user:
+        cible = str(user).replace(PREFIXES[11], "")
 
         retour = get_items_of_user(cible)
 
         lst_of_items = retour[0]
         lst_of_items_num = retour[1]
 
-        exploitation_name = shop[7][0]
+        exploitation_name = SHOP[7][0]
 
         have_an_exploitation = False
         for i in range(len(lst_of_items)):
@@ -288,64 +285,32 @@ def exploitation(user):
         if have_an_exploitation:
             number_of_exploitations = int(lst_of_items_num[number])
 
-            rapport_dans_db = prefixes[11] + cible
+            rapport_dans_db = PREFIXES[11] + cible
             rapport = db[rapport_dans_db]
 
             db[rapport_dans_db] = int(
                 rapport) + exploitation_rent * number_of_exploitations
 
-            gold_dans_db = prefixes[2] + cible
+            gold_dans_db = PREFIXES[2] + cible
             db[gold_dans_db] = int(
                 db[gold_dans_db]) + exploitation_rent * number_of_exploitations
 
 
-prefixes = [
+PREFIXES = [
     "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔",
     "↔lvl↔", "_*-*_", "♀_♀", "O_O"
 ]  # ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp		↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel		O_O :  durée d'inactivité
 
-second = 1
-minute = second * 60
-hour = minute * 60
-day = hour * 24
+SECOND = 1
+MINUTE = SECOND * 60
+HOUR = MINUTE * 60
+DAY = HOUR * 24
 
-white = 16775930
-
-
-# users = db.keys()
-# for user in users :
-# 	if user.startswith("+_+") :
-# 		# db[prefixes[3] + user.replace("°-°", "")] = 0
-# 		del db[user]
-
-# @tasks.loop(seconds=hour) # 1 heure d'attente entre chaque execution de def
-# async def midnight():
-# 	# Fonction expérimentale
-# 	now = get_datetime() # Jour, Mois, Année, Heure, Minute, Seconde
-# 	hour = int(now[3])
-# 	minute = int(now[4])
-# 	second = int(now[5])
-
-# 	print(f"Nous sommes le {now[0]}/{now[1]}/{now[2]} à {hour}:{minute}:{second}")
-
-# 	if hour == 0 :
-# 		print(f"Minute == {minute} and Hour == 0 !!!! On a détecté et on peut redémarrer !!!")
-# 		with open("tmpinfo.info", "w") as info :
-# 			info.write(f"Minute == {minute} and Hour == 0 !!!! On a détecté et on peut redémarrer !!!")
-
-# 		users = db.keys()
-
-# 		for user in users :
-# 			if user.startswith(prefixes[0]) : # Préfixe de daily
-# 				var = int(db[user])
-# 				if var != 0 :
-# 					db[user] = 0 # On remet les compteurs à 0 pour minuit !
-# 					with open("tmpinfo.info", "w") as info :
-# 						info.write(f"{user} remis à 0 !!!")
+WHITE = 16775930
 
 
 # 1 minute d'attente entre chaque execution de def
-@ tasks.loop(seconds=minute)
+@ tasks.loop(seconds=MINUTE)
 async def temps():
     rand = random.randint(1, 2048)  # 1 chance sur 2048 pour l'instant
     if rand == 5:
@@ -354,21 +319,21 @@ async def temps():
     users = db.keys()
     for user in users:
         # On retire 1 minute au temps restant avant que daily soit dispo
-        timer_edit_less(user, prefixes[0])
+        timer_edit_less(user, PREFIXES[0])
         # On retire 1 minute au temps restant avant que hebdo soit dispo
-        timer_edit_less(user, prefixes[1])
+        timer_edit_less(user, PREFIXES[1])
         # On retire 1 minute au temps restant avant que beg soit dispo
-        timer_edit_less(user, prefixes[3])
+        timer_edit_less(user, PREFIXES[3])
         # On retire 1 minute au temps restant avant que steal soit dispo
-        timer_edit_less(user, prefixes[5])
+        timer_edit_less(user, PREFIXES[5])
         # On retire 1 minute au temps restant avant que le sablier temporel soit dispo
-        timer_edit_less(user, prefixes[12])
+        timer_edit_less(user, PREFIXES[12])
         # On ajoute 1 minute au temps d'inactivité
-        timer_edit_more(user, prefixes[13])
+        timer_edit_more(user, PREFIXES[13])
 
         try:
             # On retire 1 minute au temps restant avant que shield soit dispo
-            timer_edit_less(user, prefixes[8])
+            timer_edit_less(user, PREFIXES[8])
         except ValueError:
             pass
             report_edit(user)
@@ -398,28 +363,28 @@ async def temps():
                         print(f"{to_delete} supprimé avec succès !")
 
 
-@ client.event
+@ CLIENT.event
 async def on_ready():
-    print("Je me suis connecté en {0.user}".format(client))
+    print("Je me suis connecté en {0.user}".format(CLIENT))
 
     temps.start()
 
 
-@ client.event
+@ CLIENT.event
 async def on_message(message):
     content = message.content
     author = message.author
     channel = message.channel
 
-    if author == client.user:
+    if author == CLIENT.user:
         return
 
-    if str(content).startswith(prefixe):
+    if str(content).startswith(PREFIXE):
         create_user(str(author))
 
         users = db.keys()
         for user in users:
-            if user.startswith(prefixes[7]):
+            if user.startswith(PREFIXES[7]):
                 if str(author) in user:
                     print(
                         f"{author}, utilisateur bannis, a tenté de faire une commande."
@@ -427,132 +392,132 @@ async def on_message(message):
                     return
         add_xp(author, 49)
 
-    cl_command = classic_commands.commands(message, prefixes, shop)
-    adm_command = admin_commands.commands(message, prefixes)
+    cl_command = classic_commands.commands(message, PREFIXES, SHOP)
+    adm_command = admin_commands.commands(message, PREFIXES)
 
-    if content.lower().startswith(prefixe + "help"):
-        notation = f"{prefixe}help"
-        args = get_args(content, prefixe + "help")
+    if content.lower().startswith(PREFIXE + "help"):
+        notation = f"{PREFIXE}help"
+        args = get_args(content, PREFIXE + "help")
 
         await cl_command.help(notation, args)
 
-    elif content.lower().startswith(prefixe + "shop"):
-        notation = f"{prefixe}shop"
+    elif content.lower().startswith(PREFIXE + "shop"):
+        notation = f"{PREFIXE}shop"
 
         await cl_command.shop_print(notation)
 
-    elif content.lower().startswith(prefixe + "buy"):
-        notation = f"{prefixe}buy [item_number] [count]"
-        args = get_args(content, prefixe + "buy")
+    elif content.lower().startswith(PREFIXE + "buy"):
+        notation = f"{PREFIXE}buy [item_number] [count]"
+        args = get_args(content, PREFIXE + "buy")
 
         await cl_command.buy(notation, args)
 
-    elif content.lower().startswith(prefixe + "sell"):
-        notation = f"{prefixe}sell [item_number] [count]"
-        args = get_args(content, prefixe + "sell")
+    elif content.lower().startswith(PREFIXE + "sell"):
+        notation = f"{PREFIXE}sell [item_number] [count]"
+        args = get_args(content, PREFIXE + "sell")
 
         await cl_command.sell(notation, args)
 
-    elif content.lower().startswith(prefixe + "bag"):
-        notation = f"{prefixe}bag [user]"
-        args = get_args(content, prefixe + "bag")
+    elif content.lower().startswith(PREFIXE + "bag"):
+        notation = f"{PREFIXE}bag [user]"
+        args = get_args(content, PREFIXE + "bag")
 
         await cl_command.bag(notation, args)
 
-    elif content.lower().startswith(prefixe + "use"):
-        notation = f"{prefixe}use [item]"
-        args = get_args(content, prefixe + "buy")
+    elif content.lower().startswith(PREFIXE + "use"):
+        notation = f"{PREFIXE}use [item]"
+        args = get_args(content, PREFIXE + "buy")
 
         await cl_command.use(notation, args)
 
-    elif content.lower().startswith(prefixe + "profile"):
-        notation = f"{prefixe}profile [user]"
-        args = get_args(content, prefixe + "profile")
+    elif content.lower().startswith(PREFIXE + "profile"):
+        notation = f"{PREFIXE}profile [user]"
+        args = get_args(content, PREFIXE + "profile")
 
         await cl_command.profile(notation, args)
 
-    elif content.lower().startswith(prefixe + "gold"):
-        notation = f"{prefixe}gold [user]"
-        args = get_args(content, prefixe + "gold")
+    elif content.lower().startswith(PREFIXE + "gold"):
+        notation = f"{PREFIXE}gold [user]"
+        args = get_args(content, PREFIXE + "gold")
 
         await cl_command.gold(notation, args)
-    elif content.lower().startswith(prefixe + "balance"):
-        notation = f"{prefixe}balance [user]"
-        args = get_args(content, prefixe + "balance")
+    elif content.lower().startswith(PREFIXE + "balance"):
+        notation = f"{PREFIXE}balance [user]"
+        args = get_args(content, PREFIXE + "balance")
 
         await cl_command.gold(notation, args)
 
-    if content.lower().startswith(prefixe + "level"):
-        notation = f"{prefixe}level [user]"
-        args = get_args(content, prefixe + "level")
+    if content.lower().startswith(PREFIXE + "level"):
+        notation = f"{PREFIXE}level [user]"
+        args = get_args(content, PREFIXE + "level")
 
         await cl_command.level(notation, args)
-    if content.lower().startswith(prefixe + "xp"):
-        notation = f"{prefixe}xp [user]"
-        args = get_args(content, prefixe + "xp")
+    if content.lower().startswith(PREFIXE + "xp"):
+        notation = f"{PREFIXE}xp [user]"
+        args = get_args(content, PREFIXE + "xp")
 
         await cl_command.level(notation, args)
 
-    elif content.lower().startswith(prefixe + "give"):
-        notation = f"{prefixe}give <user> <valeur>"
-        args = get_args(content, prefixe + "give")
+    elif content.lower().startswith(PREFIXE + "give"):
+        notation = f"{PREFIXE}give <user> <valeur>"
+        args = get_args(content, PREFIXE + "give")
 
         await cl_command.give(notation, args)
 
-    elif content.lower().startswith(prefixe + "rank level"):
-        notation = f"{prefixe}rank level"
+    elif content.lower().startswith(PREFIXE + "rank level"):
+        notation = f"{PREFIXE}rank level"
 
         await cl_command.rank_level(notation)
 
-    elif content.lower().startswith(prefixe + "rank gold"):
-        notation = f"{prefixe}rank gold"
+    elif content.lower().startswith(PREFIXE + "rank gold"):
+        notation = f"{PREFIXE}rank gold"
 
         await cl_command.rank_gold(notation)
 
-    elif content.lower().startswith(prefixe + "beg"):
-        notation = f"{prefixe}beg"
+    elif content.lower().startswith(PREFIXE + "beg"):
+        notation = f"{PREFIXE}beg"
 
         await cl_command.beg()
 
-    elif content.lower().startswith(prefixe + "daily"):
-        notation = f"{prefixe}daily"
+    elif content.lower().startswith(PREFIXE + "daily"):
+        notation = f"{PREFIXE}daily"
 
         await cl_command.daily()
 
-    elif content.lower().startswith(prefixe + "hebdo"):
-        notation = f"{prefixe}hebdo"
+    elif content.lower().startswith(PREFIXE + "hebdo"):
+        notation = f"{PREFIXE}hebdo"
 
         await cl_command.hebdo()
 
-    elif content.lower().startswith(prefixe + "ping"):
-        notation = f"{prefixe}ping"
+    elif content.lower().startswith(PREFIXE + "ping"):
+        notation = f"{PREFIXE}ping"
 
         await cl_command.ping()
 
-    elif content.lower().startswith(prefixe + "steal"):
-        notation = f"{prefixe}steal <user>"
-        args = get_args(content, prefixe + "steal")
+    elif content.lower().startswith(PREFIXE + "steal"):
+        notation = f"{PREFIXE}steal <user>"
+        args = get_args(content, PREFIXE + "steal")
 
         await cl_command.steal(notation, args)
 
-    elif content.lower().startswith(prefixe + "report"):
-        notation = f"{prefixe}report <user>"
-        args = get_args(content, prefixe + "report")
+    elif content.lower().startswith(PREFIXE + "report"):
+        notation = f"{PREFIXE}report <user>"
+        args = get_args(content, PREFIXE + "report")
 
         await cl_command.report(notation, args)
 
-    elif content.lower().startswith(prefixe + "delete"):
-        notation = f"{prefixe}delete <user>"
-        args = get_args(content, prefixe + "delete")
+    elif content.lower().startswith(PREFIXE + "delete"):
+        notation = f"{PREFIXE}delete <user>"
+        args = get_args(content, PREFIXE + "delete")
 
         if not (str(author) == "Polaris#4776"):
             return
 
         await adm_command.delete(notation, args)
 
-    elif content.lower().startswith(prefixe + "removemydata"):
-        notation = f"{prefixe}removemydata"
-        args = get_args(content, prefixe + "removemydata")
+    elif content.lower().startswith(PREFIXE + "removemydata"):
+        notation = f"{PREFIXE}removemydata"
+        args = get_args(content, PREFIXE + "removemydata")
 
         if not (str(author) == "Alioth#7249"):
             if not (str(author) == "Polaris#4776"):
@@ -560,45 +525,45 @@ async def on_message(message):
 
         await adm_command.remove_my_data(notation, args)
 
-    elif content.lower().startswith(prefixe + "resetdata"):
-        notation = f"{prefixe}resetdata <type>"
-        args = get_args(content, prefixe + "resetdata <type>")
+    elif content.lower().startswith(PREFIXE + "resetdata"):
+        notation = f"{PREFIXE}resetdata <type>"
+        args = get_args(content, PREFIXE + "resetdata <type>")
 
         if not (str(author) == "Polaris#4776"):
             return
 
         await adm_command.reset_data(notation, args)
 
-    elif content.lower().startswith(prefixe + "blockgold"):
-        notation = f"{prefixe}blockgold <user>"
-        args = get_args(content, prefixe + "blockgold <user>")
+    elif content.lower().startswith(PREFIXE + "blockgold"):
+        notation = f"{PREFIXE}blockgold <user>"
+        args = get_args(content, PREFIXE + "blockgold <user>")
 
         if not (str(author) == "Polaris#4776"):
             return
 
         await adm_command.blockgold(notation, args)
 
-    elif content.lower().startswith(prefixe + "unblockgold"):
-        notation = f"{prefixe}unblockgold <user>"
-        args = get_args(content, prefixe + "unblockgold <user>")
+    elif content.lower().startswith(PREFIXE + "unblockgold"):
+        notation = f"{PREFIXE}unblockgold <user>"
+        args = get_args(content, PREFIXE + "unblockgold <user>")
 
         if not (str(author) == "Polaris#4776"):
             return
 
         await adm_command.unblockgold(notation, args)
 
-    elif content.lower().startswith(prefixe + "nothing"):
-        notation = f"{prefixe}nothing"
+    elif content.lower().startswith(PREFIXE + "nothing"):
+        notation = f"{PREFIXE}nothing"
 
         embed = discord.Embed(title="Rien ne s'est passé !",
-                              description="", color=white)
+                              description="", color=WHITE)
         await channel.send(embed=embed)
 
     if not author.bot:
         add_xp(author, 1)
 
         # On remet la durée d'inactivité à 0.
-        db[prefixes[13] + str(author)] = 0
+        db[PREFIXES[13] + str(author)] = 0
 
 
-client.run(TOKEN)
+CLIENT.run(TOKEN)
