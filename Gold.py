@@ -19,36 +19,36 @@ import admin_commands
 SHOP = [[
     "Pendentif de sagesse de Leonard de Vinci :medal:",
     "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
-    3000
+    3000, 1
 ],
         [
             "Baton de Merlin :magic_wand:",
-            "Par la barbe de l'enchanteur, le voilà retrouvé !", 10000
+            "Par la barbe de l'enchanteur, le voilà retrouvé !", 10000, 2
         ],
         [
             "Bottes de sept lieues :boot:",
-            "Vous ne serez plus jamais en retard !", 2000
+            "Vous ne serez plus jamais en retard !", 2000, 3
         ],
         [
             "Couronne de la reine d'Angleterre :crown:",
-            "Gardé jalousement dans son château, la voilà !", 3000
+            "Gardé jalousement dans son château, la voilà !", 3000, 4
         ],
         [
             "Excalibur :dagger:",
-            "Débrouillez vous pour la retirer de ce maudit rocher !", 15000
+            "Débrouillez vous pour la retirer de ce maudit rocher !", 15000, 5
         ],
         [
             "Arc de Robin des Bois :bow_and_arrow:",
-            "Ne rate jamais sa cible !", 8000
-        ], ["Eclair de Zeus :zap:", "Foudroyez vos ennemis !", 10000],
+            "Ne rate jamais sa cible !", 8000, 6
+        ], ["Eclair de Zeus :zap:", "Foudroyez vos ennemis !", 10000, 7],
         [
             "Exploitation pétrolière :construction_site:",
             "Investissez dans le pétrole et gagnez automatiquement de l'argent !",
-            5000
+            5000, 8
         ],
         [
             "Sablier temporel :hourglass:",
-            "Réinitialisez vos temps d'attente !!!", 3000
+            "Réinitialisez vos temps d'attente !!!", 3000, 9
         ],
         [
             "Bouclier Divin :shield:",
@@ -57,16 +57,17 @@ SHOP = [[
         [
             "Justice corrompue :scales:",
             "Faite la preuve de votre richesse est corrompez le monde entier !",
-            1000000000
+            1000000000, 11
         ],
         [
             "Richesse exquise :reminder_ribbon:",
-            "Montrez une preuve de votre raffinement extrême !", 1000000000000
+            "Montrez une preuve de votre raffinement extrême !", 1000000000000,
+            12
         ],
         [
             "Richesse suprême :rosette: ",
             "L'objet qui ferait mourir de jalousie un milliardaire !",
-            99000000000000000
+            99000000000000000, 13
         ]]
 # ":boomerang:""  boomerang
 
