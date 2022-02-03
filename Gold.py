@@ -351,20 +351,23 @@ async def temps():
                 for i in range(3):
                     del list_user[0]
                 no_list_user = "".join(list_user)
-                if str(db["°-°" + no_list_user]) == "0":
-                    print(
-                        f"La personne {no_list_user} est pauvre et inactive : supprimons la !"
-                    )
-                    to_delete = no_list_user
+                try:
+                    if str(db["°-°" + no_list_user]) == "0":
+                        print(
+                            f"La personne {no_list_user} est pauvre et inactive : supprimons la !"
+                        )
+                        to_delete = no_list_user
 
-                    users = db.keys()
-                    found = False
-                    for user in users:
-                        if to_delete in user:
-                            del db[user]
-                            found = True
-                    if found:
-                        print(f"{to_delete} supprimé avec succès !")
+                        users = db.keys()
+                        found = False
+                        for user in users:
+                            if to_delete in user:
+                                del db[user]
+                                found = True
+                        if found:
+                            print(f"{to_delete} supprimé avec succès !")
+                except KeyError as e:
+                    print(f"\nKeyError catched. Exception : {e}")
 
 
 @CLIENT.event
