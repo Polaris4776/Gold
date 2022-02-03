@@ -2,7 +2,6 @@ import discord
 import asyncio
 import os
 
-
 TOKEN = os.getenv("DISCORD_TOKEN")
 CLIENT = discord.Client()
 
