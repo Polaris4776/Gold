@@ -146,7 +146,6 @@ def get_items_of_user(self, cible):
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
         item_in_shop = self.shop[(int(ls[group_item][0])) - 1]
         name = item_in_shop[0]
-        number = item_in_shop[3]
 
         lst_of_items.append(name)
         lst_of_items_num.append(ls[group_item][1])
@@ -364,11 +363,19 @@ class commands:
         exists = False
         for group in ls:
             if int(group[0]) == number:
-                if item == 8:
+                if item == 7:  # 7 + 1 = 8 Exploitation
                     # La personne souhaite acheter une exploitation
                     if int(group[1]) + count > 30:
                         # La personne possèdera plus de trente exploitations
-                        pass
+                        embed = discord.Embed(
+                            title=
+                            "Vous ne pouvez pas posséder plus de 30 exploitations !",
+                            description=
+                            f"Vous possédez {int(group[1])} exploitations et votre achat vous en ferais posséder {int(group[1]) + count} !",
+                            color=WHITE)
+                        await self.channel.send(embed=embed)
+                        return
+
                 exists = True
                 group[1] = str(int(group[1]) + count)
 

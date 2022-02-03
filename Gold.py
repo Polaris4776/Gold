@@ -93,10 +93,9 @@ def get_items_of_user(cible):
     lst_of_items_num = []
 
     for group_item in range(len(ls)):
-        item_in_shop = SHOP[(int(ls[group_item][0])) -
-                            1]  # 0 : Name		1 : Comment		2 : Prix		3 : Number
+        item_in_shop = SHOP[(int(ls[group_item][0])) - 1]
+        # 0 : Name		1 : Comment		2 : Prix		3 : Number
         name = item_in_shop[0]
-        number = item_in_shop[3]
 
         lst_of_items.append(name)
         lst_of_items_num.append(ls[group_item][1])
