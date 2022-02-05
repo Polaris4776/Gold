@@ -57,17 +57,17 @@ SHOP = [[
         [
             "Justice corrompue :scales:",
             "Faite la preuve de votre richesse est corrompez le monde entier !",
-            1000000000, 11
+            1000000000, 12
         ],
         [
             "Richesse exquise :reminder_ribbon:",
             "Montrez une preuve de votre raffinement extrême !", 1000000000000,
-            12
+            13
         ],
         [
             "Richesse suprême :rosette: ",
             "L'objet qui ferait mourir de jalousie un milliardaire !",
-            99000000000000000, 13
+            99000000000000000, 14
         ]]
 # ":boomerang:""  boomerang
 
