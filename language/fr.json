@@ -1,14 +1,14 @@
 {
-    "items": [
+    "shop": [
         {
             "name": "Pendentif de sagesse de Leonard de Vinci :medal:",
-            "description": "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
+            "description": "Avec ce pendentif, vous serez un peu moins bï¿½te (c'est dï¿½jï¿½ un bon dï¿½but).",
             "price": 3000,
             "item_number": 1
         },
         {
             "name": "Baton de Merlin :magic_wand:",
-            "description": "Par la barbe de l'enchanteur, le voilà retrouvé !",
+            "description": "Par la barbe de l'enchanteur, le voilï¿½ retrouvï¿½ !",
             "price": 10000,
             "item_number": 2
         },
@@ -20,13 +20,13 @@
         },
         {
             "name": "Couronne de la reine d'Angleterre :crown:",
-            "description": "Gardée jalousement dans son château, la voilà !",
+            "description": "Gardï¿½e jalousement dans son chï¿½teau, la voilï¿½ !",
             "price": 3000,
             "item_number": 4
         },
         {
             "name": "Excalibur :dagger:",
-            "description": "Débrouillez vous pour la retirer de ce maudit rocher !",
+            "description": "Dï¿½brouillez vous pour la retirer de ce maudit rocher !",
             "price": 15000,
             "item_number": 5
         },
@@ -43,26 +43,26 @@
             "item_number": 7
         },
         {
-            "name": "Exploitation pétrolière :construction_site:",
-            "description": "Investissez dans le pétrole et gagnez automatiquement de l'argent !",
+            "name": "Exploitation pï¿½troliï¿½re :construction_site:",
+            "description": "Investissez dans le pï¿½trole et gagnez automatiquement de l'argent !",
             "price": 5000,
             "item_number": 8
         },
         {
             "name": "Sablier temporel :hourglass:",
-            "description": "Réinitialisez vos temps d'attente !!!",
+            "description": "Rï¿½initialisez vos temps d'attente !!!",
             "price": 3000,
             "item_number": 9
         },
         {
             "name": "Bouclier Divin :shield:",
-            "description": "Empêchez les gens de vous voler pendant une semaine !!!",
+            "description": "Empï¿½chez les gens de vous voler pendant une semaine !!!",
             "price": 2000,
             "item_number": 10
         },
         {
             "name": "Crotte :poop:",
-            "description": "Offrez la à vos amis !",
+            "description": "Offrez la ï¿½ vos amis !",
             "price": 10,
             "item_number": 11
         },
@@ -74,12 +74,12 @@
         },
         {
             "name": "Richesse exquise :reminder_ribbon:",
-            "description": "Montrez une preuve de votre raffinement extrême !",
+            "description": "Montrez une preuve de votre raffinement extrï¿½me !",
             "price": 1000000000000,
             "item_number": 13
         },
         {
-            "name": "Richesse suprême :rosette: ",
+            "name": "Richesse suprï¿½me :rosette: ",
             "description": "L'objet qui ferait mourir de jalousie un milliardaire !",
             "price": 99000000000000000,
             "item_number": 14
