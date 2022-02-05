@@ -52,22 +52,22 @@ SHOP = [[
         ],
         [
             "Bouclier Divin :shield:",
-            "Empêchez les gens de vous voler pendant une semaine !!!", 2000
-        ], ["Crotte :poop:", "Offrez la à vos amis !", 10],
+            "Empêchez les gens de vous voler pendant une semaine !!!", 2000, 10
+        ], ["Crotte :poop:", "Offrez la à vos amis !", 11],
         [
             "Justice corrompue :scales:",
             "Faite la preuve de votre richesse est corrompez le monde entier !",
-            1000000000, 11
+            1000000000, 12
         ],
         [
             "Richesse exquise :reminder_ribbon:",
             "Montrez une preuve de votre raffinement extrême !", 1000000000000,
-            12
+            13
         ],
         [
             "Richesse suprême :rosette: ",
             "L'objet qui ferait mourir de jalousie un milliardaire !",
-            99000000000000000, 13
+            99000000000000000, 14
         ]]
 # ":boomerang:""  boomerang
 
