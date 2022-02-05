@@ -53,7 +53,7 @@ SHOP = [[
         [
             "Bouclier Divin :shield:",
             "Empêchez les gens de vous voler pendant une semaine !!!", 2000, 10
-        ], ["Crotte :poop:", "Offrez la à vos amis !", 11],
+        ], ["Crotte :poop:", "Offrez la à vos amis !", 10, 11],
         [
             "Justice corrompue :scales:",
             "Faite la preuve de votre richesse est corrompez le monde entier !",
