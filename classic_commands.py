@@ -146,7 +146,6 @@ def get_items_of_user(self, cible):
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
         item_in_shop = self.shop[(int(ls[group_item][0])) - 1]
         name = item_in_shop[0]
-        number = item_in_shop[3]
 
         lst_of_items.append(name)
         lst_of_items_num.append(ls[group_item][1])
@@ -348,23 +347,6 @@ class commands:
 
         valeur = price * count
 
-        # if item == 8 :
-        # 	sablier_dans_db = self.prefixes[12] + cible
-        # 	minute = int(db[sablier_dans_db])
-        # 	heure = minute // 60
-        # 	minute = minute % 60
-
-        # 	if count > 1 :
-        # 		embed = discord.Embed(title="Vous ne pouvez acheter **qu'un seul sablier** toutes les 12h.", description=f"Réessayer avec un seul, et non pas {count}.", color=WHITE)
-        # 		await self.channel.send(embed=embed)
-        # 		return
-
-        # 	print(int(db[sablier_dans_db]))
-        # 	if not (int(db[sablier_dans_db]) == 0) :
-        # 		embed = discord.Embed(title=f"Vous ne pouvez pas me vider mon stock de sabliers !!! Revenez donc dans {heure}h {minute}min pour acheter un sablier !", description="Vous pouvez acheter cet objet toutes les 12h.", color=WHITE)
-        # 		await self.channel.send(embed=embed)
-        # 		return
-
         if not ((gold_of_cible - valeur) >= 0):  # Trop pauvre !
             embed = discord.Embed(
                 title=
@@ -381,6 +363,19 @@ class commands:
         exists = False
         for group in ls:
             if int(group[0]) == number:
+                if item == 7:  # 7 + 1 = 8 Exploitation
+                    # La personne souhaite acheter une exploitation
+                    if int(group[1]) + count > 30:
+                        # La personne possèdera plus de trente exploitations
+                        embed = discord.Embed(
+                            title=
+                            "Vous ne pouvez pas posséder plus de 30 exploitations !",
+                            description=
+                            f"Vous possédez {int(group[1])} exploitations et votre achat vous en ferais posséder {int(group[1]) + count} !",
+                            color=WHITE)
+                        await self.channel.send(embed=embed)
+                        return
+
                 exists = True
                 group[1] = str(int(group[1]) + count)
 

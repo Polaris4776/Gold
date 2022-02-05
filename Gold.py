@@ -7,7 +7,6 @@ from datetime import datetime
 import pytz
 import classic_commands
 import admin_commands
-
 """Commandes spéciales :
 ?delete
 ?resetdata
@@ -17,56 +16,60 @@ import admin_commands
 """
 
 # 0 : Name		1 : Comment		2 : Prix		3 : Number
-SHOP = [
-    [
-        "Pendentif de sagesse de Leonard de Vinci :medal:",
-        "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
-        3000
-    ],
-    [
-        "Baton de Merlin :magic_wand:",
-        "Par la barbe de l'enchanteur, le voilà retrouvé !", 10000
-    ],
-    [
-        "Bottes de sept lieues :boot:",
-        "Vous ne serez plus jamais en retard !", 2000
-    ],
-    [
-        "Couronne de la reine d'Angleterre :crown:",
-        "Gardé jalousement dans son château, la voilà !", 3000
-    ],
-    [
-        "Excalibur :dagger:",
-        "Débrouillez vous pour la retirer de ce maudit rocher !", 15000
-    ],
-    [
-        "Arc de Robin des Bois :bow_and_arrow:", "Ne rate jamais sa cible !",
-        8000
-    ],
-    ["Eclair de Zeus :zap:", "Foudroyez vos ennemis !", 10000],
-    [
-        "Exploitation pétrolière :construction_site:",
-        "Investissez dans le pétrole et gagnez automatiquement de l'argent !",
-        5000
-    ],
-    [
-        "Sablier temporel :hourglass:",
-        "Réinitialisez vos temps d'attente !!!", 3000
-    ],
-    [
-        "Bouclier Divin :shield:",
-        "Empêchez les gens de vous voler pendant une semaine !!!", 2000
-    ],
-    ["Crotte :poop:", "Offrez la à vos amis !", 10],
-    ["Justice corrompue :scales:",
-        "Faite la preuve de votre richesse est corrompez le monde entier !", 1000000000],
-    ["Richesse exquise :reminder_ribbon:",
-        "Montrez une preuve de votre raffinement extrême !", 1000000000000],
-    ["Richesse suprême :rosette: ",
-        "L'objet qui ferait mourir de jalousie un milliardaire !", 99000000000000000]
-]
+SHOP = [[
+    "Pendentif de sagesse de Leonard de Vinci :medal:",
+    "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
+    3000, 1
+],
+        [
+            "Baton de Merlin :magic_wand:",
+            "Par la barbe de l'enchanteur, le voilà retrouvé !", 10000, 2
+        ],
+        [
+            "Bottes de sept lieues :boot:",
+            "Vous ne serez plus jamais en retard !", 2000, 3
+        ],
+        [
+            "Couronne de la reine d'Angleterre :crown:",
+            "Gardé jalousement dans son château, la voilà !", 3000, 4
+        ],
+        [
+            "Excalibur :dagger:",
+            "Débrouillez vous pour la retirer de ce maudit rocher !", 15000, 5
+        ],
+        [
+            "Arc de Robin des Bois :bow_and_arrow:",
+            "Ne rate jamais sa cible !", 8000, 6
+        ], ["Eclair de Zeus :zap:", "Foudroyez vos ennemis !", 10000, 7],
+        [
+            "Exploitation pétrolière :construction_site:",
+            "Investissez dans le pétrole et gagnez automatiquement de l'argent !",
+            5000, 8
+        ],
+        [
+            "Sablier temporel :hourglass:",
+            "Réinitialisez vos temps d'attente !!!", 3000, 9
+        ],
+        [
+            "Bouclier Divin :shield:",
+            "Empêchez les gens de vous voler pendant une semaine !!!", 2000, 10
+        ], ["Crotte :poop:", "Offrez la à vos amis !", 11],
+        [
+            "Justice corrompue :scales:",
+            "Faite la preuve de votre richesse est corrompez le monde entier !",
+            1000000000, 12
+        ],
+        [
+            "Richesse exquise :reminder_ribbon:",
+            "Montrez une preuve de votre raffinement extrême !", 1000000000000,
+            13
+        ],
+        [
+            "Richesse suprême :rosette: ",
+            "L'objet qui ferait mourir de jalousie un milliardaire !",
+            99000000000000000, 14
+        ]]
 # ":boomerang:""  boomerang
-
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 CLIENT = discord.Client()
@@ -90,10 +93,9 @@ def get_items_of_user(cible):
     lst_of_items_num = []
 
     for group_item in range(len(ls)):
-        item_in_shop = SHOP[(int(ls[group_item][0])) -
-                            1]  # 0 : Name		1 : Comment		2 : Prix		3 : Number
+        item_in_shop = SHOP[(int(ls[group_item][0])) - 1]
+        # 0 : Name		1 : Comment		2 : Prix		3 : Number
         name = item_in_shop[0]
-        number = item_in_shop[3]
 
         lst_of_items.append(name)
         lst_of_items_num.append(ls[group_item][1])
@@ -202,6 +204,7 @@ def report_edit(user):
 async def wait_for_message(
         channel, author,
         CLIENT):  # En attente d'un message dans le même salon.
+
     def check(m):
         return (m.channel == channel) and (m.content != "") and (
             m.author == author) and (author != CLIENT.user)
@@ -310,7 +313,7 @@ WHITE = 16775930
 
 
 # 1 minute d'attente entre chaque execution de def
-@ tasks.loop(seconds=MINUTE)
+@tasks.loop(seconds=MINUTE)
 async def temps():
     rand = random.randint(1, 2048)  # 1 chance sur 2048 pour l'instant
     if rand == 5:
@@ -348,29 +351,33 @@ async def temps():
                 for i in range(3):
                     del list_user[0]
                 no_list_user = "".join(list_user)
-                if str(db["°-°" + no_list_user]) == "0":
-                    print(
-                        f"La personne {no_list_user} est pauvre et inactive : supprimons la !")
-                    to_delete = no_list_user
+                try:
+                    if str(db["°-°" + no_list_user]) == "0":
+                        print(
+                            f"La personne {no_list_user} est pauvre et inactive : supprimons la !"
+                        )
+                        to_delete = no_list_user
 
-                    users = db.keys()
-                    found = False
-                    for user in users:
-                        if to_delete in user:
-                            del db[user]
-                            found = True
-                    if found:
-                        print(f"{to_delete} supprimé avec succès !")
+                        users = db.keys()
+                        found = False
+                        for user in users:
+                            if to_delete in user:
+                                del db[user]
+                                found = True
+                        if found:
+                            print(f"{to_delete} supprimé avec succès !")
+                except KeyError as e:
+                    print(f"\nKeyError catched. Exception : {e}")
 
 
-@ CLIENT.event
+@CLIENT.event
 async def on_ready():
     print("Je me suis connecté en {0.user}".format(CLIENT))
 
     temps.start()
 
 
-@ CLIENT.event
+@CLIENT.event
 async def on_message(message):
     content = message.content
     author = message.author
@@ -556,7 +563,8 @@ async def on_message(message):
         notation = f"{PREFIXE}nothing"
 
         embed = discord.Embed(title="Rien ne s'est passé !",
-                              description="", color=WHITE)
+                              description="",
+                              color=WHITE)
         await channel.send(embed=embed)
 
     if not author.bot:
