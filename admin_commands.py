@@ -30,7 +30,8 @@ def create_user(self, UserToCreate):
         pass
 
     UserToCreate = str(UserToCreate)
-    parcour = [0, 1, 2, 3, 5, 9, 10]  # Daily, Hebdo, Gold, Daily, Steal
+    # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
+    parcour = [0, 1, 2, 3, 5, 9, 10, 11, 12, 13, 14]
     users = db.keys()
 
     for i in parcour:

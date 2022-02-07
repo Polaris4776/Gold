@@ -13,6 +13,7 @@ DAY = HOUR * 24
 WHITE = 16775930
 
 SHIELD_PROTECT_TIME = 10080  # min (1 semaine)
+DAGGER_TIME = 10080 # min (1 semaine)
 
 DAILY_ADD = 800
 HEBDO_ADD = 2600
@@ -76,6 +77,19 @@ def use_items(self, cible, item):
 
     if item == 1:
         return not_usable
+
+    elif item == 5:  # Excalibur
+        dagger_in_db = self.prefixes[14] + cible # Dagger = Exalibur
+        db[dagger_in_db] = str(DAGGER_TIME)
+        minute = DAGGER_TIME
+        heure = minute // 60
+        minute = minute % 60
+        jour = heure // 24
+        heure = heure % 24
+
+        delete_item(self, 5, cible, 1)
+
+        return f"Vous êtes désormais virtuose pendant {jour}jours {heure}h {minute}min ! :dagger: (Vous pouvez voler des personnes protégées par un bouclier)"
 
     elif item == 8:  # Exploitation pétrolière
         return f"{group_item[0]} est actif dès son achat."
@@ -162,7 +176,7 @@ def create_user(self, UserToCreate):
 
     UserToCreate = str(UserToCreate)
     # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
-    parcour = [0, 1, 2, 3, 5, 9, 10, 11, 12, 13]
+    parcour = [0, 1, 2, 3, 5, 9, 10, 11, 12, 13, 14]
     users = db.keys()
 
     for i in parcour:
@@ -880,25 +894,50 @@ class commands:
 
         if int(db[steal_dans_db]) == 0:
             shield_in_db = self.prefixes[8] + cible
+            dagger_in_db = self.prefixes[14] + author
             try:
                 shield = db[shield_in_db]
+                dagger = db[dagger_in_db]
+
             except KeyError:
-                pass
-            else:
-                if shield > 0:
-                    db[steal_dans_db] = 1439
-                    embed = discord.Embed(
+                create_user(cible)
+                create_user(author)
+                embed = discord.Embed(
                         title=
-                        "Vous vous êtes lamentablement fracassé la tête sur son bouclier :shield:, vous échouez donc à le voler.",
-                        description="",
+                        "Une erreur s'est produite durant le vol. ",
+                        description="Elle a été corrigée, veuillez réessayer.",
                         color=WHITE)
                     await self.channel.send(embed=embed)
                     return
+            else:
+                if shield > 0:
+                    if dagger > 0 : 
+                        embed = discord.Embed(
+                            title=
+                            "La personne est protégée par un bouclier, mais en votre qualité de virtuose, vous pouvez quand même la détrousser !",
+                            description="",
+                            color=WHITE)
+                        await self.channel.send(embed=embed)
+                    else : 
+                        db[steal_dans_db] = 1439
+                        embed = discord.Embed(
+                            title=
+                            "Vous vous êtes lamentablement fracassé la tête sur son bouclier :shield:, vous échouez donc à le voler.",
+                            description="",
+                            color=WHITE)
+                        await self.channel.send(embed=embed)
+                        return
 
             gold_of_author = int(db[gold_dans_db_for_author])
             gold_of_cible = int(db[gold_dans_db_for_cible])
+            level_dans_db = self.prefixes[10] + str(self.author)
+            lvl = db[level_dans_db]
 
-            valeur = STEAL_VALUE
+            valeur = gold_of_cible // 1000 + (lvl*gold_of_cible//1000)
+            if valeur < STEAL_VALUE : 
+                valeur = STEAL_VALUE
+
+            print(valeur)
 
             if not (((gold_of_cible - valeur) > 0) or
                     ((gold_of_cible - valeur) == 0)):  # Trop pauvre !
@@ -908,7 +947,7 @@ class commands:
                 gold_of_author + valeur)  # Ajoute l'argent à la cible
             db[gold_dans_db_for_cible] = str(gold_of_cible -
                                              valeur)  # On vole l'argent !
-            db[report_dans_db_for_author] = f"5|{cible}"
+            db[report_dans_db_for_author] = f"5|{cible}|{valeur}"
             db[steal_dans_db] = 1439
             embed = discord.Embed(
                 title=
@@ -957,6 +996,7 @@ class commands:
             ls[0] = int(ls[0])
             value = ls[0]  # Temps restant en minute pour reporter
             stolen = str(ls[1])
+            valeur_stolen = int(ls[2])
         except KeyError:
             embed = discord.Embed(
                 title=
@@ -985,7 +1025,7 @@ class commands:
 
         # Si on arrive là, c'est qu'on peut bien reporter.
 
-        valeur = STEAL_VALUE * 2
+        valeur = valeur_stolen * 1,5
 
         gold_dans_db_for_author = self.prefixes[2] + str(self.author)
         gold_dans_db_for_cible = self.prefixes[2] + str(cible)

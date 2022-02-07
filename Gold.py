@@ -35,7 +35,7 @@ SHOP = [[
         ],
         [
             "Excalibur :dagger:",
-            "Débrouillez vous pour la retirer de ce maudit rocher !", 15000, 5
+            "Débrouillez vous pour la retirer de ce maudit rocher !", 4000, 5
         ],
         [
             "Arc de Robin des Bois :bow_and_arrow:",
@@ -52,7 +52,7 @@ SHOP = [[
         ],
         [
             "Bouclier Divin :shield:",
-            "Empêchez les gens de vous voler pendant une semaine !!!", 2000, 10
+            "Empêchez les gens de vous voler pendant une semaine (sauf si il possède excalibur) !!!", 2000, 10
         ], ["Crotte :poop:", "Offrez la à vos amis !", 11],
         [
             "Justice corrompue :scales:",
@@ -156,7 +156,7 @@ def create_user(UserToCreate):
 
     UserToCreate = str(UserToCreate)
     parcour = [
-        0, 1, 2, 3, 5, 9, 10, 11, 12, 13
+        0, 1, 2, 3, 5, 9, 10, 11, 12, 13, 14
     ]  # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
     users = db.keys()
 
@@ -301,8 +301,9 @@ def exploitation(user):
 
 PREFIXES = [
     "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔",
-    "↔lvl↔", "_*-*_", "♀_♀", "O_O"
-]  # ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp		↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel		O_O :  durée d'inactivité
+    "↔lvl↔", "_*-*_", "♀_♀", "O_O", "T_T"
+]  # ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp		↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel		O_O :  durée d'inactivité       T_T : Excalibur
+
 
 SECOND = 1
 MINUTE = SECOND * 60
