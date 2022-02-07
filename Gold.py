@@ -35,7 +35,7 @@ SHOP = [[
         ],
         [
             "Excalibur :dagger:",
-            "Débrouillez vous pour la retirer de ce maudit rocher !", 4000, 5
+            "Enfin retirée du rocher, elle permet d'outrepasser les lourdaux qui se protègent avec un bouclier ! Vous pourrez rester virtuose une semaine après utilisation !", 4000, 5
         ],
         [
             "Arc de Robin des Bois :bow_and_arrow:",
