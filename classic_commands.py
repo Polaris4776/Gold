@@ -414,12 +414,107 @@ class commands:
         await self.channel.send(embed=embed)
 
     async def sell(self, notation, args):
+        cible = str(self.author)
+
+        try:
+            item = int(args[0]) - 1
+        except ValueError:
+            embed = discord.Embed(
+                title=f"Merci de faire ```{notation}```",
+                description="Merci d'entrer un nombre et non du texte.",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+        except IndexError:
+            embed = discord.Embed(
+                title=f"Merci de faire ```{notation}```",
+                description=
+                "Merci d'entrer un nombre indiquant l'objet que vous souhaitez vendre.",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+
+        try:
+            count = int(args[1])
+            if count < 0:
+                embed = discord.Embed(
+                    title=
+                    "Vous n'essayez quand même pas de m'acheter ces objets ?!",
+                    description=
+                    "Non merci, je refuse. Vendez plutout en positif.",
+                    color=WHITE)
+                await self.channel.send(embed=embed)
+                return
+        except ValueError:
+            embed = discord.Embed(
+                title=f"Merci de faire ```{notation}```",
+                description="Merci d'entrer un nombre et non du texte.",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+        except IndexError:  # Il n'y a pas de valeur spécifiée
+            count = 1
+
+        if (item < 0) or (item > len(self.shop)):
+            embed = discord.Embed(title=f"Merci de faire ```{notation}```",
+                                  description="L'objet demandé n'existe pas !",
+                                  color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+
+        # 0 : Name		1 : Comment		2 : Prix		3 : Number
+        item_in_shop = self.shop[item]
+        name = item_in_shop[0]
+        comment = item_in_shop[1]
+        price = item_in_shop[2]
+        number = item_in_shop[3]
+
+        gold_dans_db_for_cible = self.prefixes[2] + str(cible)
+
+        gold_of_cible = int(db[gold_dans_db_for_cible])
+
+        valeur = (price * count) - (price * count) // 10
+
+        items_dans_db_for_author = self.prefixes[6] + f"{cible}"
+        ls = extract_data_encoded_NT1(self, cible)
+
+        exists = False
+        for group in ls:
+            if int(group[0]) == number:
+                exists = True
+                group[1] = str(int(group[1]) - count)
+                if group[1] == "0" : 
+                    print("\n\nPlus d'items donc suppression de group")
+                    del (group)
+                    print(ls)
+
+        if not exists:
+            embed = discord.Embed(
+                title="Vous ne possédez pas cet objet.",
+                description="A moins que vous ne le sortiez de votre chapeau magique, vous n'en possédez pas !",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+            ls.append([str(number), str(count)])
+
+        # On retire le prix de l'objet.
+        db[gold_dans_db_for_cible] = str(gold_of_cible + valeur)
+
+        reformat = []
+        for element in ls:
+            reformat.append("-".join(element))
+
+        reformated = "|".join(reformat)
+        print(f"reformated = {reformated}")
+        db[items_dans_db_for_author] = reformated
+
         embed = discord.Embed(
-            title="La commande sell n'est pas encore disponible.",
+            title="",
             description=
-            "Contactez Polaris#4776 si vous voulez qu'elle soit ajoutée.",
+            f"Vous avez vendu {count} {name} pour {valeur} :dollar: !",
             color=WHITE)
         await self.channel.send(embed=embed)
+
 
     async def bag(self, notation, args):
         cible = str(get_mention(self, args))
@@ -441,6 +536,7 @@ class commands:
                               description=f"{formated}",
                               color=WHITE)
         await self.channel.send(embed=embed)
+
 
     async def use(self, notation, args):
         if len(args) == 0:

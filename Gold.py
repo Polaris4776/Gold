@@ -68,6 +68,11 @@ SHOP = [[
             "Richesse suprême :rosette: ",
             "L'objet qui ferait mourir de jalousie un milliardaire !",
             99000000000000000, 14
+        ],
+        [
+            "Part d'action :x:",
+            "Achetez et revendez des parts d'entreprises et entrez en bourse ! (Attention, risque de perte de votre argent et de dépression !)",
+            98765432101239810, 15
         ]]
 # ":boomerang:""  boomerang
 
