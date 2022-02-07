@@ -1025,7 +1025,11 @@ class commands:
 
         # Si on arrive là, c'est qu'on peut bien reporter.
 
-        valeur = valeur_stolen * 1,5
+        level_dans_db = self.prefixes[10] + str(self.author)
+        lvl = db[level_dans_db]
+        
+
+        valeur = valeur_stolen * (1,5 + (lvl//50)
 
         gold_dans_db_for_author = self.prefixes[2] + str(self.author)
         gold_dans_db_for_cible = self.prefixes[2] + str(cible)
