@@ -54,7 +54,7 @@ SHOP = [
     ],
     [
         "Bouclier Divin :shield:",
-        "Empêchez les gens de vous voler pendant une semaine (sauf si il possède excalibur) !!!",
+        "Empêchez les gens de vous voler pendant une semaine (sauf si ils possèdent excalibur) !!!",
         2000, 10
     ], ["Crotte :poop:", "Offrez la à vos amis !", 10, 11],
     [
@@ -72,7 +72,7 @@ SHOP = [
         99000000000000000, 14
     ],
     [
-        "Part d'action :x:",
+        "Part d'action :part_alternation_mark:",
         "Achetez et revendez des parts d'entreprises et entrez en bourse ! (Attention, risque de perte de votre argent et de dépression !)",
         98765432101239810, 15
     ]
