@@ -176,7 +176,7 @@ def create_user(self, UserToCreate):
 
     UserToCreate = str(UserToCreate)
     # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
-    parcour = [0, 1, 2, 3, 5, 9, 10, 11, 12, 13, 14]
+    parcour = [0, 1, 2, 3, 5, 8, 9, 10, 11, 12, 13, 14]
     users = db.keys()
 
     for i in parcour:
@@ -979,7 +979,7 @@ class commands:
                     title="Une erreur s'est produite durant le vol. ",
                     description="Elle a été corrigée, veuillez réessayer.",
                     color=WHITE)
-                await self.channel.send(embed=embed)
+                await self.channAttendel.send(embed=embed)
                 return
             else:
                 if shield > 0:

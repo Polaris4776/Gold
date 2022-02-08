@@ -164,7 +164,7 @@ def create_user(UserToCreate):
 
     UserToCreate = str(UserToCreate)
     parcour = [
-        0, 1, 2, 3, 5, 9, 10, 11, 12, 13, 14
+        0, 1, 2, 3, 5, 8, 9, 10, 11, 12, 13, 14
     ]  # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
     users = db.keys()
 

@@ -1,5 +1,6 @@
 import discord
 from replit import db
+from classic_commands import create_user
 
 CLIENT = discord.Client()
 PREFIXE = "?"
@@ -21,29 +22,6 @@ def get_mention(message, args):
     else:
         return message.mentions[0]
 
-
-def create_user(self, UserToCreate):
-    try:
-        if UserToCreate.bot:
-            return
-    except AttributeError:  # Ce n'est pas une variable Discord.Member
-        pass
-
-    UserToCreate = str(UserToCreate)
-    # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
-    parcour = [0, 1, 2, 3, 5, 9, 10, 11, 12, 13, 14]
-    users = db.keys()
-
-    for i in parcour:
-        if not self.prefixes[i] + UserToCreate in users:
-            db[self.prefixes[i] + UserToCreate] = "0"
-
-    if not self.prefixes[6] + UserToCreate in users:  # Items
-        db[self.prefixes[6] + UserToCreate] = "11-1"
-    
-    if not self.prefixes[15] + UserToCreate in users: # Possessions of actions
-        db[self.prefixes[15] + UserToCreate] = "Red-0|Green-0|Blue-0"
-    
 
 class commands:
 
@@ -87,8 +65,7 @@ class commands:
             await self.channel.send(embed=embed)
         if not (found):
             embed = discord.Embed(
-                title=
-                f"{to_delete} n'a pas été trouvé dans la base de données !",
+                title=f"{to_delete} n'a pas été trouvé dans la base de données !",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -116,8 +93,7 @@ class commands:
             await self.channel.send(embed=embed)
         else:
             embed = discord.Embed(
-                title=
-                "Vous ne pouvez pas supprimer votre compte car vous n'existez pas encore.",
+                title="Vous ne pouvez pas supprimer votre compte car vous n'existez pas encore.",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
