@@ -274,10 +274,10 @@ class commands:
             print(commandes)
 
     async def shop_print(self, notation):
-        Item_Name = 0
-        Item_Info = 1
-        Item_Price = 2
-        Item_Number = 3
+        Item_Name = "name"
+        Item_Info = "description"
+        Item_Price = "price"
+        Item_Number = "item_number"
 
         to_print = ""
         for group_item in self.shop:
