@@ -606,22 +606,22 @@ async def on_message(message):
         db[PREFIXES[13] + str(author)] = 0
 
 try:
-    to_sell = db[prefixes[16]]
+    to_sell = db[PREFIXES[16]]
 except:
-    db[prefixes[16]] = input(
+    db[PREFIXES[16]] = input(
         "\nLa database du prix de l'action Red n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
 
 try:
-    to_sell = db[prefixes[17]]
+    to_sell = db[PREFIXES[17]]
 except:
 
-    db[prefixes[17]] = input(
+    db[PREFIXES[17]] = input(
         "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
 
 try:
-    to_sell = db[prefixes[16]]
+    to_sell = db[PREFIXES[16]]
 except:
-    db[prefixes[17]] = input(
+    db[PREFIXES[17]] = input(
         "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
 
 del to_sell
