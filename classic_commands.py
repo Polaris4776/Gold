@@ -187,6 +187,10 @@ def create_user(self, UserToCreate):
         db[self.prefixes[6] + UserToCreate] = "11-1"
 
 
+    if not self.prefixes[15] + UserToCreate in users: # Possessions of actions
+        db[self.prefixes[15] + UserToCreate] = "Red-0|Green-0|Blue-0"
+
+
 # NT1 Nolann's Technic 1 (spécifique)
 def extract_data_encoded_NT1(self, cible):
     items_dans_db_for_author = self.prefixes[6] + f"{cible}"

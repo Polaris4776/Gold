@@ -40,7 +40,10 @@ def create_user(self, UserToCreate):
 
     if not self.prefixes[6] + UserToCreate in users:  # Items
         db[self.prefixes[6] + UserToCreate] = "11-1"
-
+    
+    if not self.prefixes[15] + UserToCreate in users: # Possessions of actions
+        db[self.prefixes[15] + UserToCreate] = "Red-0|Green-0|Blue-0"
+    
 
 class commands:
 
