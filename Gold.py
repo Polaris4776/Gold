@@ -16,6 +16,8 @@ import admin_commands
 """
 
 # 0 : Name		1 : Comment		2 : Prix		3 : Number
+
+
 SHOP = [
     [
         "Pendentif de sagesse de Leonard de Vinci :medal:",
@@ -77,6 +79,7 @@ SHOP = [
         98765432101239810, 15
     ]
 ]
+
 # ":boomerang:""  boomerang
 
 TOKEN = os.getenv("DISCORD_TOKEN")
