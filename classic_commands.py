@@ -989,14 +989,14 @@ class commands:
 
         if int(db[steal_dans_db]) == 0:
             shield_in_db = self.prefixes[8] + cible
-            dagger_in_db = self.prefixes[14] + author
+            dagger_in_db = self.prefixes[14] + self.author
             try:
                 shield = db[shield_in_db]
                 dagger = db[dagger_in_db]
 
             except KeyError:
                 create_user(cible)
-                create_user(author)
+                create_user(self.author)
                 embed = discord.Embed(
                     title="Une erreur s'est produite durant le vol. ",
                     description="Elle a été corrigée, veuillez réessayer.",
