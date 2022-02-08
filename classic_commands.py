@@ -969,15 +969,15 @@ class commands:
             shield_in_db = self.prefixes[8] + cible
             dagger_in_db = self.prefixes[14] + str(self.author)
             try:
-                shield = db[shield_in_db]
-                dagger = db[dagger_in_db]
+                shield = int(db[shield_in_db])
+                dagger = int(db[dagger_in_db])
 
             except KeyError:
                 create_user(self, cible)
                 create_user(self, self.author)
                 embed = discord.Embed(
-                    title="Une erreur s'est produite durant le vol. ",
-                    description="Elle a été corrigée, veuillez réessayer.",
+                    title="Une mise à jour de la base de donnée s'est produite durant le vol. ",
+                    description="Elle a été terminée, veuillez réessayer.",
                     color=WHITE)
                 await self.channAttendel.send(embed=embed)
                 return
