@@ -186,8 +186,7 @@ def create_user(self, UserToCreate):
     if not self.prefixes[6] + UserToCreate in users:  # Items
         db[self.prefixes[6] + UserToCreate] = "11-1"
 
-
-    if not self.prefixes[15] + UserToCreate in users: # Possessions of actions
+    if not self.prefixes[15] + UserToCreate in users:  # Possessions of actions
         db[self.prefixes[15] + UserToCreate] = "Red-0|Green-0|Blue-0"
 
 
@@ -247,8 +246,7 @@ class commands:
 
             embed = discord.Embed(
                 title="Commandes possibles : ",
-                description=
-                ":white_check_mark: : Commande disponible\n:arrows_counterclockwise: : En développement, peut ne pas marcher ou marcher partiellement.\n:x: : Commande non disponible.",
+                description=":white_check_mark: : Commande disponible\n:arrows_counterclockwise: : En développement, peut ne pas marcher ou marcher partiellement.\n:x: : Commande non disponible.",
                 color=WHITE)
             for i in range(len(commandes)):
                 embed.add_field(name=f"{commandes[i]}",
@@ -298,8 +296,7 @@ class commands:
 
         embed = discord.Embed(
             title="Boutique (version temporaire)",
-            description=
-            f"{to_print}\n\n```{PREFIXE}buy [item_number] [count]```ex : ```{PREFIXE}buy 11 2```(pour acheter deux objets du numéro 11)",
+            description=f"{to_print}\n\n```{PREFIXE}buy [item_number] [count]```ex : ```{PREFIXE}buy 11 2```(pour acheter deux objets du numéro 11)",
             color=WHITE)
         await self.channel.send(embed=embed)
 
@@ -318,8 +315,7 @@ class commands:
         except IndexError:
             embed = discord.Embed(
                 title=f"Merci de faire ```{notation}```",
-                description=
-                "Merci d'entrer un nombre indiquant l'objet que vous souhaitez acheter.",
+                description="Merci d'entrer un nombre indiquant l'objet que vous souhaitez acheter.",
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -328,10 +324,8 @@ class commands:
             count = int(args[1])
             if count < 0:
                 embed = discord.Embed(
-                    title=
-                    "Vous n'essayez quand même pas de me vendre ces objets ?!",
-                    description=
-                    "Non merci, je refuse. Achetez plutout en positif.",
+                    title="Vous n'essayez quand même pas de me vendre ces objets ?!",
+                    description="Non merci, je refuse. Achetez plutout en positif.",
                     color=WHITE)
                 await self.channel.send(embed=embed)
                 return
@@ -367,10 +361,8 @@ class commands:
 
         if not ((gold_of_cible - valeur) >= 0):  # Trop pauvre !
             embed = discord.Embed(
-                title=
-                "Vous ne possédez pas assez d'argent pour acheter cet objet !",
-                description=
-                f"Vous possédez {gold_of_cible} :dollar: et votre achat vous coûterai {valeur} :dollar: !",
+                title="Vous ne possédez pas assez d'argent pour acheter cet objet !",
+                description=f"Vous possédez {gold_of_cible} :dollar: et votre achat vous coûterai {valeur} :dollar: !",
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -386,10 +378,8 @@ class commands:
                     if int(group[1]) + count > 30:
                         # La personne possèdera plus de trente exploitations
                         embed = discord.Embed(
-                            title=
-                            "Vous ne pouvez pas posséder plus de 30 exploitations !",
-                            description=
-                            f"Vous possédez {int(group[1])} exploitations et votre achat vous en ferais posséder {int(group[1]) + count} !",
+                            title="Vous ne pouvez pas posséder plus de 30 exploitations !",
+                            description=f"Vous possédez {int(group[1])} exploitations et votre achat vous en ferais posséder {int(group[1]) + count} !",
                             color=WHITE)
                         await self.channel.send(embed=embed)
                         return
@@ -412,8 +402,7 @@ class commands:
 
         embed = discord.Embed(
             title="",
-            description=
-            f"Vous avez acheté {count} {name} pour {valeur} :dollar: !",
+            description=f"Vous avez acheté {count} {name} pour {valeur} :dollar: !",
             color=WHITE)
         await self.channel.send(embed=embed)
 
@@ -432,8 +421,7 @@ class commands:
         except IndexError:
             embed = discord.Embed(
                 title=f"Merci de faire ```{notation}```",
-                description=
-                "Merci d'entrer un nombre indiquant l'objet que vous souhaitez vendre.",
+                description="Merci d'entrer un nombre indiquant l'objet que vous souhaitez vendre.",
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -442,10 +430,8 @@ class commands:
             count = int(args[1])
             if count < 0:
                 embed = discord.Embed(
-                    title=
-                    "Vous n'essayez quand même pas de m'acheter ces objets ?!",
-                    description=
-                    "Non merci, je refuse. Vendez plutout en positif.",
+                    title="Vous n'essayez quand même pas de m'acheter ces objets ?!",
+                    description="Non merci, je refuse. Vendez plutout en positif.",
                     color=WHITE)
                 await self.channel.send(embed=embed)
                 return
@@ -495,8 +481,7 @@ class commands:
         if not exists:
             embed = discord.Embed(
                 title="Vous ne possédez pas cet objet.",
-                description=
-                "A moins que vous ne le sortiez de votre chapeau magique, vous n'en possédez pas !",
+                description="A moins que vous ne le sortiez de votre chapeau magique, vous n'en possédez pas !",
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -515,8 +500,7 @@ class commands:
 
         embed = discord.Embed(
             title="",
-            description=
-            f"Vous avez vendu {count} {name} pour {valeur} :dollar: !",
+            description=f"Vous avez vendu {count} {name} pour {valeur} :dollar: !",
             color=WHITE)
         await self.channel.send(embed=embed)
 
@@ -665,8 +649,7 @@ class commands:
         cube = "▬" * 18
         embed = discord.Embed(
             title=f"Profil de {cible}",
-            description=
-            f"{cube}\n{gold}\n{level}\n{inactivity}\n{cube}\n{equip_and_power}\n{cube}\n{objects}",
+            description=f"{cube}\n{gold}\n{level}\n{inactivity}\n{cube}\n{equip_and_power}\n{cube}\n{objects}",
             color=WHITE)
         await self.channel.send(embed=embed)
 
@@ -743,8 +726,7 @@ class commands:
 
         if str(self.author) == cible_user:
             embed = discord.Embed(
-                title=
-                "Vous ne pouvez pas vous donner de l'argent à vous même !!!!",
+                title="Vous ne pouvez pas vous donner de l'argent à vous même !!!!",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -767,8 +749,7 @@ class commands:
 
         except ValueError:
             embed = discord.Embed(
-                title=
-                "Moi qui vous croyais moins machiavélique... Vous ne pouvez pas donner un montant négatif !!!",
+                title="Moi qui vous croyais moins machiavélique... Vous ne pouvez pas donner un montant négatif !!!",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -777,8 +758,7 @@ class commands:
         if not (((gold_of_author - valeur) > 0) or
                 ((gold_of_author - valeur) == 0)):  # Trop pauvre !
             embed = discord.Embed(
-                title=
-                f"Vous ne possédez pas suffisament d'argent pour envoyer {valeur} :dollar: à {cible_user}",
+                title=f"Vous ne possédez pas suffisament d'argent pour envoyer {valeur} :dollar: à {cible_user}",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -790,8 +770,7 @@ class commands:
                 gold_of_cible + valeur)  # Ajoute l'argent à la cible
             embed = discord.Embed(
                 title="⇄ Transfert effectué : ",
-                description=
-                f"{self.author} : **{gold_of_author}** :dollar: - {valeur} :dollar: = **{gold_of_author - valeur}** :dollar:\n⇄\n{cible_user} : **{gold_of_cible}** :dollar: + {valeur} :dollar: = **{gold_of_cible + valeur}** :dollar:",
+                description=f"{self.author} : **{gold_of_author}** :dollar: - {valeur} :dollar: = **{gold_of_author - valeur}** :dollar:\n⇄\n{cible_user} : **{gold_of_cible}** :dollar: + {valeur} :dollar: = **{gold_of_cible + valeur}** :dollar:",
                 color=WHITE)
             await self.channel.send(embed=embed)
 
@@ -898,8 +877,7 @@ class commands:
         elif int(db[beg_dans_db]) > 0:
             minute = db[beg_dans_db]
             embed = discord.Embed(
-                title=
-                f"Tu dois encore attendre {minute} min avant de mendier à nouveau.",
+                title=f"Tu dois encore attendre {minute} min avant de mendier à nouveau.",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -917,8 +895,7 @@ class commands:
             db[daily_dans_db] = 1439
             embed = discord.Embed(
                 title="Tu as récupéré ta récompense journalière.",
-                description=
-                f"*+{int(DAILY_ADD + (DAILY_ADD * (lvl/20)))}* :dollar:",
+                description=f"*+{int(DAILY_ADD + (DAILY_ADD * (lvl/20)))}* :dollar:",
                 color=WHITE)
             await self.channel.send(embed=embed)
 
@@ -950,8 +927,7 @@ class commands:
             db[hebdo_dans_db] = 10079
             embed = discord.Embed(
                 title="Tu as récupéré ta récompense hebdomadaire.",
-                description=
-                f"*+{int(HEBDO_ADD + (HEBDO_ADD * (lvl/20)))}* :dollar:",
+                description=f"*+{int(HEBDO_ADD + (HEBDO_ADD * (lvl/20)))}* :dollar:",
                 color=WHITE)
             await self.channel.send(embed=embed)
         elif int(db[hebdo_dans_db]) > 0:
@@ -959,8 +935,7 @@ class commands:
             heure = minute // 60
             jour = heure // 24
             embed = discord.Embed(
-                title=
-                f"Tu dois encore attendre {jour}j {heure % 24}h {minute % 60}min.",
+                title=f"Tu dois encore attendre {jour}j {heure % 24}h {minute % 60}min.",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -973,8 +948,7 @@ class commands:
         if str(self.author) == cible:
             embed = discord.Embed(
                 title="Vous ne pouvez pas vous voler vous même !!!!",
-                description=
-                " Ou alors, vous êtes plus bête que je ne le pensait.",
+                description=" Ou alors, vous êtes plus bête que je ne le pensait.",
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -993,7 +967,7 @@ class commands:
 
         if int(db[steal_dans_db]) == 0:
             shield_in_db = self.prefixes[8] + cible
-            dagger_in_db = self.prefixes[14] + self.author
+            dagger_in_db = self.prefixes[14] + str(self.author)
             try:
                 shield = db[shield_in_db]
                 dagger = db[dagger_in_db]
@@ -1011,16 +985,14 @@ class commands:
                 if shield > 0:
                     if dagger > 0:
                         embed = discord.Embed(
-                            title=
-                            "La personne est protégée par un bouclier, mais en votre qualité de virtuose, vous pouvez quand même la détrousser !",
+                            title="La personne est protégée par un bouclier, mais en votre qualité de virtuose, vous pouvez quand même la détrousser !",
                             description="",
                             color=WHITE)
                         await self.channel.send(embed=embed)
                     else:
                         db[steal_dans_db] = 1439
                         embed = discord.Embed(
-                            title=
-                            "Vous vous êtes lamentablement fracassé la tête sur son bouclier :shield:, vous échouez donc à le voler.",
+                            title="Vous vous êtes lamentablement fracassé la tête sur son bouclier :shield:, vous échouez donc à le voler.",
                             description="",
                             color=WHITE)
                         await self.channel.send(embed=embed)
@@ -1048,10 +1020,8 @@ class commands:
             db[report_dans_db_for_author] = f"5|{cible}|{valeur}"
             db[steal_dans_db] = 1439
             embed = discord.Embed(
-                title=
-                f"Vous avez dérobé dans le porte-feuille bien garni de {cible} *+{valeur}* :dollar: !",
-                description=
-                f"Cet idiot a 5 minutes pour vous rattrapper avant que vous soyez loin ! (avec `{PREFIXE}report`)\n\n{self.author} : **{gold_of_author}** :dollar: + {valeur} :dollar: = **{gold_of_author + valeur}** :dollar:\n⇄\n{cible} : **{gold_of_cible}** :dollar: - {valeur} :dollar: = **{gold_of_cible - valeur}** :dollar:",
+                title=f"Vous avez dérobé dans le porte-feuille bien garni de {cible} *+{valeur}* :dollar: !",
+                description=f"Cet idiot a 5 minutes pour vous rattrapper avant que vous soyez loin ! (avec `{PREFIXE}report`)\n\n{self.author} : **{gold_of_author}** :dollar: + {valeur} :dollar: = **{gold_of_author + valeur}** :dollar:\n⇄\n{cible} : **{gold_of_cible}** :dollar: - {valeur} :dollar: = **{gold_of_cible - valeur}** :dollar:",
                 color=WHITE)
 
             await self.channel.send(embed=embed)
@@ -1060,8 +1030,7 @@ class commands:
             minute = db[steal_dans_db]
             heure = minute // 60
             embed = discord.Embed(
-                title=
-                f"Tu dois encore attendre {heure % 24}h {minute % 60}min avant de voler à nouveau.",
+                title=f"Tu dois encore attendre {heure % 24}h {minute % 60}min avant de voler à nouveau.",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -1081,8 +1050,7 @@ class commands:
         if str(self.author) == cible:
             embed = discord.Embed(
                 title="Vous ne pouvez pas vous dénoncer vous même !!!!",
-                description=
-                " Ou alors, vous êtes plus bête que je ne le pensait.",
+                description=" Ou alors, vous êtes plus bête que je ne le pensait.",
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -1097,8 +1065,7 @@ class commands:
             valeur_stolen = int(ls[2])
         except KeyError:
             embed = discord.Embed(
-                title=
-                "Cette personne n'est pas un voyou, contrairement à toi, qui a fait appel à la police pour rien !!!!",
+                title="Cette personne n'est pas un voyou, contrairement à toi, qui a fait appel à la police pour rien !!!!",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -1106,8 +1073,7 @@ class commands:
 
         if value == 0:
             embed = discord.Embed(
-                title=
-                "Cette personne est déjà loin ! Il aurait fallu m'appeller plus tôt !",
+                title="Cette personne est déjà loin ! Il aurait fallu m'appeller plus tôt !",
                 description="",
                 color=WHITE)
             await self.channel.send(embed=embed)
@@ -1144,10 +1110,8 @@ class commands:
         db[gold_dans_db_for_cible] = str(gold_of_cible - valeur)
         del db[report_dans_db_for_author]
         embed = discord.Embed(
-            title=
-            f"On a rattrapé ce voleur ! Ce voyou de {cible} vous a payé une amende de *+{valeur}* :dollar: pour sa fourberie !",
-            description=
-            f"Il n'aurait jamais du s'attaquer à vous !\n\n{self.author} : **{gold_of_author}** :dollar: + {valeur} :dollar: = **{gold_of_author + valeur} :dollar:**\n⇄\n{cible} : **{gold_of_cible}** :dollar: - {valeur} :dollar: = **{gold_of_cible - valeur}** :dollar:",
+            title=f"On a rattrapé ce voleur ! Ce voyou de {cible} vous a payé une amende de *+{valeur}* :dollar: pour sa fourberie !",
+            description=f"Il n'aurait jamais du s'attaquer à vous !\n\n{self.author} : **{gold_of_author}** :dollar: + {valeur} :dollar: = **{gold_of_author + valeur} :dollar:**\n⇄\n{cible} : **{gold_of_cible}** :dollar: - {valeur} :dollar: = **{gold_of_cible - valeur}** :dollar:",
             color=WHITE)
 
         await self.channel.send(embed=embed)
