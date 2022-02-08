@@ -235,12 +235,12 @@ class commands:
                         if line.strip() == "":
                             continue
                         descriptif.append(line.strip().replace(
-                            "{PREFIXE}", PREFIXE))
+                            "{prefixe}", PREFIXE))
                     else:
                         if line.strip() == "":
                             continue
                         commandes.append(line.strip().replace(
-                            "{PREFIXE}", PREFIXE))
+                            "{prefixe}", PREFIXE))
 
                     line_number += 1
 
