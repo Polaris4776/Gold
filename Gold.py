@@ -16,64 +16,67 @@ import admin_commands
 """
 
 # 0 : Name		1 : Comment		2 : Prix		3 : Number
-SHOP = [[
-    "Pendentif de sagesse de Leonard de Vinci :medal:",
-    "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
-    3000, 1
-],
-        [
-            "Baton de Merlin :magic_wand:",
-            "Par la barbe de l'enchanteur, le voilà retrouvé !", 10000, 2
-        ],
-        [
-            "Bottes de sept lieues :boot:",
-            "Vous ne serez plus jamais en retard !", 2000, 3
-        ],
-        [
-            "Couronne de la reine d'Angleterre :crown:",
-            "Gardé jalousement dans son château, la voilà !", 3000, 4
-        ],
-        [
-            "Excalibur :dagger:",
-            "Enfin retirée du rocher, elle permet d'outrepasser les lourdaux qui se protègent avec un bouclier ! Vous pourrez rester virtuose une semaine après utilisation !", 4000, 5
-        ],
-        [
-            "Arc de Robin des Bois :bow_and_arrow:",
-            "Ne rate jamais sa cible !", 8000, 6
-        ], ["Eclair de Zeus :zap:", "Foudroyez vos ennemis !", 10000, 7],
-        [
-            "Exploitation pétrolière :construction_site:",
-            "Investissez dans le pétrole et gagnez automatiquement de l'argent !",
-            5000, 8
-        ],
-        [
-            "Sablier temporel :hourglass:",
-            "Réinitialisez vos temps d'attente !!!", 3000, 9
-        ],
-        [
-            "Bouclier Divin :shield:",
-            "Empêchez les gens de vous voler pendant une semaine (sauf si il possède excalibur) !!!", 2000, 10
-        ], ["Crotte :poop:", "Offrez la à vos amis !", 11],
-        [
-            "Justice corrompue :scales:",
-            "Faite la preuve de votre richesse est corrompez le monde entier !",
-            1000000000, 12
-        ],
-        [
-            "Richesse exquise :reminder_ribbon:",
-            "Montrez une preuve de votre raffinement extrême !", 1000000000000,
-            13
-        ],
-        [
-            "Richesse suprême :rosette: ",
-            "L'objet qui ferait mourir de jalousie un milliardaire !",
-            99000000000000000, 14
-        ],
-        [
-            "Part d'action :x:",
-            "Achetez et revendez des parts d'entreprises et entrez en bourse ! (Attention, risque de perte de votre argent et de dépression !)",
-            98765432101239810, 15
-        ]]
+SHOP = [
+    [
+        "Pendentif de sagesse de Leonard de Vinci :medal:",
+        "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
+        3000, 1
+    ],
+    [
+        "Baton de Merlin :magic_wand:",
+        "Par la barbe de l'enchanteur, le voilà retrouvé !", 10000, 2
+    ],
+    [
+        "Bottes de sept lieues :boot:",
+        "Vous ne serez plus jamais en retard !", 2000, 3
+    ],
+    [
+        "Couronne de la reine d'Angleterre :crown:",
+        "Gardé jalousement dans son château, la voilà !", 3000, 4
+    ],
+    [
+        "Excalibur :dagger:",
+        "Enfin retirée du rocher, elle permet d'outrepasser les lourdaux qui se protègent avec un bouclier ! Vous pourrez rester virtuose une semaine après utilisation !",
+        4000, 5
+    ],
+    [
+        "Arc de Robin des Bois :bow_and_arrow:", "Ne rate jamais sa cible !",
+        8000, 6
+    ], ["Eclair de Zeus :zap:", "Foudroyez vos ennemis !", 10000, 7],
+    [
+        "Exploitation pétrolière :construction_site:",
+        "Investissez dans le pétrole et gagnez automatiquement de l'argent !",
+        5000, 8
+    ],
+    [
+        "Sablier temporel :hourglass:",
+        "Réinitialisez vos temps d'attente !!!", 3000, 9
+    ],
+    [
+        "Bouclier Divin :shield:",
+        "Empêchez les gens de vous voler pendant une semaine (sauf si il possède excalibur) !!!",
+        2000, 10
+    ], ["Crotte :poop:", "Offrez la à vos amis !", 10, 11],
+    [
+        "Justice corrompue :scales:",
+        "Faite la preuve de votre richesse est corrompez le monde entier !",
+        1000000000, 12
+    ],
+    [
+        "Richesse exquise :reminder_ribbon:",
+        "Montrez une preuve de votre raffinement extrême !", 1000000000000, 13
+    ],
+    [
+        "Richesse suprême :rosette: ",
+        "L'objet qui ferait mourir de jalousie un milliardaire !",
+        99000000000000000, 14
+    ],
+    [
+        "Part d'action :x:",
+        "Achetez et revendez des parts d'entreprises et entrez en bourse ! (Attention, risque de perte de votre argent et de dépression !)",
+        98765432101239810, 15
+    ]
+]
 # ":boomerang:""  boomerang
 
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -308,7 +311,6 @@ PREFIXES = [
     "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔",
     "↔lvl↔", "_*-*_", "♀_♀", "O_O", "T_T"
 ]  # ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp		↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel		O_O :  durée d'inactivité       T_T : Excalibur
-
 
 SECOND = 1
 MINUTE = SECOND * 60
