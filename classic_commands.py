@@ -495,7 +495,6 @@ class commands:
             reformat.append("-".join(element))
 
         reformated = "|".join(reformat)
-        print(f"reformated = {reformated}")
         db[items_dans_db_for_author] = reformated
 
         embed = discord.Embed(
