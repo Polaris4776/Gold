@@ -556,7 +556,10 @@ class commands:
 
         shield_dans_db = self.prefixes[8] + str(cible)
         gold_dans_db = self.prefixes[2] + str(cible)
+        dagger_in_db = self.prefixes[14] + str(cible)
+
         have_a_shield = True
+        have_a_dagger = True
 
         try:
             shield = int(db[shield_dans_db])
@@ -566,11 +569,28 @@ class commands:
             if shield == 0:
                 have_a_shield = False
 
+        try:
+            dagger = int(db[dagger_in_db])
+
+        except KeyError:
+            create_user(self, cible)
+            dagger = int(db[dagger_in_db])
+            have_a_dagger = False
+        else:
+            if dagger == 0:
+                have_a_dagger = False
+
         if have_a_shield:
-            minute = int(db[shield_dans_db])
+            minute = shield
             heure = minute // 60
             minute = minute % 60
             equip_and_power += f"\n- **Bouclier Divin** :shield: : `{heure}h {minute}min`"
+
+        if have_a_dagger:
+            minute = dagger
+            heure = minute // 60
+            minute = minute % 60
+            equip_and_power += f"\n- **Virtuose du vol** :dagger: : `{heure}h {minute}min`"
 
         retour = get_items_of_user(self, cible)
 
@@ -975,12 +995,9 @@ class commands:
             except KeyError:
                 create_user(self, cible)
                 create_user(self, self.author)
-                embed = discord.Embed(
-                    title="Une mise à jour de la base de donnée s'est produite durant le vol. ",
-                    description="Elle a été terminée, veuillez réessayer.",
-                    color=WHITE)
-                await self.channAttendel.send(embed=embed)
-                return
+                shield = int(db[shield_in_db])
+                dagger = int(db[dagger_in_db])
+
             else:
                 if shield > 0:
                     if dagger > 0:
