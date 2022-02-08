@@ -1001,7 +1001,7 @@ class commands:
             gold_of_author = int(db[gold_dans_db_for_author])
             gold_of_cible = int(db[gold_dans_db_for_cible])
             level_dans_db = self.prefixes[10] + str(self.author)
-            lvl = db[level_dans_db]
+            lvl = int(db[level_dans_db])
 
             valeur = gold_of_cible // 1000 + (lvl * gold_of_cible // 1000)
             if valeur < STEAL_VALUE:
