@@ -13,7 +13,7 @@ DAY = HOUR * 24
 WHITE = 16775930
 
 SHIELD_PROTECT_TIME = 10080  # min (1 semaine)
-DAGGER_TIME = 10080 # min (1 semaine)
+DAGGER_TIME = 10080  # min (1 semaine)
 
 DAILY_ADD = 800
 HEBDO_ADD = 2600
@@ -79,7 +79,7 @@ def use_items(self, cible, item):
         return not_usable
 
     elif item == 5:  # Excalibur
-        dagger_in_db = self.prefixes[14] + cible # Dagger = Exalibur
+        dagger_in_db = self.prefixes[14] + cible  # Dagger = Exalibur
         db[dagger_in_db] = str(DAGGER_TIME)
         minute = DAGGER_TIME
         heure = minute // 60
@@ -483,7 +483,7 @@ class commands:
             if int(group[0]) == number:
                 exists = True
                 group[1] = str(int(group[1]) - count)
-                if group[1] == "0" : 
+                if group[1] == "0":
                     print("\n\nPlus d'items donc suppression de group")
                     del (group)
                     print(ls)
@@ -491,7 +491,8 @@ class commands:
         if not exists:
             embed = discord.Embed(
                 title="Vous ne possédez pas cet objet.",
-                description="A moins que vous ne le sortiez de votre chapeau magique, vous n'en possédez pas !",
+                description=
+                "A moins que vous ne le sortiez de votre chapeau magique, vous n'en possédez pas !",
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -515,7 +516,6 @@ class commands:
             color=WHITE)
         await self.channel.send(embed=embed)
 
-
     async def bag(self, notation, args):
         cible = str(get_mention(self, args))
 
@@ -536,7 +536,6 @@ class commands:
                               description=f"{formated}",
                               color=WHITE)
         await self.channel.send(embed=embed)
-
 
     async def use(self, notation, args):
         if len(args) == 0:
@@ -999,22 +998,21 @@ class commands:
                 create_user(cible)
                 create_user(author)
                 embed = discord.Embed(
-                        title=
-                        "Une erreur s'est produite durant le vol. ",
-                        description="Elle a été corrigée, veuillez réessayer.",
-                        color=WHITE)
-                    await self.channel.send(embed=embed)
-                    return
+                    title="Une erreur s'est produite durant le vol. ",
+                    description="Elle a été corrigée, veuillez réessayer.",
+                    color=WHITE)
+                await self.channel.send(embed=embed)
+                return
             else:
                 if shield > 0:
-                    if dagger > 0 : 
+                    if dagger > 0:
                         embed = discord.Embed(
                             title=
                             "La personne est protégée par un bouclier, mais en votre qualité de virtuose, vous pouvez quand même la détrousser !",
                             description="",
                             color=WHITE)
                         await self.channel.send(embed=embed)
-                    else : 
+                    else:
                         db[steal_dans_db] = 1439
                         embed = discord.Embed(
                             title=
@@ -1029,8 +1027,8 @@ class commands:
             level_dans_db = self.prefixes[10] + str(self.author)
             lvl = db[level_dans_db]
 
-            valeur = gold_of_cible // 1000 + (lvl*gold_of_cible//1000)
-            if valeur < STEAL_VALUE : 
+            valeur = gold_of_cible // 1000 + (lvl * gold_of_cible // 1000)
+            if valeur < STEAL_VALUE:
                 valeur = STEAL_VALUE
 
             print(valeur)
@@ -1123,9 +1121,8 @@ class commands:
 
         level_dans_db = self.prefixes[10] + str(self.author)
         lvl = db[level_dans_db]
-        
 
-        valeur = valeur_stolen * (1,5 + (lvl//50)
+        valeur = valeur_stolen * (1, 5 + (lvl // 50))
 
         gold_dans_db_for_author = self.prefixes[2] + str(self.author)
         gold_dans_db_for_cible = self.prefixes[2] + str(cible)
