@@ -973,8 +973,8 @@ class commands:
                 dagger = db[dagger_in_db]
 
             except KeyError:
-                create_user(cible)
-                create_user(self.author)
+                create_user(self, cible)
+                create_user(self, self.author)
                 embed = discord.Embed(
                     title="Une erreur s'est produite durant le vol. ",
                     description="Elle a été corrigée, veuillez réessayer.",
