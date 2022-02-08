@@ -619,7 +619,7 @@ except:
         "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
 
 try:
-    to_sell = db[PREFIXES[16]]
+    to_sell = db[PREFIXES[18]]
 except:
     db[PREFIXES[17]] = input(
         "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
