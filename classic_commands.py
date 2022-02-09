@@ -24,7 +24,7 @@ STEAL_VALUE = 1000
 def delete_item(self, number_of_item, cible, count):
     number = number_of_item
     items_dans_db_for_author = self.prefixes[6] + f"{cible}"
-    ls = extract_data_encoded_NT1(self, cible)
+    ls = extract_data_encoded_NT1_for_shop(self, cible)
 
     i = 0
     for group in ls:
@@ -57,7 +57,7 @@ def use_items(self, cible, item):
         return "Cet objet n'existe pas. Ce n'est pas le bon numéro."
 
     number = item
-    ls = extract_data_encoded_NT1(self, cible)
+    ls = extract_data_encoded_NT1_for_shop(self, cible)
     i = 0
     found = False
     for group in ls:
@@ -151,7 +151,7 @@ def get_mention(
 
 
 def get_items_of_user(self, cible):
-    ls = extract_data_encoded_NT1(self, cible)
+    ls = extract_data_encoded_NT1_for_shop(self, cible)
 
     lst_of_items = []
     lst_of_items_num = []
@@ -191,7 +191,7 @@ def create_user(self, UserToCreate):
 
 
 # NT1 Nolann's Technic 1 (spécifique)
-def extract_data_encoded_NT1(self, cible):
+def extract_data_encoded_NT1_for_shop(self, cible):
     items_dans_db_for_author = self.prefixes[6] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
@@ -368,7 +368,7 @@ class commands:
             return
 
         items_dans_db_for_author = self.prefixes[6] + f"{cible}"
-        ls = extract_data_encoded_NT1(self, cible)
+        ls = extract_data_encoded_NT1_for_shop(self, cible)
 
         exists = False
         for group in ls:
@@ -466,7 +466,7 @@ class commands:
         valeur = (price * count) - (price * count) // 10
 
         items_dans_db_for_author = self.prefixes[6] + f"{cible}"
-        ls = extract_data_encoded_NT1(self, cible)
+        ls = extract_data_encoded_NT1_for_shop(self, cible)
 
         exists = False
         for group in ls:

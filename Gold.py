@@ -45,7 +45,7 @@ def is_x_in_items(x, items):  # items = liste dans liste
 
 
 def get_items_of_user(cible):
-    ls = extract_data_encoded_NT1(cible)
+    ls = extract_data_encoded_NT1_for_shop(cible)
 
     lst_of_items = []
     lst_of_items_num = []
@@ -61,7 +61,7 @@ def get_items_of_user(cible):
     return lst_of_items, lst_of_items_num
 
 
-def extract_data_encoded_NT1(cible):  # NT1 Nolann's Technic 1 (spécifique)
+def extract_data_encoded_NT1_for_shop(cible):  # NT1 Nolann's Technic 1(spécifique)
     items_dans_db_for_author = PREFIXES[6] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
@@ -225,6 +225,19 @@ def add_xp(author, value):
     db[xp_in_db] = str(xp)
     db[lvl_in_db] = str(lvl)
 
+def fluctuation_simulation(value_of_enterprise, historic_of_values) ->int: 
+    pass
+
+def first_historic_generator(index_value:int, database_location:str) : 
+    ls = []
+    mini = index_value // 2
+    maxi = index_value * 2
+    for i in range(5) : 
+        ls.append(str(random.randint(mini, maxi)))
+    print("Liste : ")
+    joined = "|".join(ls)
+    print("Joined = " + str(joined) + "\n")
+    db[database_location] = joined
 
 def edit_actions_RGB():
     print("Modification des actions.")
@@ -233,9 +246,30 @@ def edit_actions_RGB():
     Green_in_db = PREFIXES[17]
     Blue_in_db = PREFIXES[18]
 
+    Red_Historic_in_db = PREFIXES[20]
+    Green_Historic_in_db = PREFIXES[21]
+    Blue_Historic_in_db = PREFIXES[22]
+
     Red = db[Red_in_db]
     Green = db[Green_in_db]
     Blue = db[Blue_in_db]
+
+    try : 
+        Red_Historic = db[Red_Historic_in_db]
+        Green_Historic = db[Green_Historic_in_db]
+        Blue_Historic = db[Blue_Historic_in_db]
+    except ValueError : 
+      print("Veuillez entrer la valeur afin de générer les chiffres aléatoires pour les trois entreprises de base : ")
+      generate_R =  int(input("Valeur de Red : "))
+      generate_G =  int(input("Valeur de Green : "))
+      generate_B =  int(input("Valeur de Blue : "))
+
+      first_historic_generator(generate_R, Red_Historic_in_db)
+      first_historic_generator(generate_G, Green_Historic_in_db)
+      first_historic_generator(generate_B, Blue_Historic_in_db)
+
+    fluctuation_simulation(Red, Red_Historic)
+
 
 
 def exploitation(user):
@@ -273,13 +307,14 @@ def exploitation(user):
 
 
 PREFIXES = [
-    "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔",
-    "↔lvl↔", "_*-*_", "♀_♀", "O_O", "T_T",  "U_U|user_actions|", "U_U|base_action|Red", "U_U|base_action|Green", "U_U|base_action|Blue"
+    "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔","↔lvl↔",
+     "_*-*_", "♀_♀", "O_O", "T_T",  "U_U|user_actions|", "U_U|base_action|Red", "U_U|base_action|Green", "U_U|base_action|Blue", "U_U|base_action|Red|history", "U_U|base_action|Green|history", "U_U|base_action|Blue|history"
 ]
 # ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp
 # ↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel
 # O_O :  durée d'inactivité       T_T : Excalibur     U_U|user_actions| : Possessions de chaque utilisateur
 # |base_action| : Actions de bases (Red Green Blue)
+# |base_action|history| : Historique des valeurs des actions
 
 SECOND = 1
 MINUTE = SECOND * 60
