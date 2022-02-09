@@ -92,7 +92,7 @@ def use_items(self, cible, item):
         return f"Vous êtes désormais virtuose pendant {jour}jours {heure}h {minute}min ! :dagger: (Vous pouvez voler des personnes protégées par un bouclier)"
 
     elif item == 8:  # Exploitation pétrolière
-        return f"{group_item[0]} est actif dès son achat."
+        return f"{group_item["name"]} est actif dès son achat."
 
     elif item == 9:  # Sablier Temporel
         sablier_dans_db = self.prefixes[12] + cible
@@ -158,11 +158,11 @@ def get_items_of_user(self, cible):
 
     for group_item in range(len(ls)):
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
-        item_in_shop = self.shop[(int(ls[group_item][0])) - 1]
-        name = item_in_shop[0]
+        item_in_shop = self.shop[(int(ls[group_item]["name"])) - 1]
+        name = item_in_shop["name"]
 
         lst_of_items.append(name)
-        lst_of_items_num.append(ls[group_item][1])
+        lst_of_items_num.append(ls[group_item]["description"])
 
     return lst_of_items, lst_of_items_num
 
@@ -348,10 +348,10 @@ class commands:
 
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
         item_in_shop = self.shop[item]
-        name = item_in_shop[0]
-        comment = item_in_shop[1]
-        price = item_in_shop[2]
-        number = item_in_shop[3]
+        name = item_in_shop["name"]
+        comment = item_in_shop["description"]
+        price = item_in_shop["price"]
+        number = item_in_shop["item_number"]
 
         gold_dans_db_for_cible = self.prefixes[2] + str(cible)
 
@@ -447,17 +447,17 @@ class commands:
 
         if (item < 0) or (item > len(self.shop)):
             embed = discord.Embed(title=f"Merci de faire ```{notation}```",
-                                  description="L'objet demandé n'existe pas !",
-                                  color=WHITE)
+            description="L'objet demandé n'existe pas !",
+            color=WHITE)
             await self.channel.send(embed=embed)
             return
 
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
         item_in_shop = self.shop[item]
-        name = item_in_shop[0]
-        comment = item_in_shop[1]
-        price = item_in_shop[2]
-        number = item_in_shop[3]
+        name = item_in_shop["name"]
+        comment = item_in_shop["description"]
+        price = item_in_shop["price"]
+        number = item_in_shop["item_number"]
 
         gold_dans_db_for_cible = self.prefixes[2] + str(cible)
 
@@ -596,7 +596,7 @@ class commands:
         lst_of_items = retour[0]
         lst_of_items_num = retour[1]
 
-        exploitation_name = self.shop[7][0]
+        exploitation_name = self.shop[7]["name"]
 
         have_an_exploitation = False
         for i in range(len(lst_of_items)):
