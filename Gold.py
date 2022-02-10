@@ -214,6 +214,18 @@ def add_xp(author: str, value: int):
 
 
 def fluctuation_simulation(value_of_enterprise: int, historic_of_values: str) -> int:
+    print(f"\n\n\nhistoric_of_values of the enterprise = {historic_of_values}")
+    tmp_sum = 0
+    for element in historic_of_values:
+        tmp_sum += int(element)
+    average = tmp_sum // len(historic_of_values)
+    print(f"Average = {average}")
+
+    sorted_historic = sorted(historic_of_values)
+    print(f"Sorted = {sorted_historic}")
+    etendue = int(sorted[-1]) - int(sorted[0])
+    print(f"étendue = {etendue}")
+
     return value_of_enterprise
 
 
