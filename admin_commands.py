@@ -1,26 +1,12 @@
 import discord
 from replit import db
 from classic_commands import create_user
+from classic_commands import get_mention
 
 CLIENT = discord.Client()
 PREFIXE = "?"
 
 WHITE = 16775930
-
-
-# Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
-def get_mention(message, args):
-    if len(message.mentions) == 0:  # Il n'y a pas de @mention
-        if len(args) > 0:
-            for arg in args:
-                if "#" in str(arg):
-                    ls_arg = list(arg)
-                    if ls_arg[-5] == "#":
-                        return arg
-        return None
-
-    else:
-        return message.mentions[0]
 
 
 class commands:

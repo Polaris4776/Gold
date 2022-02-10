@@ -1,3 +1,4 @@
+from xmlrpc.client import boolean
 import discord
 import os
 from replit import db
@@ -36,17 +37,15 @@ with open(LOCATION_OF_FR_JSON) as json_file:
     PREFIXES = data["PREFIXES"]
 
 
-def is_x_in_items(x, items):  # items = liste dans liste
-    x = str(x)
+def is_x_in_items(x: str, items: list) -> bool:  # items = liste dans liste
     for group_item in items:
-        if str(group_item[0]) == x:
+        if str(group_item[0]) == str(x):
             print("Yes")
             return True
-
     return False
 
 
-def get_items_of_user(cible):
+def get_items_of_user(cible: str) -> list:
     ls = extract_data_encoded_NT1_for_shop(cible)
 
     lst_of_items = []
@@ -64,7 +63,7 @@ def get_items_of_user(cible):
 
 
 # NT1 Nolann's Technic 1(spécifique)
-def extract_data_encoded_NT1_for_shop(cible):
+def extract_data_encoded_NT1_for_shop(cible: str) -> list:
     items_dans_db_for_author = PREFIXES["items"] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
@@ -84,28 +83,12 @@ def extract_data_encoded_NT1_for_shop(cible):
         return ls
 
 
-def get_datetime():
+def get_datetime() -> list:
     tz_London = pytz.timezone('Europe/Paris')
     now = datetime.now(tz_London)
     time = now.strftime("%d:%m:%Y:%H:%M:%S")
     listime = time.split(":")  # Jour, Mois, Année, Heure, Minute, Seconde
     return listime
-
-
-def get_mention(
-    message, args
-):  # Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
-    if len(message.mentions) == 0:  # Il n'y a pas de @mention
-        if len(args) > 0:
-            for arg in args:
-                if "#" in str(arg):
-                    ls_arg = list(arg)
-                    if ls_arg[-5] == "#":
-                        return arg
-        return None
-
-    else:
-        return message.mentions[0]
 
 
 def create_user(UserToCreate):
@@ -134,7 +117,7 @@ def create_user(UserToCreate):
             UserToCreate] = "Red-0|Green-0|Blue-0"
 
 
-def timer_edit_less(user, prefixe_num):
+def timer_edit_less(user: str, prefixe_num: str):
     if not (user.startswith(prefixe_num)):
         return
     var = int(db[user])
@@ -145,7 +128,7 @@ def timer_edit_less(user, prefixe_num):
         db[user] = var - 1  # On s'approche du moment prêt de 1 min !
 
 
-def timer_edit_more(user, prefixe_num):
+def timer_edit_more(user: str, prefixe_num: str):
     if not (user.startswith(prefixe_num)):
         return
     var = int(db[user])
@@ -153,7 +136,7 @@ def timer_edit_more(user, prefixe_num):
     db[user] = var + 1  # On augmente la valeur d'une minute.
 
 
-def report_edit(user):
+def report_edit(user: str):
     if not (user.startswith(PREFIXES["report"])):
         return
     var = db[user]
@@ -167,9 +150,8 @@ def report_edit(user):
         db[user] = f"{ls[0] - 1}|{ls[1]}"
 
 
-async def wait_for_message(
-        channel, author,
-        CLIENT):  # En attente d'un message dans le même salon.
+# En attente d'un message dans le même salon.
+async def wait_for_message(channel, author, CLIENT):
 
     def check(m):
         return (m.channel == channel) and (m.content != "") and (
@@ -180,7 +162,7 @@ async def wait_for_message(
     return msg
 
 
-def get_args(content, command):
+def get_args(content: str, command: str) -> list:
     var = str(content)
     var = var.strip()
     var = var.split(" ")
@@ -207,7 +189,7 @@ def get_args(content, command):
     return var
 
 
-def add_xp(author, value):
+def add_xp(author: str, value: int):
     author = str(author)
     xp_in_db = PREFIXES["xp"] + author
     lvl_in_db = PREFIXES["level"] + author
@@ -231,8 +213,8 @@ def add_xp(author, value):
     db[lvl_in_db] = str(lvl)
 
 
-def fluctuation_simulation(value_of_enterprise, historic_of_values) -> int:
-    pass
+def fluctuation_simulation(value_of_enterprise: int, historic_of_values: str) -> int:
+    return value_of_enterprise
 
 
 def first_historic_generator(index_value: int, database_location: str):
@@ -277,9 +259,11 @@ def edit_actions_RGB():
         first_historic_generator(generate_B, Blue_Historic_in_db)
 
     fluctuation_simulation(Red, Red_Historic)
+    fluctuation_simulation(Green, Green_Historic)
+    fluctuation_simulation(Blue, Blue_Historic)
 
 
-def exploitation(user):
+def exploitation(user: str):
     exploitation_rent = 1
 
     if PREFIXES["auto_gold_won"] in user:

@@ -21,7 +21,7 @@ BEG_ADD = [50, 100]
 STEAL_VALUE = 1000
 
 
-def delete_item(self, number_of_item, cible, count):
+def delete_item(self, number_of_item: int, cible: str, count: int):
     number = number_of_item
     items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
     ls = extract_data_encoded_NT1_for_shop(self, cible)
@@ -44,7 +44,7 @@ def delete_item(self, number_of_item, cible, count):
     db[items_dans_db_for_author] = reformated
 
 
-def use_items(self, cible, item):
+def use_items(self, cible: str, item: str) -> str:
     try:
         item = int(item)
     except ValueError:
@@ -134,10 +134,10 @@ def use_items(self, cible, item):
     else:
         return "Cet objet n'a pas encore été programmé."
 
+# Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
 
-def get_mention(
-    self, args
-):  # Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
+
+def get_mention(self, args: list) -> str:
     if len(self.message.mentions) == 0:  # Il n'y a pas de @mention
         if len(args) > 0:
             for arg in args:
@@ -148,10 +148,10 @@ def get_mention(
         return None
 
     else:
-        return self.message.mentions[0]
+        return str(self.message.mentions[0])
 
 
-def get_items_of_user(self, cible):
+def get_items_of_user(self, cible: str) -> list:
     ls = extract_data_encoded_NT1_for_shop(self, cible)
 
     lst_of_items = []
@@ -196,7 +196,7 @@ def create_user(self, UserToCreate):
 
 
 # NT1 Nolann's Technic 1 (spécifique)
-def extract_data_encoded_NT1_for_shop(self, cible):
+def extract_data_encoded_NT1_for_shop(self, cible: str) -> list:
     items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
