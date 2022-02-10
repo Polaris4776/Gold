@@ -470,6 +470,7 @@ class commands:
         ls = extract_data_encoded_NT1_for_shop(self, cible)
 
         exists = False
+        i = 0
         for group in ls:
             if int(group[0]) == number:
                 exists = True
@@ -486,8 +487,9 @@ class commands:
                 group[1] = str(int(group[1]) - count)
                 if group[1] == "0":
                     print("\n\nPlus d'items donc suppression de group ! Vérifie donc")
-                    del (group)
+                    del (ls[i])
                     print(ls)
+            i += 1
 
         if not exists:
             embed = discord.Embed(
@@ -496,7 +498,6 @@ class commands:
                 color=WHITE)
             await self.channel.send(embed=embed)
             return
-            ls.append([str(number), str(count)])
 
         # On retire le prix de l'objet.
         db[gold_dans_db_for_cible] = str(gold_of_cible + valeur)
