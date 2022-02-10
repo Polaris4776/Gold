@@ -183,15 +183,15 @@ def create_user(self, UserToCreate):
     users = db.keys()
 
     for key in parcour:
-        if not self.prefixes[key] + UserToCreate in users:
-            db[self.prefixes[key] + UserToCreate] = "0"
+        if not self.PREFIXES[key] + UserToCreate in users:
+            db[self.PREFIXES[key] + UserToCreate] = "0"
 
     if not self.PREFIXES["items"] + UserToCreate in users:  # Items
         db[self.PREFIXES["items"] + UserToCreate] = "11-1"
 
     # Possessions of actions
-    if not self.prefixes["user_action_possessions"] + UserToCreate in users:
-        db[self.prefixes["user_action_possessions"] +
+    if not self.PREFIXES["user_action_possessions"] + UserToCreate in users:
+        db[self.PREFIXES["user_action_possessions"] +
             UserToCreate] = "Red-0|Green-0|Blue-0"
 
 
@@ -1087,7 +1087,7 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        report_dans_db_for_author = self.prefixes[4] + f"{cible}"
+        report_dans_db_for_author = self.PREFIXES[4] + f"{cible}"
         try:
             value = db[report_dans_db_for_author]
             ls = value.split("|")
