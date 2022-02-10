@@ -17,8 +17,6 @@ import json
 ?unblockgold
 """
 
-# ":boomerang:""  boomerang
-
 TOKEN = os.getenv("DISCORD_TOKEN")
 CLIENT = discord.Client()
 PREFIXE = "?"
