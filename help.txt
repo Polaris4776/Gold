@@ -34,7 +34,7 @@ Faites un peu de shopping dans le magasin !
 {prefixe}buy :arrows_counterclockwise:
 Achetez un objet !
 
-{prefixe}sell :arrows_counterclockwise:
+{prefixe}sell :white_check_mark:
 Vendez votre objet avec une taxe de 10% comparé au prix original.
 
 {prefixe}bag :white_check_mark:

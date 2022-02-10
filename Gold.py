@@ -7,6 +7,8 @@ from datetime import datetime
 import pytz
 import classic_commands
 import admin_commands
+import json
+
 """Commandes spéciales :
 ?delete
 ?resetdata
@@ -15,65 +17,19 @@ import admin_commands
 ?unblockgold
 """
 
-# 0 : Name		1 : Comment		2 : Prix		3 : Number
-SHOP = [[
-    "Pendentif de sagesse de Leonard de Vinci :medal:",
-    "Avec ce pendentif, vous serez un peu moins bête (c'est déjà un bon début).",
-    3000, 1
-],
-        [
-            "Baton de Merlin :magic_wand:",
-            "Par la barbe de l'enchanteur, le voilà retrouvé !", 10000, 2
-        ],
-        [
-            "Bottes de sept lieues :boot:",
-            "Vous ne serez plus jamais en retard !", 2000, 3
-        ],
-        [
-            "Couronne de la reine d'Angleterre :crown:",
-            "Gardé jalousement dans son château, la voilà !", 3000, 4
-        ],
-        [
-            "Excalibur :dagger:",
-            "Débrouillez vous pour la retirer de ce maudit rocher !", 15000, 5
-        ],
-        [
-            "Arc de Robin des Bois :bow_and_arrow:",
-            "Ne rate jamais sa cible !", 8000, 6
-        ], ["Eclair de Zeus :zap:", "Foudroyez vos ennemis !", 10000, 7],
-        [
-            "Exploitation pétrolière :construction_site:",
-            "Investissez dans le pétrole et gagnez automatiquement de l'argent !",
-            5000, 8
-        ],
-        [
-            "Sablier temporel :hourglass:",
-            "Réinitialisez vos temps d'attente !!!", 3000, 9
-        ],
-        [
-            "Bouclier Divin :shield:",
-            "Empêchez les gens de vous voler pendant une semaine !!!", 2000, 10
-        ], ["Crotte :poop:", "Offrez la à vos amis !", 10, 11],
-        [
-            "Justice corrompue :scales:",
-            "Faite la preuve de votre richesse est corrompez le monde entier !",
-            1000000000, 12
-        ],
-        [
-            "Richesse exquise :reminder_ribbon:",
-            "Montrez une preuve de votre raffinement extrême !", 1000000000000,
-            13
-        ],
-        [
-            "Richesse suprême :rosette: ",
-            "L'objet qui ferait mourir de jalousie un milliardaire !",
-            99000000000000000, 14
-        ]]
-# ":boomerang:""  boomerang
-
 TOKEN = os.getenv("DISCORD_TOKEN")
 CLIENT = discord.Client()
 PREFIXE = "?"
+
+LOCATION_OF_FR_JSON = "language/fr.json"
+LANGUAGE = str(os.getenv("LANGUAGE"))
+
+if LANGUAGE == "fr":
+    with open(LOCATION_OF_FR_JSON) as json_file:
+        data = json.load(json_file)
+        SHOP = data["SHOP"]
+elif LANGUAGE == "en":
+    pass  # Pas encore programmé
 
 
 def is_x_in_items(x, items):  # items = liste dans liste
@@ -87,7 +43,7 @@ def is_x_in_items(x, items):  # items = liste dans liste
 
 
 def get_items_of_user(cible):
-    ls = extract_data_encoded_NT1(cible)
+    ls = extract_data_encoded_NT1_for_shop(cible)
 
     lst_of_items = []
     lst_of_items_num = []
@@ -95,7 +51,7 @@ def get_items_of_user(cible):
     for group_item in range(len(ls)):
         item_in_shop = SHOP[(int(ls[group_item][0])) - 1]
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
-        name = item_in_shop[0]
+        name = item_in_shop["name"]
 
         lst_of_items.append(name)
         lst_of_items_num.append(ls[group_item][1])
@@ -103,7 +59,7 @@ def get_items_of_user(cible):
     return lst_of_items, lst_of_items_num
 
 
-def extract_data_encoded_NT1(cible):  # NT1 Nolann's Technic 1 (spécifique)
+def extract_data_encoded_NT1_for_shop(cible):  # NT1 Nolann's Technic 1(spécifique)
     items_dans_db_for_author = PREFIXES[6] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
@@ -156,7 +112,7 @@ def create_user(UserToCreate):
 
     UserToCreate = str(UserToCreate)
     parcour = [
-        0, 1, 2, 3, 5, 9, 10, 11, 12, 13
+        0, 1, 2, 3, 5, 8, 9, 10, 11, 12, 13, 14
     ]  # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
     users = db.keys()
 
@@ -166,6 +122,9 @@ def create_user(UserToCreate):
 
     if not PREFIXES[6] + UserToCreate in users:  # Items
         db[PREFIXES[6] + UserToCreate] = "11-1"
+
+    if not PREFIXES[15] + UserToCreate in users:  # Possessions of actions
+        db[PREFIXES[15] + UserToCreate] = "Red-0|Green-0|Blue-0"
 
 
 def timer_edit_less(user, prefixe_num):
@@ -264,6 +223,52 @@ def add_xp(author, value):
     db[xp_in_db] = str(xp)
     db[lvl_in_db] = str(lvl)
 
+def fluctuation_simulation(value_of_enterprise, historic_of_values) ->int: 
+    pass
+
+def first_historic_generator(index_value:int, database_location:str) : 
+    ls = []
+    mini = index_value // 2
+    maxi = index_value * 2
+    for i in range(5) : 
+        ls.append(str(random.randint(mini, maxi)))
+    print("Liste : ")
+    joined = "|".join(ls)
+    print("Joined = " + str(joined) + "\n")
+    db[database_location] = joined
+
+def edit_actions_RGB():
+    print("Modification des actions.")
+
+    Red_in_db = PREFIXES[16]
+    Green_in_db = PREFIXES[17]
+    Blue_in_db = PREFIXES[18]
+
+    Red_Historic_in_db = PREFIXES[20]
+    Green_Historic_in_db = PREFIXES[21]
+    Blue_Historic_in_db = PREFIXES[22]
+
+    Red = db[Red_in_db]
+    Green = db[Green_in_db]
+    Blue = db[Blue_in_db]
+
+    try : 
+        Red_Historic = db[Red_Historic_in_db]
+        Green_Historic = db[Green_Historic_in_db]
+        Blue_Historic = db[Blue_Historic_in_db]
+    except ValueError : 
+      print("Veuillez entrer la valeur afin de générer les chiffres aléatoires pour les trois entreprises de base : ")
+      generate_R =  int(input("Valeur de Red : "))
+      generate_G =  int(input("Valeur de Green : "))
+      generate_B =  int(input("Valeur de Blue : "))
+
+      first_historic_generator(generate_R, Red_Historic_in_db)
+      first_historic_generator(generate_G, Green_Historic_in_db)
+      first_historic_generator(generate_B, Blue_Historic_in_db)
+
+    fluctuation_simulation(Red, Red_Historic)
+
+
 
 def exploitation(user):
     exploitation_rent = 1
@@ -276,7 +281,7 @@ def exploitation(user):
         lst_of_items = retour[0]
         lst_of_items_num = retour[1]
 
-        exploitation_name = SHOP[7][0]
+        exploitation_name = SHOP[7]["name"]
 
         have_an_exploitation = False
         for i in range(len(lst_of_items)):
@@ -300,9 +305,14 @@ def exploitation(user):
 
 
 PREFIXES = [
-    "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔",
-    "↔lvl↔", "_*-*_", "♀_♀", "O_O"
-]  # ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp		↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel		O_O :  durée d'inactivité
+    "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔","↔lvl↔",
+     "_*-*_", "♀_♀", "O_O", "T_T",  "U_U|user_actions|", "U_U|base_action|Red", "U_U|base_action|Green", "U_U|base_action|Blue", "U_U|base_action|Red|history", "U_U|base_action|Green|history", "U_U|base_action|Blue|history"
+]
+# ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp
+# ↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel
+# O_O :  durée d'inactivité       T_T : Excalibur     U_U|user_actions| : Possessions de chaque utilisateur
+# |base_action| : Actions de bases (Red Green Blue)
+# |base_action|history| : Historique des valeurs des actions
 
 SECOND = 1
 MINUTE = SECOND * 60
@@ -342,6 +352,11 @@ async def temps():
             report_edit(user)
         if rand:
             exploitation(user)  # On ajoute l'argent de l'exploitation
+
+    rand = random.randint(1, 5)  # 1 chance sur 2048 pour l'instant
+    if rand == 5:
+        print("Je modifie le cours de la bourse")
+        edit_actions_RGB()
 
     users = db.keys()
     for user in users:
@@ -573,5 +588,25 @@ async def on_message(message):
         # On remet la durée d'inactivité à 0.
         db[PREFIXES[13] + str(author)] = 0
 
+try:
+    to_sell = db[PREFIXES[16]]
+except:
+    db[PREFIXES[16]] = input(
+        "\nLa database du prix de l'action Red n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+
+try:
+    to_sell = db[PREFIXES[17]]
+except:
+
+    db[PREFIXES[17]] = input(
+        "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+
+try:
+    to_sell = db[PREFIXES[18]]
+except:
+    db[PREFIXES[18]] = input(
+        "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+
+del to_sell
 
 CLIENT.run(TOKEN)
