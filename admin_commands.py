@@ -101,7 +101,7 @@ class commands:
     async def reset_data(self, notation, args):
         if len(args) == 0:
             embed = discord.Embed(title=f"Merci de faire ```{notation}```",
-                                  description="Entrez le numéro de *prefixes*",
+                                  description="Entrez le nom de *prefixes*",
                                   color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -130,7 +130,7 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        db[self.prefixes[7] + cible] = "True"
+        db[self.prefixes["bannis"] + cible] = "True"
 
         embed = discord.Embed(title="Compte bannis !",
                               description="",
@@ -151,7 +151,7 @@ class commands:
             return
 
         try:
-            del db[self.prefixes[7] + cible]
+            del db[self.prefixes["bannis"] + cible]
         except KeyError:
             embed = discord.Embed(title="Ce compte n'étais pas bannis !",
                                   description="",
