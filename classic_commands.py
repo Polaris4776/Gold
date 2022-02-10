@@ -163,7 +163,7 @@ def get_items_of_user(self, cible):
         name = item_in_shop["name"]
 
         lst_of_items.append(name)
-        lst_of_items_num.append(ls[group_item]["description"])
+        lst_of_items_num.append(ls[group_item][1])
 
     return lst_of_items, lst_of_items_num
 
