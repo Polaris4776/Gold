@@ -92,7 +92,8 @@ def use_items(self, cible, item):
         return f"Vous êtes désormais virtuose pendant {jour}jours {heure}h {minute}min ! :dagger: (Vous pouvez voler des personnes protégées par un bouclier)"
 
     elif item == 8:  # Exploitation pétrolière
-        return f"{group_item["name"]} est actif dès son achat."
+        name = group_item["name"]
+        return f"{name} est actif dès son achat."
 
     elif item == 9:  # Sablier Temporel
         sablier_dans_db = self.prefixes[12] + cible
@@ -447,8 +448,8 @@ class commands:
 
         if (item < 0) or (item > len(self.shop)):
             embed = discord.Embed(title=f"Merci de faire ```{notation}```",
-            description="L'objet demandé n'existe pas !",
-            color=WHITE)
+                                  description="L'objet demandé n'existe pas !",
+                                  color=WHITE)
             await self.channel.send(embed=embed)
             return
 
