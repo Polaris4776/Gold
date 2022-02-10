@@ -474,6 +474,14 @@ class commands:
             if int(group[0]) == number:
                 exists = True
                 group[1] = str(int(group[1]) - count)
+                # La personne veut vendre plus qu'elle ne possède
+                if count > int(group[1]):
+                    embed = discord.Embed(
+                        title="Vous essayez de me vendre plus que vous ne possédez !!!",
+                        description="Vous ne m'aurez pas ansi, petit voyou !!!",
+                        color=WHITE)
+                    await self.channel.send(embed=embed)
+                    return
                 if group[1] == "0":
                     print("\n\nPlus d'items donc suppression de group")
                     del (group)
