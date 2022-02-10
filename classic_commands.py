@@ -21,9 +21,9 @@ BEG_ADD = [50, 100]
 STEAL_VALUE = 1000
 
 
-def delete_item(self, number_of_item, cible, count):
+def delete_item(self, number_of_item: int, cible: str, count: int):
     number = number_of_item
-    items_dans_db_for_author = self.prefixes[6] + f"{cible}"
+    items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
     ls = extract_data_encoded_NT1_for_shop(self, cible)
 
     i = 0
@@ -44,7 +44,7 @@ def delete_item(self, number_of_item, cible, count):
     db[items_dans_db_for_author] = reformated
 
 
-def use_items(self, cible, item):
+def use_items(self, cible: str, item: str) -> str:
     try:
         item = int(item)
     except ValueError:
@@ -79,7 +79,7 @@ def use_items(self, cible, item):
         return not_usable
 
     elif item == 5:  # Excalibur
-        dagger_in_db = self.prefixes[14] + cible  # Dagger = Exalibur
+        dagger_in_db = self.PREFIXES["excalibur"] + cible  # Dagger = Exalibur
         db[dagger_in_db] = str(DAGGER_TIME)
         minute = DAGGER_TIME
         heure = minute // 60
@@ -96,13 +96,13 @@ def use_items(self, cible, item):
         return f"{name} est actif dès son achat."
 
     elif item == 9:  # Sablier Temporel
-        sablier_dans_db = self.prefixes[12] + cible
+        sablier_dans_db = self.PREFIXES["sablier"] + cible
 
         if int(db[sablier_dans_db]) == 0:
-            daily_dans_db = self.prefixes[0] + str(self.author)
-            beg_dans_db = self.prefixes[3] + str(self.author)
-            hebdo_dans_db = self.prefixes[1] + str(self.author)
-            steal_dans_db = self.prefixes[5] + str(self.author)
+            daily_dans_db = self.PREFIXES["daily"] + str(self.author)
+            beg_dans_db = self.PREFIXES["beg"] + str(self.author)
+            hebdo_dans_db = self.PREFIXES["hebdo"] + str(self.author)
+            steal_dans_db = self.PREFIXES["steal"] + str(self.author)
 
             my_list = [
                 daily_dans_db, beg_dans_db, hebdo_dans_db, steal_dans_db
@@ -119,7 +119,7 @@ def use_items(self, cible, item):
             return f"Vous ne pouvez pas utilser trop de sablier !!! Revenez donc dans {heure}h {minute}min pour l'utiliser à nouveau ! :hourglass:"
 
     elif item == 10:  # Bouclier Divin
-        shield_in_db = self.prefixes[8] + cible
+        shield_in_db = self.PREFIXES["shield"] + cible
         db[shield_in_db] = str(SHIELD_PROTECT_TIME)
         minute = SHIELD_PROTECT_TIME
         heure = minute // 60
@@ -134,10 +134,10 @@ def use_items(self, cible, item):
     else:
         return "Cet objet n'a pas encore été programmé."
 
+# Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
 
-def get_mention(
-    self, args
-):  # Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
+
+def get_mention(self, args: list) -> str:
     if len(self.message.mentions) == 0:  # Il n'y a pas de @mention
         if len(args) > 0:
             for arg in args:
@@ -148,10 +148,10 @@ def get_mention(
         return None
 
     else:
-        return self.message.mentions[0]
+        return str(self.message.mentions[0])
 
 
-def get_items_of_user(self, cible):
+def get_items_of_user(self, cible: str) -> list:
     ls = extract_data_encoded_NT1_for_shop(self, cible)
 
     lst_of_items = []
@@ -177,23 +177,27 @@ def create_user(self, UserToCreate):
 
     UserToCreate = str(UserToCreate)
     # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
-    parcour = [0, 1, 2, 3, 5, 8, 9, 10, 11, 12, 13, 14]
+    parcour = [
+        "daily", "hebdo", "gold", "beg", "steal", "shield", "xp", "level", "auto_gold_won", "sablier", "inactivity", "excalibur"
+    ]
     users = db.keys()
 
-    for i in parcour:
-        if not self.prefixes[i] + UserToCreate in users:
-            db[self.prefixes[i] + UserToCreate] = "0"
+    for key in parcour:
+        if not self.PREFIXES[key] + UserToCreate in users:
+            db[self.PREFIXES[key] + UserToCreate] = "0"
 
-    if not self.prefixes[6] + UserToCreate in users:  # Items
-        db[self.prefixes[6] + UserToCreate] = "11-1"
+    if not self.PREFIXES["items"] + UserToCreate in users:  # Items
+        db[self.PREFIXES["items"] + UserToCreate] = "11-1"
 
-    if not self.prefixes[15] + UserToCreate in users:  # Possessions of actions
-        db[self.prefixes[15] + UserToCreate] = "Red-0|Green-0|Blue-0"
+    # Possessions of actions
+    if not self.PREFIXES["user_action_possessions"] + UserToCreate in users:
+        db[self.PREFIXES["user_action_possessions"] +
+            UserToCreate] = "Red-0|Green-0|Blue-0"
 
 
 # NT1 Nolann's Technic 1 (spécifique)
-def extract_data_encoded_NT1_for_shop(self, cible):
-    items_dans_db_for_author = self.prefixes[6] + f"{cible}"
+def extract_data_encoded_NT1_for_shop(self, cible: str) -> list:
+    items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
 
@@ -214,14 +218,14 @@ def extract_data_encoded_NT1_for_shop(self, cible):
 
 class commands:
 
-    def __init__(self, message, prefixes, shop):
+    def __init__(self, message, PREFIXES, shop):
         self.message = message
         self.content = message.content
         self.author = message.author
         self.channel = message.channel
         self.CLIENT = CLIENT
         self.user_id = message.author.id
-        self.prefixes = prefixes
+        self.PREFIXES = PREFIXES
         self.shop = shop
 
     async def help(self, notation, args):
@@ -269,8 +273,10 @@ class commands:
 
                     to_append = line.strip().replace("{PREFIXE}", "")
                     to_append = to_append.split(" ")
+                    print(to_append)
                     commandes.append(to_append[0])
                     line_number += 1
+            print(commandes)
 
     async def shop_print(self, notation):
         Item_Name = "name"
@@ -352,7 +358,7 @@ class commands:
         price = item_in_shop["price"]
         number = item_in_shop["item_number"]
 
-        gold_dans_db_for_cible = self.prefixes[2] + str(cible)
+        gold_dans_db_for_cible = self.PREFIXES["gold"] + str(cible)
 
         gold_of_cible = int(db[gold_dans_db_for_cible])
 
@@ -366,7 +372,7 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        items_dans_db_for_author = self.prefixes[6] + f"{cible}"
+        items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
         ls = extract_data_encoded_NT1_for_shop(self, cible)
 
         exists = False
@@ -458,13 +464,13 @@ class commands:
         price = item_in_shop["price"]
         number = item_in_shop["item_number"]
 
-        gold_dans_db_for_cible = self.prefixes[2] + str(cible)
+        gold_dans_db_for_cible = self.PREFIXES["gold"] + str(cible)
 
         gold_of_cible = int(db[gold_dans_db_for_cible])
 
         valeur = (price * count) - (price * count) // 10
 
-        items_dans_db_for_author = self.prefixes[6] + f"{cible}"
+        items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
         ls = extract_data_encoded_NT1_for_shop(self, cible)
 
         exists = False
@@ -557,13 +563,13 @@ class commands:
         else:
             cible = str(self.author)
 
-        gold_dans_db = self.prefixes[2] + cible
+        gold_dans_db = self.PREFIXES["gold"] + cible
 
         equip_and_power = "Equipements et pouvoirs actifs : "
 
-        shield_dans_db = self.prefixes[8] + str(cible)
-        gold_dans_db = self.prefixes[2] + str(cible)
-        dagger_in_db = self.prefixes[14] + str(cible)
+        shield_dans_db = self.PREFIXES["shield"] + str(cible)
+        gold_dans_db = self.PREFIXES["gold"] + str(cible)
+        dagger_in_db = self.PREFIXES["excalibur"] + str(cible)
 
         have_a_shield = True
         have_a_dagger = True
@@ -616,7 +622,7 @@ class commands:
         if have_an_exploitation:
             number_of_exploitations = lst_of_items_num[number]
 
-            rapport_dans_db = self.prefixes[11] + cible
+            rapport_dans_db = self.PREFIXES["auto_gold_won"] + cible
             rapport = db[rapport_dans_db]
 
             equip_and_power += f"\n- **Exploitation pétrolière** :construction_site: : `{number_of_exploitations} actifs` (`{rapport}` :dollar: de bénéfices)"
@@ -631,11 +637,11 @@ class commands:
         gold = f"**Monnaie** : `{db[gold_dans_db]}` :dollar:"
 
         if (cible == "None") or (cible == str(self.author)):
-            level_dans_db = self.prefixes[10] + str(self.author)
-            xp_dans_db = self.prefixes[9] + str(self.author)
+            level_dans_db = self.PREFIXES["level"] + str(self.author)
+            xp_dans_db = self.PREFIXES["xp"] + str(self.author)
         else:
-            level_dans_db = self.prefixes[10] + cible
-            xp_dans_db = self.prefixes[9] + cible
+            level_dans_db = self.PREFIXES["level"] + cible
+            xp_dans_db = self.PREFIXES["xp"] + cible
 
         try:
             lvl = int(db[level_dans_db])
@@ -650,7 +656,7 @@ class commands:
 
         level = f"**Level** : `{lvl}`\n**Expérience** : `{xp}/{lvl*500}`"
 
-        inactivity_dans_db = self.prefixes[13] + str(cible)
+        inactivity_dans_db = self.PREFIXES["inactivity"] + str(cible)
 
         try:
             inactivity = int(db[inactivity_dans_db])
@@ -687,7 +693,7 @@ class commands:
             create_user(self, cible)
 
         if (cible == "None") or (cible == str(self.author)):
-            gold_dans_db = self.prefixes[2] + str(self.author)
+            gold_dans_db = self.PREFIXES["gold"] + str(self.author)
 
             embed = discord.Embed(title=f"{self.author}",
                                   description="Tu as {} :dollar:.".format(
@@ -696,7 +702,7 @@ class commands:
             await self.channel.send(embed=embed)
 
         else:
-            gold_dans_db = self.prefixes[2] + cible
+            gold_dans_db = self.PREFIXES["gold"] + cible
 
             embed = discord.Embed(
                 title="",
@@ -712,11 +718,11 @@ class commands:
             create_user(self, cible)
 
         if (cible == "None") or (cible == str(self.author)):
-            level_dans_db = self.prefixes[10] + str(self.author)
-            xp_dans_db = self.prefixes[9] + str(self.author)
+            level_dans_db = self.PREFIXES["level"] + str(self.author)
+            xp_dans_db = self.PREFIXES["xp"] + str(self.author)
         else:
-            level_dans_db = self.prefixes[10] + cible
-            xp_dans_db = self.prefixes[9] + cible
+            level_dans_db = self.PREFIXES["level"] + cible
+            xp_dans_db = self.PREFIXES["xp"] + cible
 
         try:
             lvl = int(db[level_dans_db])
@@ -748,8 +754,8 @@ class commands:
             return
 
         cible_user = cible
-        gold_dans_db_for_author = self.prefixes[2] + str(self.author)
-        gold_dans_db_for_cible = self.prefixes[2] + cible_user
+        gold_dans_db_for_author = self.PREFIXES["gold"] + str(self.author)
+        gold_dans_db_for_cible = self.PREFIXES["gold"] + cible_user
 
         if str(self.author) == cible_user:
             embed = discord.Embed(
@@ -805,14 +811,15 @@ class commands:
         users = db.keys()
         all_users = []
         for user in users:
-            if user.startswith(self.prefixes[10]):
-                to_append = str(user.replace(self.prefixes[10], ""))
+            if user.startswith(self.PREFIXES["level"]):
+                to_append = str(user.replace(self.PREFIXES["level"], ""))
                 create_user(self, to_append)
                 all_users.append(to_append)
 
         value_of_all_users = []
         for user in all_users:
-            value_of_all_users.append(int(db[str(self.prefixes[10] + user)]))
+            value_of_all_users.append(
+                int(db[str(self.PREFIXES["level"] + user)]))
         dict_all_users = {}
 
         for i in range(len(all_users)):
@@ -845,14 +852,15 @@ class commands:
         users = db.keys()
         all_users = []
         for user in users:
-            if user.startswith(self.prefixes[2]):
-                to_append = str(user.replace(self.prefixes[2], ""))
+            if user.startswith(self.PREFIXES["gold"]):
+                to_append = str(user.replace(self.PREFIXES["gold"], ""))
                 create_user(self, to_append)
                 all_users.append(to_append)
 
         value_of_all_users = []
         for user in all_users:
-            value_of_all_users.append(int(db[str(self.prefixes[2] + user)]))
+            value_of_all_users.append(
+                int(db[str(self.PREFIXES["gold"] + user)]))
         dict_all_users = {}
 
         for i in range(len(all_users)):
@@ -882,9 +890,9 @@ class commands:
         await self.channel.send(embed=embed)
 
     async def beg(self):
-        beg_dans_db = self.prefixes[3] + str(self.author)
-        gold_dans_db = self.prefixes[2] + str(self.author)
-        level_dans_db = self.prefixes[10] + str(self.author)
+        beg_dans_db = self.PREFIXES["beg"] + str(self.author)
+        gold_dans_db = self.PREFIXES["gold"] + str(self.author)
+        level_dans_db = self.PREFIXES["level"] + str(self.author)
 
         if int(db[beg_dans_db]) == 0:
             rand = random.randint(1, 2)
@@ -910,9 +918,9 @@ class commands:
             await self.channel.send(embed=embed)
 
     async def daily(self):
-        daily_dans_db = self.prefixes[0] + str(self.author)
-        gold_dans_db = self.prefixes[2] + str(self.author)
-        level_dans_db = self.prefixes[10] + str(self.author)
+        daily_dans_db = self.PREFIXES["daily"] + str(self.author)
+        gold_dans_db = self.PREFIXES["gold"] + str(self.author)
+        level_dans_db = self.PREFIXES["level"] + str(self.author)
 
         lvl = int(db[level_dans_db])
 
@@ -942,9 +950,9 @@ class commands:
         await self.channel.send(embed=embed)
 
     async def hebdo(self):
-        hebdo_dans_db = self.prefixes[1] + str(self.author)
-        gold_dans_db = self.prefixes[2] + str(self.author)
-        level_dans_db = self.prefixes[10] + str(self.author)
+        hebdo_dans_db = self.PREFIXES["hebdo"] + str(self.author)
+        gold_dans_db = self.PREFIXES["gold"] + str(self.author)
+        level_dans_db = self.PREFIXES["level"] + str(self.author)
 
         lvl = int(db[level_dans_db])
 
@@ -987,14 +995,14 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        gold_dans_db_for_author = self.prefixes[2] + str(self.author)
-        gold_dans_db_for_cible = self.prefixes[2] + str(cible)
-        report_dans_db_for_author = self.prefixes[4] + f"{self.author}"
-        steal_dans_db = self.prefixes[5] + str(self.author)
+        gold_dans_db_for_author = self.PREFIXES["gold"] + str(self.author)
+        gold_dans_db_for_cible = self.PREFIXES["gold"] + str(cible)
+        report_dans_db_for_author = self.PREFIXES["report"] + f"{self.author}"
+        steal_dans_db = self.PREFIXES["steal"] + str(self.author)
 
         if int(db[steal_dans_db]) == 0:
-            shield_in_db = self.prefixes[8] + cible
-            dagger_in_db = self.prefixes[14] + str(self.author)
+            shield_in_db = self.PREFIXES["shield"] + cible
+            dagger_in_db = self.PREFIXES["excalibur"] + str(self.author)
             try:
                 shield = int(db[shield_in_db])
                 dagger = int(db[dagger_in_db])
@@ -1024,7 +1032,7 @@ class commands:
 
             gold_of_author = int(db[gold_dans_db_for_author])
             gold_of_cible = int(db[gold_dans_db_for_cible])
-            level_dans_db = self.prefixes[10] + str(self.author)
+            level_dans_db = self.PREFIXES["level"] + str(self.author)
             lvl = int(db[level_dans_db])
 
             valeur = gold_of_cible // 1000 + (lvl * gold_of_cible // 1000)
@@ -1079,7 +1087,7 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        report_dans_db_for_author = self.prefixes[4] + f"{cible}"
+        report_dans_db_for_author = self.PREFIXES[4] + f"{cible}"
         try:
             value = db[report_dans_db_for_author]
             ls = value.split("|")
@@ -1113,13 +1121,13 @@ class commands:
 
         # Si on arrive là, c'est qu'on peut bien reporter.
 
-        level_dans_db = self.prefixes[10] + str(self.author)
+        level_dans_db = self.PREFIXES["level"] + str(self.author)
         lvl = db[level_dans_db]
 
         valeur = valeur_stolen * (1, 5 + (lvl // 50))
 
-        gold_dans_db_for_author = self.prefixes[2] + str(self.author)
-        gold_dans_db_for_cible = self.prefixes[2] + str(cible)
+        gold_dans_db_for_author = self.PREFIXES["gold"] + str(self.author)
+        gold_dans_db_for_cible = self.PREFIXES["gold"] + str(cible)
 
         gold_of_author = int(db[gold_dans_db_for_author])
         gold_of_cible = int(db[gold_dans_db_for_cible])

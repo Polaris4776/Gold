@@ -90,5 +90,29 @@
             "price": 98765432101239810,
             "item_number": 15
         }
-    ]
+    ],
+    "PREFIXES": {
+        "daily": "←+→",
+        "hebdo": "-@_@-",
+        "gold": "°-°",
+        "beg": "-_-",
+        "report": "+_+",
+        "steal": "X_X",
+        "items": "¤_¤",
+        "bannis": "*_*",
+        "shield": "→0←",
+        "xp": "↔xp↔",
+        "level": "↔lvl↔",
+        "auto_gold_won": "_*-*_",
+        "sablier": "♀_♀",
+        "inactivity": "O_O",
+        "excalibur": "T_T",
+        "user_action_possessions": "U_U|user_actions|",
+        "Red_actions": "U_U|base_action|Red",
+        "Green_actions": "U_U|base_action|Green",
+        "Blue_actions": "U_U|base_action|Blue",
+        "Red_historic": "U_U|base_action|Red|history",
+        "Green_historic": "U_U|base_action|Green|history",
+        "Blue_historic": "U_U|base_action|Blue|history"
+    }
 }

@@ -1,26 +1,12 @@
 import discord
 from replit import db
 from classic_commands import create_user
+from classic_commands import get_mention
 
 CLIENT = discord.Client()
 PREFIXE = "?"
 
 WHITE = 16775930
-
-
-# Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
-def get_mention(message, args):
-    if len(message.mentions) == 0:  # Il n'y a pas de @mention
-        if len(args) > 0:
-            for arg in args:
-                if "#" in str(arg):
-                    ls_arg = list(arg)
-                    if ls_arg[-5] == "#":
-                        return arg
-        return None
-
-    else:
-        return message.mentions[0]
 
 
 class commands:
@@ -101,7 +87,7 @@ class commands:
     async def reset_data(self, notation, args):
         if len(args) == 0:
             embed = discord.Embed(title=f"Merci de faire ```{notation}```",
-                                  description="Entrez le numéro de *prefixes*",
+                                  description="Entrez le nom de *prefixes*",
                                   color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -130,7 +116,7 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        db[self.prefixes[7] + cible] = "True"
+        db[self.prefixes["bannis"] + cible] = "True"
 
         embed = discord.Embed(title="Compte bannis !",
                               description="",
@@ -151,7 +137,7 @@ class commands:
             return
 
         try:
-            del db[self.prefixes[7] + cible]
+            del db[self.prefixes["bannis"] + cible]
         except KeyError:
             embed = discord.Embed(title="Ce compte n'étais pas bannis !",
                                   description="",

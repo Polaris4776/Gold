@@ -1,3 +1,4 @@
+from xmlrpc.client import boolean
 import discord
 import os
 from replit import db
@@ -8,7 +9,6 @@ import pytz
 import classic_commands
 import admin_commands
 import json
-
 """Commandes spéciales :
 ?delete
 ?resetdata
@@ -31,18 +31,20 @@ if LANGUAGE == "fr":
 elif LANGUAGE == "en":
     pass  # Pas encore programmé
 
+with open(LOCATION_OF_FR_JSON) as json_file:
+    data = json.load(json_file)
+    PREFIXES = data["PREFIXES"]
 
-def is_x_in_items(x, items):  # items = liste dans liste
-    x = str(x)
+
+def is_x_in_items(x: str, items: list) -> bool:  # items = liste dans liste
     for group_item in items:
-        if str(group_item[0]) == x:
+        if str(group_item[0]) == str(x):
             print("Yes")
             return True
-
     return False
 
 
-def get_items_of_user(cible):
+def get_items_of_user(cible: str) -> list:
     ls = extract_data_encoded_NT1_for_shop(cible)
 
     lst_of_items = []
@@ -59,8 +61,9 @@ def get_items_of_user(cible):
     return lst_of_items, lst_of_items_num
 
 
-def extract_data_encoded_NT1_for_shop(cible):  # NT1 Nolann's Technic 1(spécifique)
-    items_dans_db_for_author = PREFIXES[6] + f"{cible}"
+# NT1 Nolann's Technic 1(spécifique)
+def extract_data_encoded_NT1_for_shop(cible: str) -> list:
+    items_dans_db_for_author = PREFIXES["items"] + f"{cible}"
     try:
         value = db[items_dans_db_for_author]
 
@@ -79,28 +82,12 @@ def extract_data_encoded_NT1_for_shop(cible):  # NT1 Nolann's Technic 1(spécifi
         return ls
 
 
-def get_datetime():
+def get_datetime() -> list:
     tz_London = pytz.timezone('Europe/Paris')
     now = datetime.now(tz_London)
     time = now.strftime("%d:%m:%Y:%H:%M:%S")
     listime = time.split(":")  # Jour, Mois, Année, Heure, Minute, Seconde
     return listime
-
-
-def get_mention(
-    message, args
-):  # Retourne la première mention ou le premier nom d'utilisateur dans le message (pas forcément correct)
-    if len(message.mentions) == 0:  # Il n'y a pas de @mention
-        if len(args) > 0:
-            for arg in args:
-                if "#" in str(arg):
-                    ls_arg = list(arg)
-                    if ls_arg[-5] == "#":
-                        return arg
-        return None
-
-    else:
-        return message.mentions[0]
 
 
 def create_user(UserToCreate):
@@ -111,23 +98,27 @@ def create_user(UserToCreate):
         pass
 
     UserToCreate = str(UserToCreate)
+    # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
     parcour = [
-        0, 1, 2, 3, 5, 8, 9, 10, 11, 12, 13, 14
-    ]  # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
+        "daily", "hebdo", "gold", "beg", "steal", "shield", "xp", "level",
+        "auto_gold_won", "sablier", "inactivity", "excalibur"
+    ]
     users = db.keys()
 
-    for i in parcour:
-        if not PREFIXES[i] + UserToCreate in users:
-            db[PREFIXES[i] + UserToCreate] = "0"
+    for key in parcour:
+        if not PREFIXES[key] + UserToCreate in users:
+            db[PREFIXES[key] + UserToCreate] = "0"
 
-    if not PREFIXES[6] + UserToCreate in users:  # Items
-        db[PREFIXES[6] + UserToCreate] = "11-1"
+    if not PREFIXES["items"] + UserToCreate in users:  # Items
+        db[PREFIXES["items"] + UserToCreate] = "11-1"
 
-    if not PREFIXES[15] + UserToCreate in users:  # Possessions of actions
-        db[PREFIXES[15] + UserToCreate] = "Red-0|Green-0|Blue-0"
+    if not PREFIXES[
+            "user_action_possessions"] + UserToCreate in users:  # Possessions of actions
+        db[PREFIXES["user_action_possessions"] +
+           UserToCreate] = "Red-0|Green-0|Blue-0"
 
 
-def timer_edit_less(user, prefixe_num):
+def timer_edit_less(user: str, prefixe_num: str):
     if not (user.startswith(prefixe_num)):
         return
     var = int(db[user])
@@ -138,7 +129,7 @@ def timer_edit_less(user, prefixe_num):
         db[user] = var - 1  # On s'approche du moment prêt de 1 min !
 
 
-def timer_edit_more(user, prefixe_num):
+def timer_edit_more(user: str, prefixe_num: str):
     if not (user.startswith(prefixe_num)):
         return
     var = int(db[user])
@@ -146,8 +137,8 @@ def timer_edit_more(user, prefixe_num):
     db[user] = var + 1  # On augmente la valeur d'une minute.
 
 
-def report_edit(user):
-    if not (user.startswith(PREFIXES[4])):
+def report_edit(user: str):
+    if not (user.startswith(PREFIXES["report"])):
         return
     var = db[user]
     ls = var.split("|")
@@ -160,9 +151,8 @@ def report_edit(user):
         db[user] = f"{ls[0] - 1}|{ls[1]}"
 
 
-async def wait_for_message(
-        channel, author,
-        CLIENT):  # En attente d'un message dans le même salon.
+# En attente d'un message dans le même salon.
+async def wait_for_message(channel, author, CLIENT):
 
     def check(m):
         return (m.channel == channel) and (m.content != "") and (
@@ -173,7 +163,7 @@ async def wait_for_message(
     return msg
 
 
-def get_args(content, command):
+def get_args(content: str, command: str) -> list:
     var = str(content)
     var = var.strip()
     var = var.split(" ")
@@ -200,10 +190,10 @@ def get_args(content, command):
     return var
 
 
-def add_xp(author, value):
+def add_xp(author: str, value: int):
     author = str(author)
-    xp_in_db = PREFIXES[9] + author
-    lvl_in_db = PREFIXES[10] + author
+    xp_in_db = PREFIXES["xp"] + author
+    lvl_in_db = PREFIXES["level"] + author
 
     try:
         xp = int(db[xp_in_db])
@@ -223,58 +213,77 @@ def add_xp(author, value):
     db[xp_in_db] = str(xp)
     db[lvl_in_db] = str(lvl)
 
-def fluctuation_simulation(value_of_enterprise, historic_of_values) ->int: 
-    pass
 
-def first_historic_generator(index_value:int, database_location:str) : 
+def fluctuation_simulation(value_of_enterprise: int,
+                           historic_of_values: str) -> int:
+    print(f"\n\n\nhistoric_of_values of the enterprise = {historic_of_values}")
+    tmp_sum = 0
+    for element in historic_of_values:
+        tmp_sum += int(element)
+    average = tmp_sum // len(historic_of_values)
+    print(f"Average = {average}")
+
+    sorted_historic = sorted(historic_of_values)
+    print(f"Sorted = {sorted_historic}")
+    etendue = int(sorted[-1]) - int(sorted[0])
+    print(f"étendue = {etendue}")
+
+    return value_of_enterprise
+
+
+def first_historic_generator(index_value: int, database_location: str):
     ls = []
     mini = index_value // 2
     maxi = index_value * 2
-    for i in range(5) : 
+    for i in range(5):
         ls.append(str(random.randint(mini, maxi)))
     print("Liste : ")
     joined = "|".join(ls)
     print("Joined = " + str(joined) + "\n")
     db[database_location] = joined
 
+
 def edit_actions_RGB():
     print("Modification des actions.")
 
-    Red_in_db = PREFIXES[16]
-    Green_in_db = PREFIXES[17]
-    Blue_in_db = PREFIXES[18]
+    Red_in_db = PREFIXES["Red_actions"]
+    Green_in_db = PREFIXES["Green_actions"]
+    Blue_in_db = PREFIXES["Blue_actions"]
 
-    Red_Historic_in_db = PREFIXES[20]
-    Green_Historic_in_db = PREFIXES[21]
-    Blue_Historic_in_db = PREFIXES[22]
+    Red_Historic_in_db = PREFIXES["Red_historic"]
+    Green_Historic_in_db = PREFIXES["Green_historic"]
+    Blue_Historic_in_db = PREFIXES["Blue_historic"]
 
     Red = db[Red_in_db]
     Green = db[Green_in_db]
     Blue = db[Blue_in_db]
 
-    try : 
+    try:
         Red_Historic = db[Red_Historic_in_db]
         Green_Historic = db[Green_Historic_in_db]
         Blue_Historic = db[Blue_Historic_in_db]
-    except ValueError : 
-      print("Veuillez entrer la valeur afin de générer les chiffres aléatoires pour les trois entreprises de base : ")
-      generate_R =  int(input("Valeur de Red : "))
-      generate_G =  int(input("Valeur de Green : "))
-      generate_B =  int(input("Valeur de Blue : "))
+    except ValueError:
+        print(
+            "Veuillez entrer la valeur afin de générer les chiffres aléatoires pour les trois entreprises de base : "
+        )
+        generate_R = int(input("Valeur de Red : "))
+        generate_G = int(input("Valeur de Green : "))
+        generate_B = int(input("Valeur de Blue : "))
 
-      first_historic_generator(generate_R, Red_Historic_in_db)
-      first_historic_generator(generate_G, Green_Historic_in_db)
-      first_historic_generator(generate_B, Blue_Historic_in_db)
+        first_historic_generator(generate_R, Red_Historic_in_db)
+        first_historic_generator(generate_G, Green_Historic_in_db)
+        first_historic_generator(generate_B, Blue_Historic_in_db)
 
     fluctuation_simulation(Red, Red_Historic)
+    fluctuation_simulation(Green, Green_Historic)
+    fluctuation_simulation(Blue, Blue_Historic)
 
 
-
-def exploitation(user):
+def exploitation(user: str):
     exploitation_rent = 1
 
-    if PREFIXES[11] in user:
-        cible = str(user).replace(PREFIXES[11], "")
+    if PREFIXES["auto_gold_won"] in user:
+        cible = str(user).replace(PREFIXES["auto_gold_won"], "")
 
         retour = get_items_of_user(cible)
 
@@ -293,26 +302,26 @@ def exploitation(user):
         if have_an_exploitation:
             number_of_exploitations = int(lst_of_items_num[number])
 
-            rapport_dans_db = PREFIXES[11] + cible
+            rapport_dans_db = PREFIXES["auto_gold_won"] + cible
             rapport = db[rapport_dans_db]
 
             db[rapport_dans_db] = int(
                 rapport) + exploitation_rent * number_of_exploitations
 
-            gold_dans_db = PREFIXES[2] + cible
+            gold_dans_db = PREFIXES["gold"] + cible
             db[gold_dans_db] = int(
                 db[gold_dans_db]) + exploitation_rent * number_of_exploitations
 
 
-PREFIXES = [
-    "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔","↔lvl↔",
-     "_*-*_", "♀_♀", "O_O", "T_T",  "U_U|user_actions|", "U_U|base_action|Red", "U_U|base_action|Green", "U_U|base_action|Blue", "U_U|base_action|Red|history", "U_U|base_action|Green|history", "U_U|base_action|Blue|history"
-]
-# ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp
-# ↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel
-# O_O :  durée d'inactivité       T_T : Excalibur     U_U|user_actions| : Possessions de chaque utilisateur
-# |base_action| : Actions de bases (Red Green Blue)
-# |base_action|history| : Historique des valeurs des actions
+# PREFIXES = [
+#     "←+→", "-@_@-", "°-°", "-_-", "+_+", "X_X", "¤_¤", "*_*", "→0←", "↔xp↔", "↔lvl↔",
+#     "_*-*_", "♀_♀", "O_O", "T_T",  "U_U|user_actions|", "U_U|base_action|Red", "U_U|base_action|Green", "U_U|base_action|Blue", "U_U|base_action|Red|history", "U_U|base_action|Green|history", "U_U|base_action|Blue|history"
+# ]
+# # ←+→ : daily 	-@_@- : hebdo		°-° : gold		-_- : beg		+_+ : steal ready to report		X_X : steal		¤_¤ : items		*_* : bannis		→0← : shield		↔xp↔ : xp
+# # ↔lvl↔ : level		_*-*_ : argent déjà rapportée par les exploitations pétrolières		♀_♀ : sablier temporel
+# # O_O :  durée d'inactivité       T_T : Excalibur     U_U|user_actions| : Possessions de chaque utilisateur
+# # |base_action| : Actions de bases (Red Green Blue)
+# # |base_action|history| : Historique des valeurs des actions
 
 SECOND = 1
 MINUTE = SECOND * 60
@@ -332,23 +341,29 @@ async def temps():
     users = db.keys()
     for user in users:
         # On retire 1 minute au temps restant avant que daily soit dispo
-        timer_edit_less(user, PREFIXES[0])
+        timer_edit_less(user, PREFIXES["daily"])
         # On retire 1 minute au temps restant avant que hebdo soit dispo
-        timer_edit_less(user, PREFIXES[1])
+        timer_edit_less(user, PREFIXES["hebdo"])
         # On retire 1 minute au temps restant avant que beg soit dispo
-        timer_edit_less(user, PREFIXES[3])
+        timer_edit_less(user, PREFIXES["beg"])
         # On retire 1 minute au temps restant avant que steal soit dispo
-        timer_edit_less(user, PREFIXES[5])
+        timer_edit_less(user, PREFIXES["steal"])
         # On retire 1 minute au temps restant avant que le sablier temporel soit dispo
-        timer_edit_less(user, PREFIXES[12])
+        timer_edit_less(user, PREFIXES["sablier"])
         # On ajoute 1 minute au temps d'inactivité
-        timer_edit_more(user, PREFIXES[13])
+        timer_edit_more(user, PREFIXES["inactivity"])
+
+        try:
+            # On retire 1 minute au temps restant avant que l'on ne soit plus virtuose du vol
+            timer_edit_less(user, PREFIXES["excalibur"])
+        except ValueError:
+            create_user(user)
 
         try:
             # On retire 1 minute au temps restant avant que shield soit dispo
-            timer_edit_less(user, PREFIXES[8])
+            timer_edit_less(user, PREFIXES["shield"])
         except ValueError:
-            pass
+            create_user(user)
             report_edit(user)
         if rand:
             exploitation(user)  # On ajoute l'argent de l'exploitation
@@ -406,7 +421,7 @@ async def on_message(message):
 
         users = db.keys()
         for user in users:
-            if user.startswith(PREFIXES[7]):
+            if user.startswith(PREFIXES["bannis"]):
                 if str(author) in user:
                     print(
                         f"{author}, utilisateur bannis, a tenté de faire une commande."
@@ -586,27 +601,29 @@ async def on_message(message):
         add_xp(author, 1)
 
         # On remet la durée d'inactivité à 0.
-        db[PREFIXES[13] + str(author)] = 0
+        db[PREFIXES["inactivity"] + str(author)] = 0
+
 
 try:
-    to_sell = db[PREFIXES[16]]
-except:
-    db[PREFIXES[16]] = input(
-        "\nLa database du prix de l'action Red n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+    to_sell = db[PREFIXES["Red_actions"]]
+except ValueError:
+    db[PREFIXES["Red_actions"]] = input(
+        "\nLa database du prix de l'action Red n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : "
+    )
 
 try:
-    to_sell = db[PREFIXES[17]]
-except:
+    to_sell = db[PREFIXES["Green_actions"]]
+except ValueError:
 
-    db[PREFIXES[17]] = input(
-        "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+    db[PREFIXES["Green_actions"]] = input(
+        "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : "
+    )
 
 try:
-    to_sell = db[PREFIXES[18]]
-except:
-    db[PREFIXES[18]] = input(
-        "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
-
-del to_sell
+    to_sell = db[PREFIXES["Blue_actions"]]
+except ValueError:
+    db[PREFIXES["Blue_actions"]] = input(
+        "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : "
+    )
 
 CLIENT.run(TOKEN)
