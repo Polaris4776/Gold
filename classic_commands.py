@@ -269,10 +269,8 @@ class commands:
 
                     to_append = line.strip().replace("{PREFIXE}", "")
                     to_append = to_append.split(" ")
-                    print(to_append)
                     commandes.append(to_append[0])
                     line_number += 1
-            print(commandes)
 
     async def shop_print(self, notation):
         Item_Name = "name"
@@ -486,9 +484,7 @@ class commands:
 
                 group[1] = str(int(group[1]) - count)
                 if group[1] == "0":
-                    print("\n\nPlus d'items donc suppression de group ! Vérifie donc")
                     del (ls[i])
-                    print(ls)
             i += 1
 
         if not exists:
