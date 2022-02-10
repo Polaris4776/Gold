@@ -9,7 +9,6 @@ import pytz
 import classic_commands
 import admin_commands
 import json
-
 """Commandes spéciales :
 ?delete
 ?resetdata
@@ -101,7 +100,8 @@ def create_user(UserToCreate):
     UserToCreate = str(UserToCreate)
     # Daily, Hebdo, Gold, Daily, Steal, [...], Argent rapportée en exploit. pétrol., Durée d'inactivité...
     parcour = [
-        "daily", "hebdo", "gold", "beg", "steal", "shield", "xp", "level", "auto_gold_won", "sablier", "inactivity", "excalibur"
+        "daily", "hebdo", "gold", "beg", "steal", "shield", "xp", "level",
+        "auto_gold_won", "sablier", "inactivity", "excalibur"
     ]
     users = db.keys()
 
@@ -112,9 +112,10 @@ def create_user(UserToCreate):
     if not PREFIXES["items"] + UserToCreate in users:  # Items
         db[PREFIXES["items"] + UserToCreate] = "11-1"
 
-    if not PREFIXES["user_action_possessions"] + UserToCreate in users:  # Possessions of actions
+    if not PREFIXES[
+            "user_action_possessions"] + UserToCreate in users:  # Possessions of actions
         db[PREFIXES["user_action_possessions"] +
-            UserToCreate] = "Red-0|Green-0|Blue-0"
+           UserToCreate] = "Red-0|Green-0|Blue-0"
 
 
 def timer_edit_less(user: str, prefixe_num: str):
@@ -213,7 +214,8 @@ def add_xp(author: str, value: int):
     db[lvl_in_db] = str(lvl)
 
 
-def fluctuation_simulation(value_of_enterprise: int, historic_of_values: str) -> int:
+def fluctuation_simulation(value_of_enterprise: int,
+                           historic_of_values: str) -> int:
     print(f"\n\n\nhistoric_of_values of the enterprise = {historic_of_values}")
     tmp_sum = 0
     for element in historic_of_values:
@@ -261,7 +263,9 @@ def edit_actions_RGB():
         Green_Historic = db[Green_Historic_in_db]
         Blue_Historic = db[Blue_Historic_in_db]
     except ValueError:
-        print("Veuillez entrer la valeur afin de générer les chiffres aléatoires pour les trois entreprises de base : ")
+        print(
+            "Veuillez entrer la valeur afin de générer les chiffres aléatoires pour les trois entreprises de base : "
+        )
         generate_R = int(input("Valeur de Red : "))
         generate_G = int(input("Valeur de Green : "))
         generate_B = int(input("Valeur de Blue : "))
@@ -350,10 +354,16 @@ async def temps():
         timer_edit_more(user, PREFIXES["inactivity"])
 
         try:
+            # On retire 1 minute au temps restant avant que l'on ne soit plus virtuose du vol
+            timer_edit_less(user, PREFIXES["excalibur"])
+        except ValueError:
+            create_user(user)
+
+        try:
             # On retire 1 minute au temps restant avant que shield soit dispo
             timer_edit_less(user, PREFIXES["shield"])
         except ValueError:
-            pass
+            create_user(user)
             report_edit(user)
         if rand:
             exploitation(user)  # On ajoute l'argent de l'exploitation
@@ -593,23 +603,27 @@ async def on_message(message):
         # On remet la durée d'inactivité à 0.
         db[PREFIXES["inactivity"] + str(author)] = 0
 
+
 try:
     to_sell = db[PREFIXES["Red_actions"]]
 except ValueError:
     db[PREFIXES["Red_actions"]] = input(
-        "\nLa database du prix de l'action Red n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+        "\nLa database du prix de l'action Red n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : "
+    )
 
 try:
     to_sell = db[PREFIXES["Green_actions"]]
 except ValueError:
 
     db[PREFIXES["Green_actions"]] = input(
-        "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+        "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : "
+    )
 
 try:
     to_sell = db[PREFIXES["Blue_actions"]]
 except ValueError:
     db[PREFIXES["Blue_actions"]] = input(
-        "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+        "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : "
+    )
 
 CLIENT.run(TOKEN)
