@@ -218,14 +218,14 @@ def extract_data_encoded_NT1_for_shop(self, cible: str) -> list:
 
 class commands:
 
-    def __init__(self, message, prefixes, shop):
+    def __init__(self, message, PREFIXES, shop):
         self.message = message
         self.content = message.content
         self.author = message.author
         self.channel = message.channel
         self.CLIENT = CLIENT
         self.user_id = message.author.id
-        self.prefixes = prefixes
+        self.PREFIXES = PREFIXES
         self.shop = shop
 
     async def help(self, notation, args):
