@@ -478,7 +478,7 @@ class commands:
                 if count > int(group[1]):
                     embed = discord.Embed(
                         title="Vous essayez de me vendre plus que vous ne possédez !!!",
-                        description="Vous ne m'aurez pas ansi, petit voyou !!!",
+                        description="Vous ne m'aurez pas ainsi, petit voyou !!!",
                         color=WHITE)
                     await self.channel.send(embed=embed)
                     return
@@ -1029,9 +1029,9 @@ class commands:
             lvl = int(db[level_dans_db])
 
             valeur = gold_of_cible // 1000 + (lvl * gold_of_cible // 1000)
+            print(valeur)
             if valeur < STEAL_VALUE:
                 valeur = STEAL_VALUE
-
             print(valeur)
 
             if not (((gold_of_cible - valeur) > 0) or
