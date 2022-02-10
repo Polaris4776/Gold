@@ -399,7 +399,7 @@ async def on_message(message):
 
         users = db.keys()
         for user in users:
-            if user.startswith(PREFIXES[7]):
+            if user.startswith(PREFIXES["bannis"]):
                 if str(author) in user:
                     print(
                         f"{author}, utilisateur bannis, a tenté de faire une commande."
