@@ -226,6 +226,8 @@ def fluctuation_simulation(value_of_enterprise: int, historic_of_values: str) ->
     etendue = int(sorted[-1]) - int(sorted[0])
     print(f"étendue = {etendue}")
 
+    ecart = historic_of_values[0] - historic_of_values[-1]
+
     return value_of_enterprise
 
 
@@ -593,23 +595,21 @@ async def on_message(message):
         # On remet la durée d'inactivité à 0.
         db[PREFIXES["inactivity"] + str(author)] = 0
 
-try:
-    to_sell = db[PREFIXES["Red_actions"]]
-except ValueError:
-    db[PREFIXES["Red_actions"]] = input(
-        "\nLa database du prix de l'action Red n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+ls = ["Red_actions", "Green_actions", "Blue_actions"]
+for element in ls:
+    try:
+        to_sell = db[PREFIXES[element]]
+    except ValueError:
+        db[PREFIXES[element]] = input(
+            f"\nLa database du prix de {element} n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
 
-try:
-    to_sell = db[PREFIXES["Green_actions"]]
-except ValueError:
 
-    db[PREFIXES["Green_actions"]] = input(
-        "\nLa database du prix de l'action Green n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
-
-try:
-    to_sell = db[PREFIXES["Blue_actions"]]
-except ValueError:
-    db[PREFIXES["Blue_actions"]] = input(
-        "\nLa database du prix de l'action Blue n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
+ls = ["Red_historic", "Green_historic", "Blue_historic"]
+for element in ls:
+    try:
+        to_sell = db[PREFIXES[element]]
+    except ValueError:
+        db[PREFIXES[element]] = input(
+            f"\nLa database des valeurs de {element} n'est pas encore définie. Veuillez créer un historique de départ pour simuler séparé par des |\nValeur : ")
 
 CLIENT.run(TOKEN)
