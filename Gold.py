@@ -237,12 +237,9 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     average = tmp_sum // len(historic_of_values)
 
     sorted_historic = sorted(historic_of_values)
-    print(f"Sorted = {sorted_historic}")
     etendue = int(sorted_historic[-1]) - int(sorted_historic[0])
-    print(f"Etendue = {etendue}")
 
     ecart = int(historic_of_values[0]) - int(historic_of_values[-1])
-    print(f"Ecart = {ecart}")
 
     heavy_change = False
 
@@ -278,7 +275,6 @@ def first_historic_generator(index_value: int, database_location: str) -> str:
     maxi = index_value * 2
     for i in range(5):
         ls.append(str(random.randint(mini, maxi)))
-    print("Liste : ")
     joined = "|".join(ls)
     print("Joined = " + str(joined) + "\n")
     db[database_location] = joined
