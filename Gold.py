@@ -261,7 +261,7 @@ def edit_actions_RGB():
         Red_Historic = db[Red_Historic_in_db]
         Green_Historic = db[Green_Historic_in_db]
         Blue_Historic = db[Blue_Historic_in_db]
-    except ValueError:
+    except KeyError:
         print("Veuillez entrer la valeur afin de générer les chiffres aléatoires pour les trois entreprises de base : ")
         generate_R = int(input("Valeur de Red : "))
         generate_G = int(input("Valeur de Green : "))
@@ -353,7 +353,7 @@ async def temps():
         try:
             # On retire 1 minute au temps restant avant que shield soit dispo
             timer_edit_less(user, PREFIXES["shield"])
-        except ValueError:
+        except KeyError:
             pass
             report_edit(user)
         if rand:
@@ -598,17 +598,8 @@ ls = ["Red_actions", "Green_actions", "Blue_actions"]
 for element in ls:
     try:
         to_sell = db[PREFIXES[element]]
-    except ValueError:
+    except KeyError:
         db[PREFIXES[element]] = input(
             f"\nLa database du prix de {element} n'est pas encore définie. A combien voulez-vous la mettre ?\nValeur : ")
-
-
-ls = ["Red_historic", "Green_historic", "Blue_historic"]
-for element in ls:
-    try:
-        to_sell = db[PREFIXES[element]]
-    except ValueError:
-        db[PREFIXES[element]] = input(
-            f"\nLa database des valeurs de {element} n'est pas encore définie. Veuillez créer un historique de départ pour simuler séparé par des |\nValeur : ")
 
 CLIENT.run(TOKEN)
