@@ -1160,24 +1160,24 @@ class commands:
         Blue = int(db[Blue_in_db])
 
         try:
-            Red_Historic = ": dollar: - ".join(
+            Red_Historic = "`: dollar: - `".join(
                 (db[Red_Historic_in_db]).split("|"))
-            Green_Historic = ": dollar: - ".join(
+            Green_Historic = "`: dollar: - `".join(
                 (db[Green_Historic_in_db]).split("|"))
-            Blue_Historic = ": dollar: - ".join(
+            Blue_Historic = "`: dollar: - `".join(
                 (db[Blue_Historic_in_db]).split("|"))
         except KeyError:
             Hist = "Il n'y a pas encore d'historique pour le moment. :zzz:"
         else:
-            Hist = "*Historique de la valeur des actions de base : *"
-            Hist += f"*- Red : * : {Red_Historic} :dollar:"
-            Hist += f"*- Green : * : {Green_Historic} :dollar:"
-            Hist += f"*- Blue : * : {Blue_Historic} :dollar:"
+            Hist = "*Historique de la valeur des actions de base :"
+            Hist += f"\n*- Red :* `{Red_Historic}` :dollar:"
+            Hist += f"\n*- Green :* `{Green_Historic}` :dollar:"
+            Hist += f"\n*- Blue :* `{Blue_Historic}` :dollar:"
 
         RGB = "*Valeur des actions de base : *"
-        RGB += f"*- Red : *{Red} :dollar:"
-        RGB += f"*- Green : *{Green} :dollar:"
-        RGB += f"*- Blue : *{Blue} :dollar:"
+        RGB += f"\n*- Red :* `{Red}` :dollar:"
+        RGB += f"\n*- Green :* `{Green}` :dollar:"
+        RGB += f"\n*- Blue :* `{Blue}`:dollar:"
 
         cube = "▬" * 18
         embed = discord.Embed(
