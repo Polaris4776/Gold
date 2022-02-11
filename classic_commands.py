@@ -1145,3 +1145,16 @@ class commands:
             color=WHITE)
 
         await self.channel.send(embed=embed)
+
+    async def actions(self, notation, args):
+        Red_in_db = self.PREFIXES["Red_actions"]
+        Green_in_db = self.PREFIXES["Green_actions"]
+        Blue_in_db = self.PREFIXES["Blue_actions"]
+
+        Red_Historic_in_db = self.PREFIXES["Red_historic"]
+        Green_Historic_in_db = self.PREFIXES["Green_historic"]
+        Blue_Historic_in_db = self.PREFIXES["Blue_historic"]
+
+        Red = int(db[Red_in_db])
+        Green = int(db[Green_in_db])
+        Blue = int(db[Blue_in_db])

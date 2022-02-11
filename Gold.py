@@ -272,7 +272,7 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     return value_of_actions
 
 
-def first_historic_generator(index_value: int, database_location: str):
+def first_historic_generator(index_value: int, database_location: str) -> str:
     ls = []
     mini = index_value // 2
     maxi = index_value * 2
@@ -282,6 +282,8 @@ def first_historic_generator(index_value: int, database_location: str):
     joined = "|".join(ls)
     print("Joined = " + str(joined) + "\n")
     db[database_location] = joined
+
+    return joined
 
 
 def edit_actions_RGB():
@@ -309,9 +311,11 @@ def edit_actions_RGB():
         generate_G = int(input("Valeur de Green : "))
         generate_B = int(input("Valeur de Blue : "))
 
-        first_historic_generator(generate_R, Red_Historic_in_db)
-        first_historic_generator(generate_G, Green_Historic_in_db)
-        first_historic_generator(generate_B, Blue_Historic_in_db)
+        Red_Historic = first_historic_generator(generate_R, Red_Historic_in_db)
+        Green_Historic = first_historic_generator(
+            generate_G, Green_Historic_in_db)
+        Blue_Historic = first_historic_generator(
+            generate_B, Blue_Historic_in_db)
 
     new_R_value = fluctuation_simulation(Red, Red_Historic)
     new_G_value = fluctuation_simulation(Green, Green_Historic)
@@ -583,6 +587,12 @@ async def on_message(message):
         args = get_args(content, PREFIXE + "report")
 
         await cl_command.report(notation, args)
+
+    elif content.lower().startswith(PREFIXE + "actions"):
+        notation = f"{PREFIXE}actions"
+        args = get_args(content, PREFIXE + "actions")
+
+        await cl_command.actions(notation, args)
 
     elif content.lower().startswith(PREFIXE + "delete"):
         notation = f"{PREFIXE}delete <user>"

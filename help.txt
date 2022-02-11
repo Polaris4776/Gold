@@ -37,6 +37,9 @@ Achetez un objet !
 {prefixe}sell :white_check_mark:
 Vendez votre objet avec une taxe de 10% comparé au prix original.
 
+{prefixe}actions :arrows_counterclockwise:
+Observez le cours de la bourse, la valeur actuelle des actions et l'historique de leur évolution !
+
 {prefixe}bag :white_check_mark:
 Admirez votre magifique équipement... ou jalousez celui d'autrui !
 
