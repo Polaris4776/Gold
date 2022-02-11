@@ -216,9 +216,9 @@ def add_xp(author: str, value: int):
 def historic_changing(new_value: int, historic: str) -> str:
     print(f"\n\nHistoric before : {historic}")
     historic = historic.split("|")  # Devient une liste
-    del Red_Historic[0]
-    historic = historic.append(new_value)
-    historic = historic.join("|")
+    del historic[0]
+    historic.append(str(new_value))
+    historic = "|".join(historic)
     print(f"Red historic now : {historic}")
 
     return historic
@@ -244,18 +244,20 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     ecart = int(historic_of_values[0]) - int(historic_of_values[-1])
     print(f"Ecart = {ecart}")
 
+    heavy_change = False
+
     # Premier lancer pour fort changement
     alea = random.randint(0, ALEA_OF_HEAVY_CHANGE)
     print(f"Ancienne valeur : {value_of_actions}")
     if alea == ALEA_OF_HEAVY_CHANGE:  # Forte valorisation ou effondrement
-        value_of_actions = average + ecart * 10
+        value_of_actions = average + ecart * random.randint(1, 15)
         heavy_change = True
     else:  # Changement normal
         alea = random.randint(0, 100)
         if alea > 50:
-            value_of_actions = value_of_actions + ecart * (alea - 50) // 10
+            value_of_actions = value_of_actions + ecart * (alea - 50) // 100
         if alea < 50:
-            value_of_actions = value_of_actions - ecart * (alea - 50) // 10
+            value_of_actions = value_of_actions - ecart * (alea - 50) // 100
 
     if value_of_actions < 10:  # Minimum value
         value_of_actions = 10
