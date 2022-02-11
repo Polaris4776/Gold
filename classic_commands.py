@@ -1169,12 +1169,12 @@ class commands:
         except KeyError:
             Hist = "Il n'y a pas encore d'historique pour le moment. :zzz:"
         else:
-            Hist = "**Historique de la valeur des actions de base : **"
+            Hist = "Historique de la valeur des actions de base :"
             Hist += f"\n**- Red :** `{Red_Historic}` :dollar:"
             Hist += f"\n**- Green :** `{Green_Historic}` :dollar:"
             Hist += f"\n**- Blue :** `{Blue_Historic}` :dollar:"
 
-        RGB = "**Valeur des actions de base :**"
+        RGB = "Valeur des actions de base :"
         RGB += f"\n**- Red :** `{Red}` :dollar:"
         RGB += f"\n**- Green :** `{Green}` :dollar:"
         RGB += f"\n**- Blue :** `{Blue}` :dollar:"
