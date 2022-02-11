@@ -1,4 +1,3 @@
-from xmlrpc.client import boolean
 import discord
 import os
 from replit import db
