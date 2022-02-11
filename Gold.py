@@ -20,6 +20,7 @@ import json
 TOKEN = os.getenv("DISCORD_TOKEN")
 CLIENT = discord.Client()
 PREFIXE = "?"
+ALEA_OF_HEAVY_CHANGE = 10
 
 LOCATION_OF_FR_JSON = "language/fr.json"
 LANGUAGE = str(os.getenv("LANGUAGE"))
@@ -212,23 +213,61 @@ def add_xp(author: str, value: int):
     db[lvl_in_db] = str(lvl)
 
 
-def fluctuation_simulation(value_of_enterprise: int, historic_of_values: str) -> int:
+def historic_changing(new_value: int, historic: str) -> str:
+    print(f"\n\nHistoric before : {historic}")
+    historic = historic.split("|")  # Devient une liste
+    del Red_Historic[0]
+    historic = historic.append(new_value)
+    historic = historic.join("|")
+    print(f"Red historic now : {historic}")
+
+    return historic
+
+
+def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> int:
     print(f"\n\n\nhistoric_of_values of the enterprise = {historic_of_values}")
     historic_of_values = historic_of_values.split("|")  # Devient une liste
+
+    for element in range(len(historic_of_values)):
+        historic_of_values[element] = int(historic_of_values[element])
+
     tmp_sum = 0
     for element in historic_of_values:
         tmp_sum += int(element)
     average = tmp_sum // len(historic_of_values)
-    print(f"Average = {average}")
 
     sorted_historic = sorted(historic_of_values)
     print(f"Sorted = {sorted_historic}")
     etendue = int(sorted_historic[-1]) - int(sorted_historic[0])
-    print(f"étendue = {etendue}")
+    print(f"Etendue = {etendue}")
 
-    ecart = historic_of_values[0] - historic_of_values[-1]
+    ecart = int(historic_of_values[0]) - int(historic_of_values[-1])
+    print(f"Ecart = {ecart}")
 
-    return value_of_enterprise
+    # Premier lancer pour fort changement
+    alea = random.randint(0, ALEA_OF_HEAVY_CHANGE)
+    print(f"Ancienne valeur : {value_of_actions}")
+    if alea == ALEA_OF_HEAVY_CHANGE:  # Forte valorisation ou effondrement
+        value_of_actions = average + ecart * 10
+        heavy_change = True
+    else:  # Changement normal
+        alea = random.randint(0, 100)
+        if alea > 50:
+            value_of_actions = value_of_actions + ecart * (alea - 50) // 10
+        if alea < 50:
+            value_of_actions = value_of_actions - ecart * (alea - 50) // 10
+
+    if value_of_actions < 10:  # Minimum value
+        value_of_actions = 10
+
+    if heavy_change:
+        print("\n\nLa valeur de l'action de l'entreprise à fortement changé !!!")
+        print(f"La valeur actuelle est désormais : {value_of_actions}\n\n")
+    else:
+        print(
+            f"\nLa valeur actuelle est désormais : {value_of_actions}\n\nLe changement est de : {ecart * (alea - 50) // 10}")
+
+    return value_of_actions
 
 
 def first_historic_generator(index_value: int, database_location: str):
@@ -254,9 +293,9 @@ def edit_actions_RGB():
     Green_Historic_in_db = PREFIXES["Green_historic"]
     Blue_Historic_in_db = PREFIXES["Blue_historic"]
 
-    Red = db[Red_in_db]
-    Green = db[Green_in_db]
-    Blue = db[Blue_in_db]
+    Red = int(db[Red_in_db])
+    Green = int(db[Green_in_db])
+    Blue = int(db[Blue_in_db])
 
     try:
         Red_Historic = db[Red_Historic_in_db]
@@ -272,9 +311,17 @@ def edit_actions_RGB():
         first_historic_generator(generate_G, Green_Historic_in_db)
         first_historic_generator(generate_B, Blue_Historic_in_db)
 
-    fluctuation_simulation(Red, Red_Historic)
-    fluctuation_simulation(Green, Green_Historic)
-    fluctuation_simulation(Blue, Blue_Historic)
+    new_R_value = fluctuation_simulation(Red, Red_Historic)
+    new_G_value = fluctuation_simulation(Green, Green_Historic)
+    new_B_value = fluctuation_simulation(Blue, Blue_Historic)
+
+    db[Red_in_db] = new_R_value
+    db[Green_in_db] = new_G_value
+    db[Blue_in_db] = new_B_value
+
+    db[Red_Historic_in_db] = historic_changing(new_R_value, Red_Historic)
+    db[Green_Historic_in_db] = historic_changing(new_G_value, Green_Historic)
+    db[Blue_Historic_in_db] = historic_changing(new_B_value, Blue_Historic)
 
 
 def exploitation(user: str):
