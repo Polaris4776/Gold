@@ -20,7 +20,7 @@ import json
 TOKEN = os.getenv("DISCORD_TOKEN")
 CLIENT = discord.Client()
 PREFIXE = "?"
-ALEA_OF_HEAVY_CHANGE = 10
+ALEA_OF_HEAVY_CHANGE = 100
 
 LOCATION_OF_FR_JSON = "language/fr.json"
 LANGUAGE = str(os.getenv("LANGUAGE"))
