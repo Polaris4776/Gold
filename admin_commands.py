@@ -11,14 +11,14 @@ WHITE = 16775930
 
 class commands:
 
-    def __init__(self, message, prefixes):
+    def __init__(self, message, PREFIXES):
         self.message = message
         self.content = message.content
         self.author = message.author
         self.channel = message.channel
         self.CLIENT = CLIENT
         self.user_id = message.author.id
-        self.prefixes = prefixes
+        self.PREFIXES = PREFIXES
 
     async def delete(self, notation, args):
         cible = None
@@ -63,7 +63,7 @@ class commands:
 
         exist = False
         for user in users:
-            for prefix in self.prefixes:
+            for prefix in self.PREFIXES:
                 if prefix in user:
                     user = user.replace(prefix, "")
                     if cible in user:
@@ -87,7 +87,7 @@ class commands:
     async def reset_data(self, notation, args):
         if len(args) == 0:
             embed = discord.Embed(title=f"Merci de faire ```{notation}```",
-                                  description="Entrez le nom de *prefixes*",
+                                  description="Entrez le nom de *PREFIXES*",
                                   color=WHITE)
             await self.channel.send(embed=embed)
             return
@@ -95,7 +95,7 @@ class commands:
         users = db.keys()
 
         for user in users:
-            if user.startswith(self.prefixes[args[0]]):
+            if user.startswith(self.PREFIXES[args[0]]):
                 del db[user]
         embed = discord.Embed(title="Variable supprimée avec succès !",
                               description="",
@@ -116,7 +116,7 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        db[self.prefixes["bannis"] + cible] = "True"
+        db[self.PREFIXES["bannis"] + cible] = "True"
 
         embed = discord.Embed(title="Compte bannis !",
                               description="",
@@ -137,7 +137,7 @@ class commands:
             return
 
         try:
-            del db[self.prefixes["bannis"] + cible]
+            del db[self.PREFIXES["bannis"] + cible]
         except KeyError:
             embed = discord.Embed(title="Ce compte n'étais pas bannis !",
                                   description="",
