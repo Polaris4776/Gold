@@ -223,7 +223,7 @@ def fluctuation_simulation(value_of_enterprise: int, historic_of_values: str) ->
 
     sorted_historic = sorted(historic_of_values)
     print(f"Sorted = {sorted_historic}")
-    etendue = int(sorted[-1]) - int(sorted[0])
+    etendue = int(sorted_historic[-1]) - int(sorted_historic[0])
     print(f"étendue = {etendue}")
 
     ecart = historic_of_values[0] - historic_of_values[-1]
@@ -360,7 +360,7 @@ async def temps():
         if rand:
             exploitation(user)  # On ajoute l'argent de l'exploitation
 
-    rand = random.randint(1, 5)  # 1 chance sur 2048 pour l'instant
+    rand = random.randint(1, 5)  # 1 chance sur 5 pour l'instant
     if rand == 5:
         print("Je modifie le cours de la bourse")
         edit_actions_RGB()

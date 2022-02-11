@@ -354,7 +354,6 @@ class commands:
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
         item_in_shop = self.shop[item]
         name = item_in_shop["name"]
-        comment = item_in_shop["description"]
         price = item_in_shop["price"]
         number = item_in_shop["item_number"]
 
@@ -460,7 +459,6 @@ class commands:
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
         item_in_shop = self.shop[item]
         name = item_in_shop["name"]
-        comment = item_in_shop["description"]
         price = item_in_shop["price"]
         number = item_in_shop["item_number"]
 
