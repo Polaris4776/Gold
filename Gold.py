@@ -214,6 +214,7 @@ def add_xp(author: str, value: int):
 
 def fluctuation_simulation(value_of_enterprise: int, historic_of_values: str) -> int:
     print(f"\n\n\nhistoric_of_values of the enterprise = {historic_of_values}")
+    historic_of_values = historic_of_values.split("|")  # Devient une liste
     tmp_sum = 0
     for element in historic_of_values:
         tmp_sum += int(element)
