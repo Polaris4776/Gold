@@ -1085,7 +1085,7 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        report_dans_db_for_author = self.PREFIXES[4] + f"{cible}"
+        report_dans_db_for_author = self.PREFIXES["report"] + f"{cible}"
         try:
             value = db[report_dans_db_for_author]
             ls = value.split("|")
