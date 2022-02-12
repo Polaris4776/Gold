@@ -1,3 +1,4 @@
+from this import d
 from unicodedata import name
 import discord
 import os
@@ -122,7 +123,6 @@ def create_user(UserToCreate):
         for i in range(3):
             new_value.append((str(BASE_ACTION[i]["name"])) + "-0")
         new_value = "|".join(new_value)
-        print(f"New_value = {new_value}")
         db[PREFIXES["user_action_possessions"] +
             UserToCreate] = new_value
 
@@ -256,6 +256,7 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     # Premier lancer pour fort changement
     alea = random.randint(0, ALEA_OF_HEAVY_CHANGE)
     print(f"Ancienne valeur : {value_of_actions}")
+    old_value_of_actions = value_of_actions
     if alea == ALEA_OF_HEAVY_CHANGE:  # Forte valorisation ou effondrement
         value_of_actions = average + ecart * random.randint(1, 15)
         heavy_change = True
@@ -270,7 +271,9 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
                 alea // 10 - random.randint(-10, 30) - etendue // 1000
 
     if value_of_actions < 10:  # Minimum value
-        value_of_actions = 10
+        value_of_actions = 100
+
+    print(f"Le changement est de {value_of_actions - old_value_of_actions}")
 
     if heavy_change:
         print("\n\nLa valeur de l'action de l'entreprise à fortement changé !!!")
