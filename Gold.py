@@ -36,6 +36,10 @@ with open(LOCATION_OF_FR_JSON) as json_file:
     data = json.load(json_file)
     PREFIXES = data["PREFIXES"]
 
+with open(LOCATION_OF_FR_JSON) as json_file:
+    data = json.load(json_file)
+    BASE_ACTION = data["ACTIONS_SHOP"]
+
 
 def is_x_in_items(x: str, items: list) -> bool:  # items = liste dans liste
     for group_item in items:
@@ -470,7 +474,8 @@ async def on_message(message):
                     return
         add_xp(author, 49)
 
-    cl_command = classic_commands.commands(message, PREFIXES, SHOP)
+    cl_command = classic_commands.commands(
+        message, PREFIXES, SHOP, BASE_ACTION)
     adm_command = admin_commands.commands(message, PREFIXES)
 
     if content.lower().startswith(PREFIXE + "help"):
@@ -489,6 +494,12 @@ async def on_message(message):
         args = get_args(content, PREFIXE + "buy")
 
         await cl_command.buy(notation, args)
+
+    elif content.lower().startswith(PREFIXE + "actionbuy"):
+        notation = f"{PREFIXE}action buy [action_number] [count]"
+        args = get_args(content, PREFIXE + "actionbuy")
+
+        await cl_command.action_buy(notation, args)
 
     elif content.lower().startswith(PREFIXE + "sell"):
         notation = f"{PREFIXE}sell [item_number] [count]"

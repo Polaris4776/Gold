@@ -53,7 +53,7 @@ def use_items(self, cible: str, item: str) -> str:
     cible = str(cible)
     not_usable = "Cet objet n'est pas utilisable."
 
-    if item > len(self.shop):
+    if item > len(self.SHOP):
         return "Cet objet n'existe pas. Ce n'est pas le bon numéro."
 
     number = item
@@ -73,7 +73,7 @@ def use_items(self, cible: str, item: str) -> str:
     if found is False:
         return "Vous ne possédez pas cet objet. Veuillez l'acheter ou l'acquérir."
 
-    group_item = self.shop[item - 1]
+    group_item = self.SHOP[item - 1]
 
     if item == 1:
         return not_usable
@@ -159,7 +159,7 @@ def get_items_of_user(self, cible: str) -> list:
 
     for group_item in range(len(ls)):
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
-        item_in_shop = self.shop[(int(ls[group_item][0])) - 1]
+        item_in_shop = self.SHOP[(int(ls[group_item][0])) - 1]
         name = item_in_shop["name"]
 
         lst_of_items.append(name)
@@ -216,9 +216,30 @@ def extract_data_encoded_NT1_for_shop(self, cible: str) -> list:
         return ls
 
 
+def extract_data_encoded_NT1_for_actions(self, cible: str) -> list:
+    actions_dans_db_for_author = self.PREFIXES["user_action_possessions"] + \
+        f"{cible}"
+    try:
+        value = db[actions_dans_db_for_author]
+
+        if list(value) == []:
+            raise ValueError
+    except ValueError:  # Il ne possède pas encore d'objets
+        create_user(self, cible)
+        value = db[actions_dans_db_for_author]
+    finally:
+        ls = value.split("|")
+        i = 0
+        for item in ls:
+            ls[i] = item.split("-")
+            i += 1
+
+        return ls
+
+
 class commands:
 
-    def __init__(self, message, PREFIXES, shop):
+    def __init__(self, message, PREFIXES, SHOP, BASE_ACTION):
         self.message = message
         self.content = message.content
         self.author = message.author
@@ -226,7 +247,8 @@ class commands:
         self.CLIENT = CLIENT
         self.user_id = message.author.id
         self.PREFIXES = PREFIXES
-        self.shop = shop
+        self.SHOP = SHOP
+        self.BASE_ACTION = BASE_ACTION
 
     async def help(self, notation, args):
         if len(args) == 0:
@@ -285,7 +307,7 @@ class commands:
         Item_Number = "item_number"
 
         to_print = ""
-        for group_item in self.shop:
+        for group_item in self.SHOP:
             to_print += "\n"
             to_print += f"**{group_item[Item_Number]} : {group_item[Item_Name]}**"
 
@@ -344,7 +366,7 @@ class commands:
         except IndexError:  # Il n'y a pas de valeur spécifiée
             count = 1
 
-        if (item < 0) or (item > len(self.shop)):
+        if (item < 0) or (item > len(self.SHOP)):
             embed = discord.Embed(title=f"Merci de faire ```{notation}```",
                                   description="L'objet demandé n'existe pas !",
                                   color=WHITE)
@@ -352,7 +374,7 @@ class commands:
             return
 
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
-        item_in_shop = self.shop[item]
+        item_in_shop = self.SHOP[item]
         name = item_in_shop["name"]
         price = item_in_shop["price"]
         number = item_in_shop["item_number"]
@@ -388,6 +410,100 @@ class commands:
                         await self.channel.send(embed=embed)
                         return
 
+                exists = True
+                group[1] = str(int(group[1]) + count)
+
+        if not exists:
+            ls.append([str(number), str(count)])
+
+        # On retire le prix de l'objet.
+        db[gold_dans_db_for_cible] = str(gold_of_cible - valeur)
+
+        reformat = []
+        for element in ls:
+            reformat.append("-".join(element))
+
+        reformated = "|".join(reformat)
+        db[items_dans_db_for_author] = reformated
+
+        embed = discord.Embed(
+            title="",
+            description=f"Vous avez acheté {count} {name} pour {valeur} :dollar: !",
+            color=WHITE)
+        await self.channel.send(embed=embed)
+
+    async def action_buy(self, notation, args):
+        cible = str(self.author)
+
+        try:
+            item = int(args[0]) - 1
+        except ValueError:
+            embed = discord.Embed(
+                title=f"Merci de faire ```{notation}```",
+                description="Merci d'entrer un nombre et non du texte.",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+        except IndexError:
+            embed = discord.Embed(
+                title=f"Merci de faire ```{notation}```",
+                description="Merci d'entrer un nombre indiquant quelle action vous souhaitez acheter.",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+
+        try:
+            count = int(args[1])
+            if count < 0:
+                embed = discord.Embed(
+                    title="Vous n'essayez quand même pas de me vendre ces actions ?!",
+                    description="Non merci, je refuse. Achetez plutout en positif.",
+                    color=WHITE)
+                await self.channel.send(embed=embed)
+                return
+        except ValueError:
+            embed = discord.Embed(
+                title=f"Merci de faire ```{notation}```",
+                description="Merci d'entrer un nombre et non du texte.",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+        except IndexError:  # Il n'y a pas de nombre spécifié
+            count = 1
+
+        if (item < 0) or (item > len(self.BASE_ACTION)):
+            embed = discord.Embed(
+                title=f"Merci de faire ```{notation}```",
+                description="L'action demandé n'existe pas !",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+
+        item_in_shop = self.BASE_ACTION[item]
+        name = item_in_shop["name"]
+        price = db[self.PREFIXES[item_in_shop["price_key"]]]
+        print(price)
+        number = item_in_shop["item_number"]
+
+        gold_dans_db_for_cible = self.PREFIXES["gold"] + str(cible)
+
+        gold_of_cible = int(db[gold_dans_db_for_cible])
+
+        valeur = price * count
+
+        if not ((gold_of_cible - valeur) >= 0):  # Trop pauvre !
+            embed = discord.Embed(
+                title="Vous ne possédez pas assez d'argent pour acheter cette action !",
+                description=f"Vous possédez {gold_of_cible} :dollar: et votre achat vous coûterai {valeur} :dollar: !",
+                color=WHITE)
+            await self.channel.send(embed=embed)
+            return
+
+        items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
+        ls = extract_data_encoded_NT1_for_actions(self, cible)
+
+        for group in ls:
+            if int(group[0]) == number:
                 exists = True
                 group[1] = str(int(group[1]) + count)
 
@@ -449,7 +565,7 @@ class commands:
         except IndexError:  # Il n'y a pas de valeur spécifiée
             count = 1
 
-        if (item < 0) or (item > len(self.shop)):
+        if (item < 0) or (item > len(self.SHOP)):
             embed = discord.Embed(title=f"Merci de faire ```{notation}```",
                                   description="L'objet demandé n'existe pas !",
                                   color=WHITE)
@@ -457,7 +573,7 @@ class commands:
             return
 
         # 0 : Name		1 : Comment		2 : Prix		3 : Number
-        item_in_shop = self.shop[item]
+        item_in_shop = self.SHOP[item]
         name = item_in_shop["name"]
         price = item_in_shop["price"]
         number = item_in_shop["item_number"]
@@ -608,7 +724,7 @@ class commands:
         lst_of_items = retour[0]
         lst_of_items_num = retour[1]
 
-        exploitation_name = self.shop[7]["name"]
+        exploitation_name = self.SHOP[7]["name"]
 
         have_an_exploitation = False
         for i in range(len(lst_of_items)):

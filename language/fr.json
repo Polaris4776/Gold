@@ -83,12 +83,6 @@
             "description": "L'objet qui ferait mourir de jalousie un milliardaire !",
             "price": 99000000000000000,
             "item_number": 14
-        },
-        {
-            "name": "Part d'action :part_alternation_mark:",
-            "description": "Achetez et revendez des parts d'entreprises et entrez en bourse ! (Attention, risque de perte de votre argent et de dépression !)",
-            "price": 98765432101239810,
-            "item_number": 15
         }
     ],
     "PREFIXES": {
@@ -114,5 +108,25 @@
         "Red_historic": "U_U|base_action|Red|history",
         "Green_historic": "U_U|base_action|Green|history",
         "Blue_historic": "U_U|base_action|Blue|history"
-    }
+    },
+    "ACTIONS_SHOP": [
+        {
+            "name": "Action Ged :red_circle:",
+            "description": "Action de base à valeur faible.",
+            "price_key": "Red_actions",
+            "number": 1
+        },
+        {
+            "name": "Action Green :green_circle:",
+            "description": "Action de base à valeur moyenne.",
+            "price_key": "Green_actions",
+            "number": 2
+        },
+        {
+            "name": "Action Blue :blue_circle:",
+            "description": "Action de base à valeur élevée.",
+            "price_key": "Blue_historic",
+            "number": 3
+        }
+    ]
 }
