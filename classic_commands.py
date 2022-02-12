@@ -503,7 +503,6 @@ class commands:
         action_in_shop = self.BASE_ACTION[item]
         name = action_in_shop["name"]
         price = db[self.PREFIXES[action_in_shop["price_key"]]]
-        print(price)
         number = action_in_shop["number"]
 
         gold_dans_db_for_cible = self.PREFIXES["gold"] + str(cible)
@@ -523,7 +522,6 @@ class commands:
         actions_dans_db_for_author = self.PREFIXES["user_action_possessions"] + \
             f"{cible}"
         ls = extract_data_encoded_NT1_for_actions(self, cible)
-        print(f"ls = {ls}")
 
         for group in ls:
             if int(group[0]) == number:
@@ -533,8 +531,6 @@ class commands:
         if not exists:
             ls.append([str(number), str(count)])
 
-        print(f"new_ls = {ls}")
-
         # On retire le prix de l'objet.
         db[gold_dans_db_for_cible] = str(gold_of_cible - valeur)
 
@@ -543,7 +539,6 @@ class commands:
             reformat.append("-".join(element))
 
         reformated = "|".join(reformat)
-        print(f"Reformated = {reformated}")
         db[actions_dans_db_for_author] = reformated
 
         embed = discord.Embed(
