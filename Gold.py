@@ -118,10 +118,10 @@ def create_user(UserToCreate):
         db[PREFIXES["items"] + UserToCreate] = "11-1"
 
     if not PREFIXES["user_action_possessions"] + UserToCreate in users:  # Possessions of actions
-        new_value = ""
-        new_value += f"{BASE_ACTION[0][name]}-0"
-        new_value += f"{BASE_ACTION[1][name]}-0"
-        new_value += f"{BASE_ACTION[2][name]}-0"
+        new_value = []
+        for i in range(3):
+            new_value.append((str(BASE_ACTION[i]["name"])) + "-0")
+        new_value = "|".join(new_value)
         print(f"New_value = {new_value}")
         db[PREFIXES["user_action_possessions"] +
             UserToCreate] = new_value
@@ -392,7 +392,7 @@ WHITE = 16775930
 
 
 # 1 minute d'attente entre chaque execution de def
-@tasks.loop(seconds=MINUTE)
+@ tasks.loop(seconds=MINUTE)
 async def temps():
     rand = random.randint(1, 2048)  # 1 chance sur 2048 pour l'instant
     if rand == 5:

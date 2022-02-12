@@ -190,9 +190,14 @@ def create_user(self, UserToCreate):
         db[self.PREFIXES["items"] + UserToCreate] = "11-1"
 
     # Possessions of actions
-    if not self.PREFIXES["user_action_possessions"] + UserToCreate in users:
+    if not self.PREFIXES["user_action_possessions"] + UserToCreate in users:  # Possessions of actions
+        new_value = []
+        for i in range(3):
+            new_value.append((str(self.BASE_ACTION[i]["name"])) + "-0")
+        new_value = "|".join(new_value)
+        print(f"New_value = {new_value}")
         db[self.PREFIXES["user_action_possessions"] +
-            UserToCreate] = "Red-0|Green-0|Blue-0"
+            UserToCreate] = new_value
 
 
 # NT1 Nolann's Technic 1 (spécifique)
