@@ -224,7 +224,6 @@ def add_xp(author: str, value: int):
 
 
 def historic_changing(new_value: int, historic: str) -> str:
-    print(f"\n\nHistoric before : {historic}")
     historic = historic.split("|")  # Devient une liste
     del historic[0]
     historic.append(str(new_value))
@@ -235,7 +234,6 @@ def historic_changing(new_value: int, historic: str) -> str:
 
 
 def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> int:
-    print(f"\n\n\nhistoric_of_values of the enterprise = {historic_of_values}")
     historic_of_values = historic_of_values.split("|")  # Devient une liste
 
     for element in range(len(historic_of_values)):
