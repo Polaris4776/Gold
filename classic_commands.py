@@ -1296,18 +1296,20 @@ class commands:
             Hist = "Il n'y a pas encore d'historique pour le moment. :zzz:"
         else:
             Hist = "Historique de la valeur des actions de base :"
-            Hist += f"\n**- Red :** `{Red_Historic}` :dollar:"
-            Hist += f"\n**- Green :** `{Green_Historic}` :dollar:"
-            Hist += f"\n**- Blue :** `{Blue_Historic}` :dollar:"
+            Hist += f"\n**1 : Red :** `{Red_Historic}` :dollar:"
+            Hist += f"\n**2 : Green :** `{Green_Historic}` :dollar:"
+            Hist += f"\n**3 : Blue :** `{Blue_Historic}` :dollar:"
 
         RGB = "Valeur des actions de base :"
         RGB += f"\n**- Red :** `{Red}` :dollar:"
         RGB += f"\n**- Green :** `{Green}` :dollar:"
         RGB += f"\n**- Blue :** `{Blue}` :dollar:"
 
+        info = "\nAchetez des actions avec `?actionbuy` suivi du numéro de l'action !\nExemple pour acheter une action red : \n`?actionbuy 1`"
+
         cube = "▬" * 18
         embed = discord.Embed(
             title="Actions et évolution : ",
-            description=f"{cube}\n{RGB}\n{cube}\n{Hist}",
+            description=f"{cube}\n{RGB}\n{cube}\n{Hist}\n{info}",
             color=WHITE)
         await self.channel.send(embed=embed)
