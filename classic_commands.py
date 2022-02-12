@@ -194,7 +194,7 @@ def create_user(self, UserToCreate):
     if not self.PREFIXES["user_action_possessions"] + UserToCreate in users:
         new_value = []
         for i in range(3):
-            new_value.append((str(self.BASE_ACTION[i]["name"])) + "-0")
+            new_value.append(f"{i}-0")
         new_value = "|".join(new_value)
         db[self.PREFIXES["user_action_possessions"] +
             UserToCreate] = new_value
@@ -1305,7 +1305,7 @@ class commands:
         RGB += f"\n**- Green :** `{Green}` :dollar:"
         RGB += f"\n**- Blue :** `{Blue}` :dollar:"
 
-        info = "\nAchetez des actions avec `?actionbuy` suivi du numéro de l'action !\nExemple pour acheter une action red : \n`?actionbuy 1`"
+        info = "\nAchetez des actions avec `?actionbuy` suivi du numéro de l'action !\nExemple pour acheter une action Red : \n`?actionbuy 1`"
 
         cube = "▬" * 18
         embed = discord.Embed(

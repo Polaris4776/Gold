@@ -121,7 +121,7 @@ def create_user(UserToCreate):
     if not PREFIXES["user_action_possessions"] + UserToCreate in users:  # Possessions of actions
         new_value = []
         for i in range(3):
-            new_value.append((str(BASE_ACTION[i]["name"])) + "-0")
+            new_value.append(f"{i}-0")
         new_value = "|".join(new_value)
         db[PREFIXES["user_action_possessions"] +
             UserToCreate] = new_value
