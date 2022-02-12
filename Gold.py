@@ -519,6 +519,12 @@ async def on_message(message):
 
         await cl_command.bag(notation, args)
 
+    elif content.lower().startswith(PREFIXE + "wallet"):
+        notation = f"{PREFIXE}wallet [user]"
+        args = get_args(content, PREFIXE + "wallet")
+
+        await cl_command.bag(notation, args)
+
     elif content.lower().startswith(PREFIXE + "use"):
         notation = f"{PREFIXE}use [item]"
         args = get_args(content, PREFIXE + "buy")

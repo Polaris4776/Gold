@@ -168,6 +168,22 @@ def get_items_of_user(self, cible: str) -> list:
     return lst_of_items, lst_of_items_num
 
 
+def get_actions_of_user(self, cible: str) -> list:
+    ls = extract_data_encoded_NT1_for_actions(self, cible)
+
+    lst_of_actions = []
+    lst_of_actions_num = []
+
+    for group_item in range(len(ls)):
+        item_in_base_actions = self.BASE_ACTION[(int(ls[group_item][0])) - 1]
+        name = item_in_base_actions["name"]
+
+        lst_of_actions.append(name)
+        lst_of_actions_num.append(ls[group_item][1])
+
+    return lst_of_actions, lst_of_actions_num
+
+
 def create_user(self, UserToCreate):
     try:
         if UserToCreate.bot:
@@ -658,6 +674,29 @@ class commands:
             formated += f"**{lst_of_items[item]}** × {lst_of_items_num[item]}\n"
 
         embed = discord.Embed(title=f"Inventaire de {cible}",
+                              description=f"{formated}",
+                              color=WHITE)
+        await self.channel.send(embed=embed)
+
+    async def wallet(self, notation, args):  # Voir les actions que l'on possède
+        cible = str(get_mention(self, args))
+
+        if cible == "None":
+            cible = str(self.author)
+
+        retour = get_actions_of_user(self, cible)
+
+        print(retour)
+
+        lst_of_items = retour[0]
+        lst_of_items_num = retour[1]
+
+        formated = ""
+
+        for item in range(len(lst_of_items)):
+            formated += f"**{lst_of_items[item]}** × {lst_of_items_num[item]}\n"
+
+        embed = discord.Embed(title=f"Liste des actions de {cible}",
                               description=f"{formated}",
                               color=WHITE)
         await self.channel.send(embed=embed)

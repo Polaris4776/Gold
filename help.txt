@@ -43,6 +43,9 @@ Observez le cours de la bourse, la valeur actuelle des actions et l'historique d
 {prefixe}actionbuy :arrows_counterclockwise:
 Achetez des actions directements de la bourse !!! Et enrichissez-vous... ou perdez tout !
 
+{prefixe}wallet :arrows_counterclockwise:
+Admirez vos magnifiques possessions d'actions !
+
 {prefixe}bag :white_check_mark:
 Admirez votre magifique équipement... ou jalousez celui d'autrui !
 
