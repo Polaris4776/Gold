@@ -273,14 +273,10 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     if value_of_actions < 10:  # Minimum value
         value_of_actions = 100
 
-    print(f"Le changement est de {value_of_actions - old_value_of_actions}")
-
     if heavy_change:
         print("\n\nLa valeur de l'action de l'entreprise à fortement changé !!!")
         print(f"La valeur actuelle est désormais : {value_of_actions}\n\n")
-    else:
-        print(
-            f"\nLa valeur actuelle est désormais : {value_of_actions}\n\nLe changement est de : {ecart * (alea - 50) // 10}")
+    print(f"Le changement est de : {value_of_actions - old_value_of_actions}")
 
     return value_of_actions
 
