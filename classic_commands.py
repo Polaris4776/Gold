@@ -484,11 +484,11 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        item_in_shop = self.BASE_ACTION[item]
-        name = item_in_shop["name"]
-        price = db[self.PREFIXES[item_in_shop["price_key"]]]
+        action_in_shop = self.BASE_ACTION[item]
+        name = action_in_shop["name"]
+        price = db[self.PREFIXES[action_in_shop["price_key"]]]
         print(price)
-        number = item_in_shop["item_number"]
+        number = action_in_shop["number"]
 
         gold_dans_db_for_cible = self.PREFIXES["gold"] + str(cible)
 
