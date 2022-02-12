@@ -499,8 +499,10 @@ class commands:
             await self.channel.send(embed=embed)
             return
 
-        items_dans_db_for_author = self.PREFIXES["items"] + f"{cible}"
+        actions_dans_db_for_author = self.PREFIXES["user_action_possessions"] + \
+            f"{cible}"
         ls = extract_data_encoded_NT1_for_actions(self, cible)
+        print(f"ls = {ls}")
 
         for group in ls:
             if int(group[0]) == number:
@@ -510,6 +512,8 @@ class commands:
         if not exists:
             ls.append([str(number), str(count)])
 
+        print(f"new_ls = {ls}")
+
         # On retire le prix de l'objet.
         db[gold_dans_db_for_cible] = str(gold_of_cible - valeur)
 
@@ -518,7 +522,8 @@ class commands:
             reformat.append("-".join(element))
 
         reformated = "|".join(reformat)
-        db[items_dans_db_for_author] = reformated
+        print(f"Reformated = {reformated}")
+        db[actions_dans_db_for_author] = reformated
 
         embed = discord.Embed(
             title="",

@@ -1,3 +1,4 @@
+from unicodedata import name
 import discord
 import os
 from replit import db
@@ -117,8 +118,13 @@ def create_user(UserToCreate):
         db[PREFIXES["items"] + UserToCreate] = "11-1"
 
     if not PREFIXES["user_action_possessions"] + UserToCreate in users:  # Possessions of actions
+        new_value = ""
+        new_value += f"{BASE_ACTION[0][name]}-0"
+        new_value += f"{BASE_ACTION[1][name]}-0"
+        new_value += f"{BASE_ACTION[2][name]}-0"
+        print(f"New_value = {new_value}")
         db[PREFIXES["user_action_possessions"] +
-            UserToCreate] = "Red-0|Green-0|Blue-0"
+            UserToCreate] = new_value
 
 
 def timer_edit_less(user: str, prefixe_num: str):
@@ -256,9 +262,11 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     else:  # Changement normal
         alea = random.randint(0, 100)
         if alea > 50:
-            value_of_actions = value_of_actions + ecart * (alea - 50) // 10
+            value_of_actions = value_of_actions + ecart * \
+                (alea - 50) // 10 + random.randint(-10, 30)
         if alea < 50:
-            value_of_actions = value_of_actions - ecart * alea // 10
+            value_of_actions = value_of_actions - ecart * \
+                alea // 10 - random.randint(-10, 30)
 
     if value_of_actions < 10:  # Minimum value
         value_of_actions = 10

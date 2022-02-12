@@ -111,7 +111,7 @@
     },
     "ACTIONS_SHOP": [
         {
-            "name": "Action Ged :red_circle:",
+            "name": "Action Red :red_circle:",
             "description": "Action de base à valeur faible.",
             "price_key": "Red_actions",
             "number": 1
