@@ -1302,7 +1302,7 @@ class commands:
 
         cube = "▬" * 18
         embed = discord.Embed(
-            title=f"Actions et évolution : ",
+            title="Actions et évolution : ",
             description=f"{cube}\n{RGB}\n{cube}\n{Hist}",
             color=WHITE)
         await self.channel.send(embed=embed)
