@@ -252,9 +252,9 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     else:  # Changement normal
         alea = random.randint(0, 100)
         if alea > 50:
-            value_of_actions = value_of_actions + ecart * (alea - 50) // 100
+            value_of_actions = value_of_actions + ecart * (alea - 50) // 10
         if alea < 50:
-            value_of_actions = value_of_actions - ecart * (alea - 50) // 100
+            value_of_actions = value_of_actions - ecart * alea // 10
 
     if value_of_actions < 10:  # Minimum value
         value_of_actions = 10
