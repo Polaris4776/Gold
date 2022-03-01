@@ -22,7 +22,7 @@ import json
 TOKEN = os.getenv("DISCORD_TOKEN")
 CLIENT = discord.Client()
 PREFIXE = "?"
-ALEA_OF_HEAVY_CHANGE = 100
+ALEA_OF_HEAVY_CHANGE = 50000
 
 LOCATION_OF_FR_JSON = "language/fr.json"
 LANGUAGE = str(os.getenv("LANGUAGE"))
@@ -261,14 +261,12 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     else:  # Changement normal
         alea = random.randint(0, 100)
         if alea > 50:
-            value_of_actions = value_of_actions + ecart * \
-                (alea - 50) // 10 + random.randint(-10, 30)
-            etendue // 1000
+            value_of_actions = value_of_actions + ecart * (alea - 50) // 10 + random.randint(-10, 30) - etendue // 1000
         if alea < 50:
             value_of_actions = value_of_actions - ecart * \
                 alea // 10 - random.randint(-10, 30) - etendue // 1000
 
-    if value_of_actions < 10:  # Minimum value
+    if value_of_actions < 100:  # Minimum value
         value_of_actions = 100
 
     if heavy_change:
