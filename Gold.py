@@ -261,7 +261,8 @@ def fluctuation_simulation(value_of_actions: int, historic_of_values: list) -> i
     else:  # Changement normal
         alea = random.randint(0, 100)
         if alea > 50:
-            value_of_actions = value_of_actions + ecart * (alea - 50) // 10 + random.randint(-10, 30) - etendue // 1000
+            value_of_actions = value_of_actions + ecart * \
+                (alea - 50) // 10 + random.randint(-10, 30) - etendue // 1000
         if alea < 50:
             value_of_actions = value_of_actions - ecart * \
                 alea // 10 - random.randint(-10, 30) - etendue // 1000
@@ -439,13 +440,14 @@ async def temps():
 
                         users = db.keys()
                         found = False
-                        for user in users:
+                        for user_element in users:
                             if to_delete in user:
-                                del db[user]
+                                del db[user_element]
                                 found = True
                         if found:
                             print(f"{to_delete} supprimé avec succès !")
                 except KeyError as e:
+                    create_user(user)
                     print(f"\nKeyError catched. Exception : {e}")
 
 
