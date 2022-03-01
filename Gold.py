@@ -390,13 +390,14 @@ async def temps():
 
                         users = db.keys()
                         found = False
-                        for user in users:
+                        for user_element in users:
                             if to_delete in user:
-                                del db[user]
+                                del db[user_element]
                                 found = True
                         if found:
                             print(f"{to_delete} supprimé avec succès !")
                 except KeyError as e:
+                    create_user(user)
                     print(f"\nKeyError catched. Exception : {e}")
 
 
