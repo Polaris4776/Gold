@@ -1280,7 +1280,7 @@ class commands:
         # Si on arrive là, c'est qu'on peut bien reporter.
 
         level_dans_db = self.PREFIXES["level"] + str(self.author)
-        lvl = db[level_dans_db]
+        lvl = int(db[level_dans_db])
 
         valeur = valeur_stolen * (1, 5 + (lvl // 50))
 
