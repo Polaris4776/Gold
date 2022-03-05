@@ -18,7 +18,7 @@ class commands:
         self.channel = message.channel
         self.CLIENT = CLIENT
         self.user_id = message.author.id
-        self.prefixes = prefixes
+        self.PREFIXES = prefixes
 
     async def delete(self, notation, args):
         cible = None
